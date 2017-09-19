@@ -12,8 +12,8 @@
 </div>
 
 ## Library
-* RxJava,RxPermission,RxBus
+* **RxJava,RxPermission,RxBus
 * Retrofit,OkHttp
 * Glide
 * ButterKnife 
-* etc.
+* etc.**
