@@ -94,9 +94,7 @@ public class ChoiceCityActivity extends ToolbarActivity {
     private void initView() {
         mRecyclerview = (RecyclerView) findViewById(R.id.recyclerview);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        if (mProgressBar != null) {
-            mProgressBar.setVisibility(View.VISIBLE);
-        }
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void initRecyclerView() {

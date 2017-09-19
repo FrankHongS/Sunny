@@ -156,9 +156,10 @@ public class Util {
      * 匹配掉错误信息
      */
     public static String replaceCity(String city) {
-        city = safeText(city).replaceAll("(?:省|市|自治区|特别行政区|地区|盟)", "");
+        city = safeText(city).replaceAll("(?:省|市|自治区|特别行政区|地区|盟|区)", "");
         return city;
     }
+
 
     /**
      * 匹配掉无关信息

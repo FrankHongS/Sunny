@@ -32,6 +32,7 @@ import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.SimpleSubscriber;
 import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.modules.city.ui.ChoiceCityActivity;
+import com.hon.sunny.modules.city.ui.SearchCityActivity;
 import com.hon.sunny.modules.main.adapter.HomePagerAdapter;
 import com.hon.sunny.modules.service.AutoUpdateService;
 import com.hon.sunny.modules.setting.ui.SettingActivity;
@@ -133,7 +134,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             mFab.setImageResource(R.drawable.ic_add_24dp);
                             mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
                             mFab.setOnClickListener(v -> {
-                                Intent intent = new Intent(MainActivity.this, ChoiceCityActivity.class);
+                                Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
                                 intent.putExtra(Constants.MULTI_CHECK, true);
                                 CircularAnimUtil.startActivity(MainActivity.this, intent, mFab,
                                         R.color.colorPrimary);
@@ -248,7 +249,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 //                                AboutActivity.launch(MainActivity.this);
 //                                break;
                             case R.id.nav_city:
-                                ChoiceCityActivity.launch(MainActivity.this);
+                                SearchCityActivity.launch(MainActivity.this);
                                 break;
                             case R.id.nav_multi_cities:
                                 mViewPager.setCurrentItem(1);

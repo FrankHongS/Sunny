@@ -3,6 +3,12 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="string_search_city">选择您的城市</string>
+    <string name="desc_zone_icon">zone icon</string>
+    <string name="desc_city_icon">city icon</string>
+    <string name="desc_expand">expand</string>
+    <string name="string_cb">多城市管理</string>
+
     <string name="multi_city">开启多城市</string>
     <string name="no_network">网络不好(˵¯͒⌢͗¯͒˵)</string>
     <string name="title_activity_main2">Main2Activity</string>

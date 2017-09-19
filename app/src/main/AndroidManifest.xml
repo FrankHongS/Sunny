@@ -25,7 +25,7 @@
         android:name=".base.BaseApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:icon="@mipmap/ic_launcher_round"
+        android:icon="@mipmap/ic_launch_logo"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"
@@ -45,7 +45,7 @@
 
         <activity
             android:name=".modules.launch.FirstActivity"
-            android:theme="@style/FirstTheme">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -66,6 +66,9 @@
             />
         <activity
             android:name=".modules.about.ui.AboutActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".modules.city.ui.SearchCityActivity"
             android:screenOrientation="portrait"
             />
     </application>

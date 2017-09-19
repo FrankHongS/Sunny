@@ -7,7 +7,7 @@ import java.io.Serializable;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class Province  implements Serializable {
+public class Province implements Serializable {
 
     public String ProName;
     public int ProSort;

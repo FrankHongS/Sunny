@@ -115,7 +115,7 @@ public class RetrofitSingleton {
             PLog.w(Util.replaceInfo(t.getMessage()));
             ToastUtil.showShort("错误: " + t.getMessage());
         }
-        PLog.w(t.getMessage());
+        PLog.e(t.getMessage());
     }
 
     public ApiInterface getApiService() {

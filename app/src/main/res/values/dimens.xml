@@ -13,4 +13,6 @@
     <dimen name="recyclerview_item">0dp</dimen>
     <dimen name="cardview_margin">8dp</dimen>
 
+    <dimen name="margin_child_start">10dp</dimen>
+    <dimen name="margin_child_end">10dp</dimen>
 </resources>
