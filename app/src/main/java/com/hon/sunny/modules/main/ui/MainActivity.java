@@ -133,17 +133,11 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         if (position == 1) {
                             mFab.setImageResource(R.drawable.ic_add_24dp);
                             mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
-                            mFab.setOnClickListener(v -> {
-                                Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
-                                intent.putExtra(Constants.MULTI_CHECK, true);
-                                CircularAnimUtil.startActivity(MainActivity.this, intent, mFab,
-                                        R.color.colorPrimary);
-                            });
-
-                        } else {
+                            mFab.setOnClickListener(v -> onFabClick(1));
+                        } else if(position == 0){
                             mFab.setImageResource(R.drawable.ic_favorite);
                             mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
-                            mFab.setOnClickListener(v -> ToastUtil.showShort("clicked a Like"));
+                            mFab.setOnClickListener(v -> onFabClick(0));
                         }
                         fab.show();
                     }
@@ -159,8 +153,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-//        mFab
-        mFab.setOnClickListener(v ->ToastUtil.showShort("clicked a Like"));
+        mFab.setOnClickListener(v ->onFabClick(0));
+    }
+
+    private void onFabClick(int position){
+        switch (position){
+            case 0:
+                ToastUtil.showShort("clicked a Like");
+                break;
+            case 1:
+                Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
+                intent.putExtra(Constants.MULTI_CHECK, true);
+                CircularAnimUtil.startActivity(MainActivity.this, intent, mFab,
+                        R.color.colorPrimary);
+                break;
+            default:
+                break;
+        }
     }
 
     /**

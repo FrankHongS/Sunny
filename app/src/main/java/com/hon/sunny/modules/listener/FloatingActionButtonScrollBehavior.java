@@ -5,6 +5,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -13,6 +14,8 @@ import android.view.View;
  */
 
 public class FloatingActionButtonScrollBehavior extends FloatingActionButton.Behavior {
+
+//    private static final String TAG=FloatingActionButtonScrollBehavior.class.getSimpleName();
 
     public FloatingActionButtonScrollBehavior(Context context, AttributeSet attrs) {
         super();
@@ -33,6 +36,7 @@ public class FloatingActionButtonScrollBehavior extends FloatingActionButton.Beh
                                final int dxUnconsumed, final int dyUnconsumed) {
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed,
                 dxUnconsumed, dyUnconsumed);
+//        Log.d(TAG, "dyConsumed: "+dyConsumed+" child.isShown: "+child.isShown());
         if (dyConsumed > 0 && child.getVisibility() == View.VISIBLE) {
             child.hide();
         } else if (dyConsumed < 0 && child.getVisibility() != View.VISIBLE) {

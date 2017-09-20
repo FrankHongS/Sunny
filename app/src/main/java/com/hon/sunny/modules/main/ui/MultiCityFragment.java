@@ -150,7 +150,8 @@ public class MultiCityFragment extends BaseFragment {
 
     private void multiLoad() {
         mWeathers.clear();
-        Observable.defer(() -> Observable.from(OrmLite.getInstance().query(CityORM.class)))
+        Observable
+                .defer(() -> Observable.from(OrmLite.getInstance().query(CityORM.class)))
                 .doOnRequest(aLong -> mRefreshLayout.setRefreshing(true))
                 .map(cityORM -> Util.replaceCity(cityORM.getName()))
                 .distinct()

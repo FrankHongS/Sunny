@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Toast;
@@ -41,6 +43,8 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
 
@@ -217,7 +221,6 @@ public class SearchCityActivity extends AppCompatActivity{
         Observable.create(new Observable.OnSubscribe<List<ParentBean>>() {
             @Override
             public void call(Subscriber<? super List<ParentBean>> subscriber) {
-                mResultAdapter.clear();
                 List<ParentBean> cityList=CityDBUtil.queryCities(mDatabase,query);
                 List<ParentBean> zoneList=CityDBUtil.queryZones(mDatabase,query);
                 subscriber.onNext(cityList);
@@ -226,6 +229,13 @@ public class SearchCityActivity extends AppCompatActivity{
             }
         })
                 .compose(RxUtils.rxSchedulerHelper())
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        mResultAdapter.clear();//initial,should run on MainThread
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .doOnNext(new Action1<List<ParentBean>>() {
                     @Override
                     public void call(List<ParentBean> list) {
