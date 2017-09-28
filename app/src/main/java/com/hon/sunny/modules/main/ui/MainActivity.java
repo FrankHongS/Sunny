@@ -31,11 +31,17 @@ import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.SimpleSubscriber;
 import com.hon.sunny.common.util.ToastUtil;
-import com.hon.sunny.modules.city.ui.ChoiceCityActivity;
+import com.hon.sunny.common.util.Util;
+import com.hon.sunny.component.OrmLite;
+import com.hon.sunny.component.RxBus;
 import com.hon.sunny.modules.city.ui.SearchCityActivity;
 import com.hon.sunny.modules.main.adapter.HomePagerAdapter;
+import com.hon.sunny.modules.main.domain.ChangeCityEvent;
+import com.hon.sunny.modules.main.domain.CityORM;
+import com.hon.sunny.modules.main.domain.MultiUpdate;
 import com.hon.sunny.modules.service.AutoUpdateService;
 import com.hon.sunny.modules.setting.ui.SettingActivity;
+import com.pgyersdk.update.PgyUpdateManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,6 +69,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        RxBus.getDefault().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                changeCityEvent->
+                {
+                    mViewPager.setCurrentItem(0,true);
+                }
+        );
+        RxBus.getDefault().toObservable(MultiUpdate.class).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                multiUpdate -> {
+                    mViewPager.setCurrentItem(1,true);
+                }
+        );
         ButterKnife.bind(this);
         PLog.i("onCreate");
         initView();
@@ -131,9 +148,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     @Override
                     public void onHidden(FloatingActionButton fab) {
                         if (position == 1) {
-                            mFab.setImageResource(R.drawable.ic_add_24dp);
-                            mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
-                            mFab.setOnClickListener(v -> onFabClick(1));
+                                mFab.setImageResource(R.drawable.ic_add_24dp);
+                                mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
+                                mFab.setOnClickListener(v -> onFabClick(1));
                         } else if(position == 0){
                             mFab.setImageResource(R.drawable.ic_favorite);
                             mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
@@ -162,10 +179,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 ToastUtil.showShort("clicked a Like");
                 break;
             case 1:
-                Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
-                intent.putExtra(Constants.MULTI_CHECK, true);
-                CircularAnimUtil.startActivity(MainActivity.this, intent, mFab,
-                        R.color.colorPrimary);
+                if(Util.checkMultiCitiesCount()){
+                    Snackbar.make(mFab,R.string.city_count,Snackbar.LENGTH_LONG).show();
+                }else{
+                    Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
+                    intent.putExtra(Constants.MULTI_CHECK, true);
+                    CircularAnimUtil.startActivity(MainActivity.this, intent, mFab,
+                            R.color.colorPrimary);
+                }
                 break;
             default:
                 break;
@@ -298,6 +319,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //OrmLite.getInstance().close();
+        OrmLite.getInstance().close();
+        PgyUpdateManager.unregister();
     }
+
 }

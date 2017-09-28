@@ -15,8 +15,14 @@ import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.hon.sunny.R;
+import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
+import com.hon.sunny.component.OrmLite;
+import com.hon.sunny.modules.about.domain.VersionBean;
+import com.hon.sunny.modules.main.domain.CityORM;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -231,5 +237,19 @@ public class Util {
         ClipData clipData = ClipData.newPlainText("msg", info);
         manager.setPrimaryClip(clipData);
         ToastUtil.showShort(String.format("[%s] 已经复制到剪切板啦( •̀ .̫ •́ )✧", info));
+    }
+
+    //parse json by Gson
+    public static VersionBean parseJsonByGson(String json){
+        Gson gson=new Gson();
+        return gson.fromJson(json,
+                new TypeToken<VersionBean>(){}.getType());
+    }
+
+    // check if cities count is more than 3
+    public static boolean checkMultiCitiesCount(){
+        int count=(int) OrmLite.getInstance().queryCount(CityORM.class);
+
+        return count>= Constants.CITY_COUNT;
     }
 }

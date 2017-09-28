@@ -15,5 +15,7 @@ public class Constants {
     public static final String ORM_NAME = "cities.db";
 
     public static final String UNKNOWN_CITY = "unknown city";
+
+    public static final int CITY_COUNT=3;
 }
 

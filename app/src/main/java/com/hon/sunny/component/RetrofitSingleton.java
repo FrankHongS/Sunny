@@ -34,6 +34,7 @@ import rx.Observable;
 
 public class RetrofitSingleton {
 
+    private static RetrofitSingleton sRetrofitSingleton;
     private static ApiInterface sApiService = null;
     private static Retrofit sRetrofit = null;
     private static OkHttpClient sOkHttpClient = null;
@@ -49,12 +50,20 @@ public class RetrofitSingleton {
     }
 
     public static RetrofitSingleton getInstance() {
-        return SingletonHolder.INSTANCE;
+//        return SingletonHolder.INSTANCE;
+        if(sRetrofitSingleton==null){
+            synchronized (RetrofitSingleton.class){
+                if(sRetrofitSingleton==null){
+                    sRetrofitSingleton=new RetrofitSingleton();
+                }
+            }
+        }
+        return sRetrofitSingleton;
     }
 
-    private static class SingletonHolder {
-        private static final RetrofitSingleton INSTANCE = new RetrofitSingleton();
-    }
+//    private static class SingletonHolder {
+//        private static final RetrofitSingleton INSTANCE = new RetrofitSingleton();
+//    }
 
     private static void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -119,7 +128,7 @@ public class RetrofitSingleton {
     }
 
     public ApiInterface getApiService() {
-        return sApiService;
+            return sApiService;
     }
 
     public Observable<Weather> fetchWeather(String city) {

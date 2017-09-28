@@ -1,13 +1,18 @@
 package com.hon.sunny.common.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.widget.Toast;
 
 import com.hon.sunny.component.RetrofitSingleton;
 import com.hon.sunny.modules.about.domain.VersionAPI;
+import com.hon.sunny.modules.about.domain.VersionBean;
+import com.pgyersdk.update.PgyUpdateManager;
+import com.pgyersdk.update.UpdateManagerListener;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -48,7 +53,31 @@ public class CheckVersion {
                 });
     }
 
-    public static void showUpdateDialog(VersionAPI versionAPI, final Context context) {
+    public static void checkVersionByPgy(Activity activity){
+        PgyUpdateManager.register(activity, "com.hon.sunny.frank_hon",
+                new UpdateManagerListener() {
+                    @Override
+                    public void onNoUpdateAvailable() {
+                    }
+
+                    @Override
+                    public void onUpdateAvailable(String result) {
+                        String currentVersionName = Util.getVersion(activity);
+                        VersionBean versionBean=Util.parseJsonByGson(result);
+                        if(versionBean!=null){
+                            String serverVersionName=versionBean.data.versionName;
+                            if (currentVersionName.compareTo(serverVersionName) < 0) {
+                                if (!SharedPreferenceUtil.getInstance().getString("version", "").equals(serverVersionName)) {
+                                    showUpdateDialog(versionBean, activity);
+                                }
+                            }
+                        }
+                    }
+                }
+        );
+    }
+
+    private static void showUpdateDialog(VersionAPI versionAPI, final Context context) {
         String title = "发现新版" + versionAPI.name + "版本号：" + versionAPI.versionShort;
 
         new AlertDialog.Builder(context).setTitle(title)
@@ -64,6 +93,27 @@ public class CheckVersion {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SharedPreferenceUtil.getInstance().putString("version", versionAPI.versionShort);
+                    }
+                })
+                .show();
+    }
+
+    private static void showUpdateDialog(VersionBean versionBean,Context context){
+        String title = "ersion "+versionBean.data.versionName+" is available !";
+
+        new AlertDialog.Builder(context).setTitle(title)
+                .setMessage(versionBean.data.relaseNote)
+                .setPositiveButton("Download", (dialog, which) -> {
+                    Uri uri = Uri.parse(versionBean.data.appUrl);   //指定网址
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);           //指定Action
+                    intent.setData(uri);                            //设置Uri
+                    context.startActivity(intent);        //启动Activity
+                })
+                .setNegativeButton("Skip", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferenceUtil.getInstance().putString("version", versionBean.data.versionName);
                     }
                 })
                 .show();

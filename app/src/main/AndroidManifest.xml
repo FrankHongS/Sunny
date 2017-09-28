@@ -36,8 +36,8 @@
             android:name="com.amap.api.v2.apikey"
             android:value="f77fb4e191863aa648bb568c0d05b291"/>
         <meta-data
-            android:name="BUG_HD_SDK_GENERAL_KEY"
-            android:value="6c5241a92d395baa70c227300f5db822"/>
+            android:name="PGYER_APPID"
+            android:value="d3d2a1cbc5fcc6ffe24c43e164360902"/>
 
         <service android:name="com.amap.api.location.APSService"/>
         <service android:name=".modules.service.AutoUpdateService"/>
@@ -61,15 +61,20 @@
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".modules.city.ui.ChoiceCityActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity
             android:name=".modules.about.ui.AboutActivity"
             android:screenOrientation="portrait"
             />
         <activity android:name=".modules.city.ui.SearchCityActivity"
             android:screenOrientation="portrait"
             />
+
+        <provider android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.hon.sunny.frank_hon"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 </manifest>

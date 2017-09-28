@@ -19,6 +19,8 @@ import com.hon.sunny.base.BaseViewHolder;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.Util;
+import com.hon.sunny.component.RxBus;
+import com.hon.sunny.modules.main.domain.ChangeCityEvent;
 import com.hon.sunny.modules.main.domain.Weather;
 
 import java.util.List;
@@ -33,10 +35,10 @@ import butterknife.Bind;
 public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.MultiCityViewHolder> {
     private Context mContext;
     private List<Weather> mWeatherList;
-    private onMultiCityLongClick onMultiCityLongClick = null;
+    private OnMultiCityClickListener onMultiCityClickListener = null;
 
-    public void setOnMultiCityLongClick(onMultiCityLongClick onMultiCityLongClick) {
-        this.onMultiCityLongClick = onMultiCityLongClick;
+    public void setOnMultiCityLongClick(OnMultiCityClickListener onMultiCityClickListener) {
+        this.onMultiCityClickListener = onMultiCityClickListener;
     }
 
     public MultiCityAdapter(List<Weather> weatherList) {
@@ -53,8 +55,11 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
     public void onBindViewHolder(MultiCityViewHolder holder, int position) {
 
         holder.bind(mWeatherList.get(position));
+        holder.itemView.setOnClickListener(v->{
+            onMultiCityClickListener.onClick(mWeatherList.get(holder.getAdapterPosition()).basic.city);
+        });
         holder.itemView.setOnLongClickListener(v -> {
-            onMultiCityLongClick.longClick(mWeatherList.get(holder.getAdapterPosition()).basic.city);
+            onMultiCityClickListener.onLongClick(mWeatherList.get(holder.getAdapterPosition()).basic.city);
             return true;
         });
     }
@@ -113,8 +118,9 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
         }
     }
 
-    public interface onMultiCityLongClick {
-        void longClick(String city);
+    public interface OnMultiCityClickListener {
+        void onLongClick(String city);
+        void onClick(String city);
     }
 }
 

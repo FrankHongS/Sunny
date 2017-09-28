@@ -25,6 +25,7 @@ import com.hon.sunny.R;
 import com.hon.sunny.base.BaseApplication;
 import com.hon.sunny.base.BaseFragment;
 import com.hon.sunny.common.PLog;
+import com.hon.sunny.common.util.CheckVersion;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
@@ -94,7 +95,7 @@ public class MainFragment extends BaseFragment implements AMapLocationListener{
                         load();
                     }
                 });
-//        CheckVersion.checkVersion(getActivity());
+        CheckVersion.checkVersionByPgy(getActivity());
     }
 
     @Override

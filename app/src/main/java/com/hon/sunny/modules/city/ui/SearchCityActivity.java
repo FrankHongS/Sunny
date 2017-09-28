@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.hon.persistentsearchview.PersistentSearchView;
@@ -24,6 +26,7 @@ import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
+import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.RxBus;
@@ -67,7 +70,7 @@ public class SearchCityActivity extends AppCompatActivity{
     private DBManager mDBManager=DBManager.getInstance();
     private SQLiteDatabase mDatabase;
 
-    private boolean isChecked = false;
+    private boolean mIsChecked = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,9 +88,14 @@ public class SearchCityActivity extends AppCompatActivity{
             @Override
             public void onItemClick(String text) {
                 String city= Util.replaceCity(text);
-                if (isChecked) {
-                    OrmLite.getInstance().save(new CityORM(city));
-                    RxBus.getDefault().post(new MultiUpdate());
+                if (mIsChecked) {
+                    if(Util.checkMultiCitiesCount()){
+                        Snackbar.make(mRecyclerView,R.string.city_count,Snackbar.LENGTH_LONG).show();
+                        return;
+                    }else{
+                        OrmLite.getInstance().save(new CityORM(city));
+                        RxBus.getDefault().post(new MultiUpdate());
+                    }
                 } else {
                     SharedPreferenceUtil.getInstance().setCityName(city);
                     RxBus.getDefault().post(new ChangeCityEvent());
@@ -118,8 +126,6 @@ public class SearchCityActivity extends AppCompatActivity{
 
             @Override
             public void onSearchCleared() {
-                Toast.makeText(SearchCityActivity.this,"onSearchCleared",Toast.LENGTH_SHORT)
-                        .show();
             }
 
             @Override
@@ -165,15 +171,11 @@ public class SearchCityActivity extends AppCompatActivity{
 
             @Override
             public boolean onSearchEditBackPressed() {
-                Toast.makeText(SearchCityActivity.this,"onSearchEditBackPressed",Toast.LENGTH_SHORT)
-                        .show();
                 return false;
             }
 
             @Override
             public void onSearchExit() {
-                Toast.makeText(SearchCityActivity.this,"onSearchExit",Toast.LENGTH_SHORT)
-                        .show();
                 mResultAdapter.clear();
 //                mResultAdapter.notifyDataSetChanged();
 //                下面三行代码使recyclerView的项只是隐藏，而非清除。？？？
@@ -190,20 +192,22 @@ public class SearchCityActivity extends AppCompatActivity{
         });
 
         mCheckBox=(CheckBox) mPopup.getContentView().findViewById(R.id.popup_cb);
-
-        Intent intent = getIntent();
-        isChecked = intent.getBooleanExtra(Constants.MULTI_CHECK, false);
-        if (isChecked && SharedPreferenceUtil.getInstance().getBoolean("Tips", true)) {
-            showTips();
-        }
-
-        mCheckBox.setChecked(isChecked);
-        mCheckBox.setOnClickListener(new View.OnClickListener() {
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                isChecked=!isChecked;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mIsChecked=isChecked;
+                if(isChecked&&!Util.checkMultiCitiesCount()){
+                        if(SharedPreferenceUtil.getInstance().getBoolean("Tips",true)){
+                            showTips();
+                    }
+                }
             }
         });
+
+        Intent intent = getIntent();
+        mIsChecked = intent.getBooleanExtra(Constants.MULTI_CHECK, false);
+
+        mCheckBox.setChecked(mIsChecked);
 
         Observable.create(new Observable.OnSubscribe<String>() {
             @Override
@@ -243,8 +247,6 @@ public class SearchCityActivity extends AppCompatActivity{
                     }
                 })
                 .subscribe();
-
-
     }
 
     public void onBackPressed() {
@@ -268,4 +270,5 @@ public class SearchCityActivity extends AppCompatActivity{
         SearchCityActivity.this.finish();
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
 }
