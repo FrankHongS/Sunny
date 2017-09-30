@@ -2,9 +2,13 @@ package com.hon.sunny.common.util;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -23,6 +27,9 @@ import com.hon.sunny.common.PLog;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.modules.about.domain.VersionBean;
 import com.hon.sunny.modules.main.domain.CityORM;
+import com.hon.sunny.modules.main.domain.Weather;
+import com.hon.sunny.modules.main.ui.MainActivity;
+import com.hon.sunny.modules.service.AutoUpdateService;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -251,5 +258,26 @@ public class Util {
         int count=(int) OrmLite.getInstance().queryCount(CityORM.class);
 
         return count>= Constants.CITY_COUNT;
+    }
+
+    public static void normalStyleNotification(Weather weather,Context context,Class<? extends Activity> target){
+        SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
+        Intent intent = new Intent(context, MainActivity.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Notification.Builder builder = new Notification.Builder(context);
+        Notification notification = builder.setContentIntent(pendingIntent)
+                .setContentTitle(weather.basic.city)
+                .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
+                .setWhen(System.currentTimeMillis())
+                .setShowWhen(true)
+                // 这里部分 ROM 无法成功
+                .setSmallIcon(sharedPreferenceUtil.getInt(weather.now.cond.txt, R.mipmap.none))
+                .build();
+        notification.flags = sharedPreferenceUtil.getNotificationModel();
+        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        // tag和id都是可以拿来区分不同的通知的
+        manager.notify(1, notification);
     }
 }

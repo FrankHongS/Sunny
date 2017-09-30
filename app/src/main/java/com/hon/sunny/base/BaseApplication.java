@@ -26,7 +26,7 @@ public class BaseApplication extends Application{
     public void onCreate() {
         super.onCreate();
         sAppContext = getApplicationContext();
-        CrashHandler.init(new CrashHandler(getApplicationContext()));
+//        CrashHandler.init(new CrashHandler(getApplicationContext()));
         if (!BuildConfig.DEBUG) {
 //            FIR.init(this);
         }

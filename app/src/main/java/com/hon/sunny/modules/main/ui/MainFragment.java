@@ -172,7 +172,7 @@ public class MainFragment extends BaseFragment implements AMapLocationListener{
                 //mActivity.getToolbar().setTitle(weather.basic.city);
                 safeSetTitle(weather.basic.city);
                 mAdapter.notifyDataSetChanged();
-                normalStyleNotification(weather);
+                Util.normalStyleNotification(weather,getActivity(),MainActivity.class);
             }
         });
     }

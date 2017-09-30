@@ -7,9 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.hon.sunny.R;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
+import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.RetrofitSingleton;
 import com.hon.sunny.modules.main.domain.Weather;
@@ -51,6 +53,8 @@ public class AutoUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        fetchDataByNetWork();
+        Log.d(TAG, "onStartCommand: ");
         synchronized (this) {
             unSubscribed();
             if (mIsUnSubscribed) {
@@ -58,6 +62,7 @@ public class AutoUpdateService extends Service {
                 if (mSharedPreferenceUtil.getAutoUpdate() != 0) {
                     mNetSubscription = Observable.interval(mSharedPreferenceUtil.getAutoUpdate(), TimeUnit.HOURS)
                             .subscribe(aLong -> {
+                                Log.d(TAG, "fetchDataByNetWork: ");
                                 mIsUnSubscribed = false;
                                 //PLog.i(TAG, SystemClock.elapsedRealtime() + " 当前设置" + mSharedPreferenceUtil.getAutoUpdate());
                                 fetchDataByNetWork();
@@ -85,7 +90,7 @@ public class AutoUpdateService extends Service {
             cityName = Util.replaceCity(cityName);
         }
         RetrofitSingleton.getInstance().fetchWeather(cityName)
-                .subscribe(this::normalStyleNotification);
+                .subscribe(weather -> Util.normalStyleNotification(weather,AutoUpdateService.this,MainActivity.class));
     }
 
     private void normalStyleNotification(Weather weather) {
@@ -97,6 +102,8 @@ public class AutoUpdateService extends Service {
         Notification notification = builder.setContentIntent(pendingIntent)
                 .setContentTitle(weather.basic.city)
                 .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
+//                .setWhen(System.currentTimeMillis())
+//                .setShowWhen(true)
                 // 这里部分 ROM 无法成功
                 .setSmallIcon(mSharedPreferenceUtil.getInt(weather.now.cond.txt, R.mipmap.none))
                 .build();

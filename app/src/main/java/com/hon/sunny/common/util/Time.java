@@ -60,5 +60,13 @@ public class Time {
                 "MM-dd");
         return mDateFormat.format(date);
     }
+
+    @SuppressLint("SimpleDateFormat")
+    public static String getNowMDhm() {
+
+        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+                "MM-dd HH:mm");
+        return mDateFormat.format(new Date());
+    }
 }
 
