@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatDelegate;
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
+ *
+ * project architecture:https://github.com/googlesamples/android-architecture/tree/todo-mvp/
  */
 
 public class Sunny extends Application{
