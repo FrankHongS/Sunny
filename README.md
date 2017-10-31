@@ -17,3 +17,6 @@
 * **Glide**
 * **ButterKnife** 
 * **etc.**
+
+## Architecture
+**MVP(Model+View+Presenter)**
