@@ -3,7 +3,7 @@ package com.hon.sunny.common.util;
 import android.content.res.Resources;
 import android.support.annotation.DimenRes;
 
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -37,6 +37,6 @@ public class DensityUtil {
     }
 
     public static int dimenPixelSize(@DimenRes int id) {
-        return BaseApplication.getAppContext().getResources().getDimensionPixelSize(id);
+        return Sunny.getAppContext().getResources().getDimensionPixelSize(id);
     }
 }

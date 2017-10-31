@@ -14,31 +14,13 @@ import com.hon.sunny.R;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder>
+public abstract class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<T> {
 
     private static final int DELAY = 138;
     private int mLastPosition = -1;
 
-
-    @Override
-    public T onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
-    }
-
-
-    @Override
-    public void onBindViewHolder(T holder, int position) {
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
-
-
-    public void showItemAnim(final View view, final int position) {
+    protected void showItemAnim(final View view, final int position) {
         Context context = view.getContext();
         if (position > mLastPosition) {
             view.setAlpha(0);

@@ -21,9 +21,10 @@ public class FileUtil {
             }
 
             for (File childFile : childFiles) {
-                delete(childFile);
+                if(!delete(childFile))
+                    return false;
             }
-            return file.delete();
+            return true;
         }
         return false;
     }

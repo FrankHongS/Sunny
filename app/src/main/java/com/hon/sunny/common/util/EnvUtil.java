@@ -3,7 +3,7 @@ package com.hon.sunny.common.util;
 import android.content.Context;
 import android.util.TypedValue;
 
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -25,9 +25,9 @@ public class EnvUtil {
     public static int getStatusBarHeight() {
         if (sStatusBarHeight == 0) {
             int resourceId =
-                    BaseApplication.getAppContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+                    Sunny.getAppContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
-                sStatusBarHeight = BaseApplication.getAppContext().getResources().getDimensionPixelSize(resourceId);
+                sStatusBarHeight = Sunny.getAppContext().getResources().getDimensionPixelSize(resourceId);
             }
         }
         return sStatusBarHeight;

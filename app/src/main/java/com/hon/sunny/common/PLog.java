@@ -3,7 +3,7 @@ package com.hon.sunny.common;
 import android.util.Log;
 
 import com.hon.sunny.BuildConfig;
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 import com.hon.sunny.common.util.Time;
 
 import java.io.BufferedWriter;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 public class PLog {
     public static boolean isDebug = BuildConfig.DEBUG;
-    public static final String PATH = BaseApplication.getAppCacheDir();
+    public static final String PATH = Sunny.getAppCacheDir();
     public static final String PLOG_FILE_NAME = "log.txt";
 
     /**

@@ -22,7 +22,7 @@
     <uses-permission android:name="android.permission.READ_LOGS"/>
 
     <application
-        android:name=".base.BaseApplication"
+        android:name=".Sunny"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launch_logo"
@@ -30,8 +30,6 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--8b0522611530f06c59eec53ede24ec27-->
-        <!--f77fb4e191863aa648bb568c0d05b291 my key-->
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="f77fb4e191863aa648bb568c0d05b291"/>
@@ -40,11 +38,11 @@
             android:value="d3d2a1cbc5fcc6ffe24c43e164360902"/>
 
         <service android:name="com.amap.api.location.APSService"/>
-        <service android:name=".modules.service.AutoUpdateService"/>
+        <service android:name=".service.AutoUpdateService"/>
 
 
         <activity
-            android:name=".modules.launch.FirstActivity"
+            android:name=".launch.FirstActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -52,19 +50,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".modules.main.ui.MainActivity"
+            android:name=".main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"/>
         <activity
-            android:name=".modules.setting.ui.SettingActivity"
+            android:name=".setting.SettingActivity"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".modules.about.ui.AboutActivity"
+            android:name=".about.ui.AboutActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".modules.city.ui.SearchCityActivity"
+        <activity android:name=".city.SearchCityActivity"
             android:screenOrientation="portrait"
             />
 

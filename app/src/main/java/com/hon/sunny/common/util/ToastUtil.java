@@ -2,7 +2,7 @@ package com.hon.sunny.common.util;
 
 import android.widget.Toast;
 
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -19,7 +19,7 @@ public class ToastUtil {
         if(sToast==null){
             synchronized (ToastUtil.class){
                 if(sToast==null){
-                    sToast=Toast.makeText(BaseApplication.sAppContext,content,Toast.LENGTH_SHORT);
+                    sToast=Toast.makeText(Sunny.sAppContext,content,Toast.LENGTH_SHORT);
                 }
             }
         }else {
@@ -32,7 +32,7 @@ public class ToastUtil {
         if(sToast==null){
             synchronized (ToastUtil.class){
                 if(sToast==null){
-                    sToast=Toast.makeText(BaseApplication.sAppContext,content,Toast.LENGTH_LONG);
+                    sToast=Toast.makeText(Sunny.sAppContext,content,Toast.LENGTH_LONG);
                 }
             }
         }else {

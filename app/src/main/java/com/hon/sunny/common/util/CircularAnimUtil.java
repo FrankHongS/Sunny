@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 public class CircularAnimUtil {
 
     public static final long PERFECT_MILLS = 618;
+    public static final long SHOW_HIDE_ANIM_DURATION=200;
     public static final int MINI_RADIUS = 0;
 
     /**
@@ -183,6 +186,21 @@ public class CircularAnimUtil {
 
     public static void hide(View myView) {
         hide(myView, MINI_RADIUS, PERFECT_MILLS);
+    }
+
+    public static void hide(FloatingActionButton button){
+        button.animate()
+                .scaleX(0f)
+                .scaleY(0f)
+                .alpha(0f)
+                .setDuration(200)
+                .setInterpolator(new FastOutLinearInInterpolator())
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        button.setVisibility(View.INVISIBLE);
+                    }
+                });
     }
 }
 

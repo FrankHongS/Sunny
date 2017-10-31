@@ -1,12 +1,12 @@
 package com.hon.sunny.component;
 
 import com.hon.sunny.BuildConfig;
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.common.util.SimpleSubscriber;
-import com.hon.sunny.modules.main.domain.CityORM;
+import com.hon.sunny.data.main.bean.CityORM;
 import com.litesuits.orm.LiteOrm;
 
 import rx.Observable;
@@ -30,7 +30,7 @@ public class OrmLite {
 
     private OrmLite() {
         if (sLiteOrm == null) {
-            sLiteOrm = LiteOrm.newSingleInstance(BaseApplication.getAppContext(), Constants.ORM_NAME);
+            sLiteOrm = LiteOrm.newSingleInstance(Sunny.getAppContext(), Constants.ORM_NAME);
 
         }
         sLiteOrm.setDebugged(BuildConfig.DEBUG);

@@ -4,7 +4,7 @@ import android.app.Notification;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -34,7 +34,7 @@ public class SharedPreferenceUtil {
     }
 
     private SharedPreferenceUtil() {
-        mPrefs = BaseApplication.getAppContext().getSharedPreferences("setting", Context.MODE_PRIVATE);
+        mPrefs = Sunny.getAppContext().getSharedPreferences("setting", Context.MODE_PRIVATE);
     }
 
     public SharedPreferenceUtil putInt(String key, int value) {

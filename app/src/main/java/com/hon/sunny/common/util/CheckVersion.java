@@ -6,11 +6,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
 
-import com.hon.sunny.component.RetrofitSingleton;
-import com.hon.sunny.modules.about.domain.VersionAPI;
-import com.hon.sunny.modules.about.domain.VersionBean;
+import com.hon.sunny.component.retrofit.RetrofitSingleton;
+import com.hon.sunny.about.domain.VersionAPI;
+import com.hon.sunny.about.domain.VersionBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 
@@ -62,12 +61,12 @@ public class CheckVersion {
 
                     @Override
                     public void onUpdateAvailable(String result) {
-                        String currentVersionName = Util.getVersion(activity);
+                        int currentVersionCode = Util.getVersionCode(activity);
                         VersionBean versionBean=Util.parseJsonByGson(result);
                         if(versionBean!=null){
-                            String serverVersionName=versionBean.data.versionName;
-                            if (currentVersionName.compareTo(serverVersionName) < 0) {
-                                if (!SharedPreferenceUtil.getInstance().getString("version", "").equals(serverVersionName)) {
+                            int serverVersionCode=versionBean.data.versionCode;
+                            if (currentVersionCode<serverVersionCode) {
+                                if (SharedPreferenceUtil.getInstance().getInt("version_code", 0)!=serverVersionCode) {
                                     showUpdateDialog(versionBean, activity);
                                 }
                             }
@@ -113,7 +112,7 @@ public class CheckVersion {
                 .setNegativeButton("Skip", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferenceUtil.getInstance().putString("version", versionBean.data.versionName);
+                        SharedPreferenceUtil.getInstance().putInt("version_code", versionBean.data.versionCode);
                     }
                 })
                 .show();

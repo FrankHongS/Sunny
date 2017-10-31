@@ -3,7 +3,7 @@ package com.hon.sunny.common.util;
 import android.text.format.Formatter;
 import android.util.Log;
 
-import com.hon.sunny.base.BaseApplication;
+import com.hon.sunny.Sunny;
 import com.hon.sunny.common.PLog;
 
 import java.io.File;
@@ -53,6 +53,7 @@ public class FileSizeUtil {
      * @param filePath 文件路径
      * @return 计算好的带B、KB、MB、GB的字符串
      */
+
     public static String getAutoFileOrFilesSize(String filePath) {
         File file = new File(filePath);
         long blockSize = 0;
@@ -67,7 +68,7 @@ public class FileSizeUtil {
             e.printStackTrace();
             PLog.e("获取文件大小失败!");
         }
-        return Formatter.formatFileSize(BaseApplication.getAppContext(),blockSize);
+        return Formatter.formatFileSize(Sunny.getAppContext(),blockSize);
     }
 
 
@@ -84,7 +85,7 @@ public class FileSizeUtil {
             size = fis.available();
         }
         else {
-            file.createNewFile();
+//            file.createNewFile();
             Log.e("获取文件大小", "文件不存在!");
         }
         return size;

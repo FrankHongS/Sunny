@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 
 import com.trello.rxlifecycle.components.support.RxFragment;
 
@@ -41,7 +42,7 @@ public abstract class BaseFragment extends RxFragment {
 
     protected void safeSetTitle(String title) {
         ActionBar appBarLayout = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (appBarLayout != null) {
+        if (appBarLayout != null&& !TextUtils.isEmpty(title)) {
             appBarLayout.setTitle(title);
         }
     }
