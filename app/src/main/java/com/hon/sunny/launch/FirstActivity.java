@@ -29,7 +29,7 @@ public class FirstActivity extends Activity {
     private FrameLayout mContainer;
 
 
-    private CountDownTimer mCountDownTimer=new CountDownTimer(setCountTime(),COUNT_DOWN_INTERVAL*1000) {
+    private CountDownTimer mCountDownTimer=new CountDownTimer(setCountTime()*1000,COUNT_DOWN_INTERVAL*1000) {
         @Override
         public void onTick(long millisUntilFinished) {
             mCount.setText(millisUntilFinished/1000+"s");

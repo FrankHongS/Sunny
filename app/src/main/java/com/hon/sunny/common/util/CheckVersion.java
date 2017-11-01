@@ -98,7 +98,7 @@ public class CheckVersion {
     }
 
     private static void showUpdateDialog(VersionBean versionBean,Context context){
-        String title = "ersion "+versionBean.data.versionName+" is available !";
+        String title = "version "+versionBean.data.versionName+" is available !";
 
         new AlertDialog.Builder(context).setTitle(title)
                 .setMessage(versionBean.data.relaseNote)

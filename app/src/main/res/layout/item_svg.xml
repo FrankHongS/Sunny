@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:r="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <com.hon.sunny.launch.SvgView
+        android:id="@+id/svg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        r:duration="4000"
+        r:fadeFactor="10.0"
+        r:phase="1.0"
+        r:strokeColor="#ffffffff"
+        r:strokeWidth="2.0">
+    </com.hon.sunny.launch.SvgView>
+</merge>

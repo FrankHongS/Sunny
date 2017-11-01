@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="?listPreferredItemHeight"
+    android:layout_marginEnd="@dimen/margin_child_end"
+    android:layout_marginLeft="@dimen/margin_child_start"
+    android:layout_marginRight="@dimen/margin_child_end"
+    android:layout_marginStart="@dimen/margin_child_start"
+    android:layout_marginTop="2dp"
+    android:background="#ccc"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    >
+
+    <ImageView
+        android:id="@+id/iv_zone_icon"
+        android:layout_width="?listPreferredItemHeight"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:contentDescription="@string/desc_zone_icon"
+        android:src="@drawable/icon_city"
+        />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        tools:text="test"/>
+</FrameLayout>

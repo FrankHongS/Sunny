@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="?listPreferredItemHeight"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    android:background="#eee"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_city_icon"
+        android:layout_width="?listPreferredItemHeight"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|start"
+        android:contentDescription="@string/desc_city_icon"
+        android:src="@drawable/icon_city"
+        />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/black"
+        tools:text="test"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="?listPreferredItemHeight"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical|end"
+        android:contentDescription="@string/desc_expand"
+        android:scaleType="center"
+        android:src="@drawable/ic_expand_more_black_24dp"
+        android:visibility="visible"/>
+</LinearLayout>
