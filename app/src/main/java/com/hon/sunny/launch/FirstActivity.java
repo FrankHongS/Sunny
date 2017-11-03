@@ -23,7 +23,6 @@ public class FirstActivity extends Activity {
     private static final String TAG = FirstActivity.class.getSimpleName();
     private static final int COUNT_DOWN_TIME=5;
     private static final int COUNT_DOWN_INTERVAL=1;
-//    private SwitchHandler mHandler = new SwitchHandler(this);
     private SvgView mSvgView;
     private TextView mCount;
     private FrameLayout mContainer;
@@ -55,10 +54,9 @@ public class FirstActivity extends Activity {
     }
 
     private void addSvgView(LayoutInflater inflater, FrameLayout container){
-        final View view=inflater.inflate(R.layout.item_svg,container,false);
+        final View view=inflater.inflate(R.layout.item_svg,container,true);
         mSvgView=(SvgView)view.findViewById(R.id.svg);
         mSvgView.setSvgResource(R.raw.cloud);
-        mContainer.addView(view);
 
         new Handler().postDelayed(()-> {
                     mSvgView.startAnimation();
