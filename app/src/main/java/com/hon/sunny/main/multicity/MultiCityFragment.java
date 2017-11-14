@@ -80,10 +80,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         multiLoad();
     }
 
-    @Override
-    public void setPresenter(MultiCityContract.Presenter presenter) {
-        mMultiCityPresenter=presenter;
-    }
 
     private void initView(){
         mWeathers = new ArrayList<>();

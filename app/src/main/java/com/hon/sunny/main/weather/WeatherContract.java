@@ -18,7 +18,7 @@ public interface WeatherContract {
         void onNext(Weather weather);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter<View>{
          void loadWeather();
     }
 }

@@ -24,12 +24,16 @@ public class WeatherPresent implements WeatherContract.Presenter{
         mWeatherRepository=weatherRepository;
         mWeatherView=weatherView;
 
-        mWeatherView.setPresenter(this);
     }
 
     @Override
-    public void start() {
-        loadWeather();
+    public void takeView(WeatherContract.View view) {
+
+    }
+
+    @Override
+    public void dropView() {
+
     }
 
     @Override

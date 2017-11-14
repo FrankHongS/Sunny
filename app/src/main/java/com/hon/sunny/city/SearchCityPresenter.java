@@ -10,6 +10,8 @@ import com.hon.sunny.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -22,13 +24,13 @@ public class SearchCityPresenter implements SearchCityContract.Presenter{
     private CityRepository mCityRepository;
     private SearchCityContract.View mSearchCityView;
 
-    private SQLiteDatabase mCityDataBase;
+    private SQLiteDatabase mCityDatabase;
 
+    @Inject
     public SearchCityPresenter(CityRepository cityRepository,SearchCityContract.View searchCityView){
         mCityRepository=cityRepository;
         mSearchCityView=searchCityView;
 
-        mSearchCityView.setPresenter(this);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class SearchCityPresenter implements SearchCityContract.Presenter{
         DBManager dbManager=DBManager.getInstance();
         new Thread(()->{
             dbManager.openDatabase();
-            mCityDataBase=dbManager.getDatabase();
+            mCityDatabase=dbManager.getDatabase();
         }).start();
     }
 
@@ -52,7 +54,7 @@ public class SearchCityPresenter implements SearchCityContract.Presenter{
 
     @Override
     public void fillResultToRecyclerView(String query) {
-        mCityRepository.searchCity(mCityDataBase,query)
+        mCityRepository.searchCity(mCityDatabase,query)
                 .doOnSubscribe(()->mSearchCityView.doOnSubscribe())
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SimpleSubscriber<List<ParentBean>>() {

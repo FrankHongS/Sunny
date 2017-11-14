@@ -4,14 +4,20 @@ import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.hon.sunny.di.AppComponent;
+import com.hon.sunny.di.DaggerAppComponent;
+
+import dagger.android.AndroidInjector;
+import dagger.android.support.DaggerApplication;
+
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
  *
- * project architecture:https://github.com/googlesamples/android-architecture/tree/todo-mvp/
+ * project architecture:https://github.com/googlesamples/android-architecture/tree/todo-mvp-dagger/
  */
 
-public class Sunny extends Application{
+public class Sunny extends DaggerApplication{
     private static String sCacheDir;
     public static Context sAppContext;
 
@@ -43,5 +49,12 @@ public class Sunny extends Application{
 
     public static String getAppCacheDir() {
         return sCacheDir;
+    }
+
+    @Override
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        AppComponent appComponent= DaggerAppComponent.builder().application(this).build();
+        appComponent.inject(this);
+        return appComponent;
     }
 }

@@ -102,10 +102,6 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mLocationOption = null;
     }
 
-    @Override
-    public void setPresenter(WeatherContract.Presenter presenter) {
-        mWeatherPresenter=presenter;
-    }
 
     private void initView(){
         if (mRefreshLayout != null) {

@@ -8,33 +8,25 @@ import com.hon.sunny.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 
 /**
  * Created by Frank on 2017/10/29.
  * E-mail:frank_hon@foxmail.com
  */
-
+@Singleton
 public class CityRepository implements CityDataSource{
-
-    private static CityRepository INSTANCE;
 
     private final CityDataSource mCityDataSource;
 
-    private CityRepository(CityDataSource cityLocalDataSource){
+    @Inject
+    CityRepository(CityDataSource cityLocalDataSource){
         mCityDataSource=cityLocalDataSource;
     }
 
-    public static CityRepository getInstance(CityDataSource cityLocalDataSource){
-        if(INSTANCE==null){
-            synchronized (MultiCityRepository.class){
-                if(INSTANCE==null){
-                    INSTANCE=new CityRepository(cityLocalDataSource);
-                }
-            }
-        }
-        return INSTANCE;
-    }
 
     @Override
     public void addItemToHistoryTable(SearchItem item) {

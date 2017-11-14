@@ -67,10 +67,6 @@ public class SearchCityActivity extends RxAppCompatActivity implements SearchCit
         initView();
     }
 
-    @Override
-    public void setPresenter(SearchCityContract.Presenter presenter) {
-        mSearchCityPresenter=presenter;
-    }
 
     private void initView(){
         mPopup=new CityCardPopup(this);

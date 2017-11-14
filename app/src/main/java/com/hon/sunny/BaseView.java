@@ -7,5 +7,4 @@ package com.hon.sunny;
 
 public interface BaseView<T> {
 
-    void setPresenter(T presenter);
 }

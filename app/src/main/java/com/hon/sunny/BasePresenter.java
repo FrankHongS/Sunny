@@ -5,7 +5,9 @@ package com.hon.sunny;
  * E-mail:frank_hon@foxmail.com
  */
 
-public interface BasePresenter {
+public interface BasePresenter<T> {
 
-    void start();
+    void takeView(T view);
+
+    void dropView();
 }

@@ -22,7 +22,6 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
         mMultiCityRepository = multiCityRepository;
         mMultiCityView = multiCityView;
 
-        mMultiCityView.setPresenter(this);
     }
 
     @Override
