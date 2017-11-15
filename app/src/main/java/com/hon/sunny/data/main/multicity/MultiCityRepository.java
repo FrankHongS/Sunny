@@ -2,31 +2,23 @@ package com.hon.sunny.data.main.multicity;
 
 import com.hon.sunny.data.main.bean.Weather;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
-
+@Singleton
 public class MultiCityRepository implements MultiCityDataSource{
-    private static MultiCityRepository INSTANCE;
 
     private final MultiCityDataSource mMultiCityRemoteDataSource;
 
-    private MultiCityRepository(MultiCityDataSource multiCityRemoteDataSource){
+    @Inject
+    MultiCityRepository(MultiCityDataSource multiCityRemoteDataSource){
         mMultiCityRemoteDataSource=multiCityRemoteDataSource;
-    }
-
-    public static MultiCityRepository getInstance(MultiCityDataSource multiCityRemoteDataSource){
-        if(INSTANCE==null){
-            synchronized (MultiCityRepository.class){
-                if(INSTANCE==null){
-                    INSTANCE=new MultiCityRepository(multiCityRemoteDataSource);
-                }
-            }
-        }
-        return INSTANCE;
     }
 
     @Override

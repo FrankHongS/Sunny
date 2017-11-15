@@ -22,6 +22,7 @@ import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.component.rxbus.RxBus;
+import com.hon.sunny.di.ActivityScoped;
 import com.hon.sunny.main.adapter.MultiCityAdapter;
 import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
 import com.hon.sunny.data.main.bean.CityORM;
@@ -33,16 +34,19 @@ import com.trello.rxlifecycle.components.support.RxFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerFragment;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
-
-public class MultiCityFragment extends RxFragment implements MultiCityContract.View{
+@ActivityScoped
+public class MultiCityFragment extends DaggerFragment implements MultiCityContract.View{
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
@@ -55,9 +59,14 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
 
     private List<Weather> mWeathers;
     private MultiCityAdapter mMultiCityAdapter;
-    private MultiCityContract.Presenter mMultiCityPresenter;
+
+    @Inject
+    MultiCityContract.Presenter mMultiCityPresenter;
     // current loading city when multi load
     private String mCurrentLoadingCity="unknown city";
+
+    @Inject
+    public MultiCityFragment(){}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -169,7 +178,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
 
     private void multiLoad() {
         mWeathers.clear();
-        mMultiCityPresenter.start();
+        mMultiCityPresenter.takeView(this);
     }
 
     private void registerRxBus(){

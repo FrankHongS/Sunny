@@ -10,6 +10,7 @@ import com.hon.sunny.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import rx.android.schedulers.AndroidSchedulers;
@@ -22,20 +23,25 @@ import rx.android.schedulers.AndroidSchedulers;
 public class SearchCityPresenter implements SearchCityContract.Presenter{
 
     private CityRepository mCityRepository;
+
+    @Nullable
     private SearchCityContract.View mSearchCityView;
 
     private SQLiteDatabase mCityDatabase;
 
-    @Inject
-    public SearchCityPresenter(CityRepository cityRepository,SearchCityContract.View searchCityView){
+    public SearchCityPresenter(CityRepository cityRepository){
         mCityRepository=cityRepository;
-        mSearchCityView=searchCityView;
-
     }
 
     @Override
-    public void start() {
+    public void takeView(SearchCityContract.View view) {
+        mSearchCityView=view;
         initCityDataBase();
+    }
+
+    @Override
+    public void dropView() {
+
     }
 
     @Override

@@ -8,6 +8,8 @@
     <string name="desc_city_icon">city icon</string>
     <string name="desc_expand">expand</string>
     <string name="string_cb">多城市管理</string>
+    <string name="default_city">北京</string>
+    <string name="error_msg">找不到城市</string>
 
     <string name="city_count">sorry, cities no more than 3...</string>
     <string name="multi_city">开启多城市</string>

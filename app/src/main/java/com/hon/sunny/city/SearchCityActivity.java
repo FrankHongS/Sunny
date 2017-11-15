@@ -194,13 +194,13 @@ public class SearchCityActivity extends RxAppCompatActivity implements SearchCit
 
         checkBox.setChecked(intent.getBooleanExtra(Constants.MULTI_CHECK, false));
         // init Presenter
-        new SearchCityPresenter(CityRepository.getInstance(CityLocalDataSource.getInstance()),this);
+        mSearchCityPresenter=new SearchCityPresenter(CityRepository.getInstance(CityLocalDataSource.getInstance()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mSearchCityPresenter.start();
+        mSearchCityPresenter.takeView(this);
     }
 
     @Override

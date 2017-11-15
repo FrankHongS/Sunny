@@ -20,7 +20,7 @@ public interface MultiCityContract {
         void onNext(Weather weather);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter<View>{
         void loadMultiCityWeather();
     }
 }

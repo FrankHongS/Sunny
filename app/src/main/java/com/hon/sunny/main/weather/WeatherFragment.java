@@ -28,6 +28,7 @@ import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.component.rxbus.RxBus;
+import com.hon.sunny.di.ActivityScoped;
 import com.hon.sunny.main.MainActivity;
 import com.hon.sunny.main.adapter.WeatherAdapter;
 import com.hon.sunny.data.main.bean.Weather;
@@ -35,16 +36,19 @@ import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerFragment;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
  */
-
-public class WeatherFragment extends RxFragment implements WeatherContract.View,AMapLocationListener{
+@ActivityScoped
+public class WeatherFragment extends DaggerFragment implements WeatherContract.View,AMapLocationListener{
 
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
@@ -53,12 +57,19 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     @Bind(R.id.iv_erro)
     ImageView mIvError;
 
-    private WeatherContract.Presenter mWeatherPresenter;
+    @Inject
+    WeatherContract.Presenter mWeatherPresenter;
+
     private WeatherAdapter mWeatherAdapter;
     private final Weather mWeather=new Weather();
     //  locate current cities by AMap
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
+
+    @Inject
+    public WeatherFragment(){
+        //requires empty public constructor
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,7 +132,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     }
 
     private void loadWeather(){
-        mWeatherPresenter.start();
+        mWeatherPresenter.takeView(this);
     }
 
     @Override
@@ -139,8 +150,8 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     public void onError(Throwable e) {
         mIvError.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
-        SharedPreferenceUtil.getInstance().setCityName("北京");
-        safeSetTitle("找不到城市");
+        SharedPreferenceUtil.getInstance().setCityName(getString(R.string.default_city));
+        safeSetTitle(getString(R.string.error_msg));
         mRefreshLayout.setRefreshing(false);
         PLog.e(e.toString());
         RetrofitSingleton.disposeFailureInfo(e);

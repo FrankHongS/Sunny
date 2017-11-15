@@ -1,6 +1,11 @@
 package com.hon.sunny.di;
 
+import com.hon.sunny.main.MainActivity;
+import com.hon.sunny.main.multicity.MultiCityModule;
+import com.hon.sunny.main.weather.WeatherModule;
+
 import dagger.Module;
+import dagger.android.ContributesAndroidInjector;
 
 /**
  * Created by Frank_Hon on 2017/11/14.
@@ -8,4 +13,7 @@ import dagger.Module;
  */
 @Module
 public abstract class ActivityBindingModule {
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = {WeatherModule.class, MultiCityModule.class})
+    abstract MainActivity mainActivity();
 }

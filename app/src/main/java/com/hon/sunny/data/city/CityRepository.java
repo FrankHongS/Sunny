@@ -17,16 +17,27 @@ import rx.Observable;
  * Created by Frank on 2017/10/29.
  * E-mail:frank_hon@foxmail.com
  */
-@Singleton
 public class CityRepository implements CityDataSource{
+
+    private static CityRepository INSTANCE;
 
     private final CityDataSource mCityDataSource;
 
-    @Inject
-    CityRepository(CityDataSource cityLocalDataSource){
+    private CityRepository(CityDataSource cityLocalDataSource){
         mCityDataSource=cityLocalDataSource;
     }
 
+    public static CityRepository getInstance(CityDataSource cityLocalDataSource){
+        if(INSTANCE==null){
+            synchronized (CityRepository.class){
+                if(INSTANCE==null){
+                    INSTANCE=new CityRepository(cityLocalDataSource);
+                }
+            }
+        }
+
+        return INSTANCE;
+    }
 
     @Override
     public void addItemToHistoryTable(SearchItem item) {

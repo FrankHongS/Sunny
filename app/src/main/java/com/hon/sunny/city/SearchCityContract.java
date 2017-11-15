@@ -19,7 +19,7 @@ public interface SearchCityContract {
         void onNext(List<ParentBean> list);
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter<View>{
         void initCityDataBase();
         void addItemToHistoryTable(SearchItem item);
         void fillResultToRecyclerView(String query);

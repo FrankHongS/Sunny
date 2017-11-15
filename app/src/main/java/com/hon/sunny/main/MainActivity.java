@@ -43,8 +43,12 @@ import com.hon.sunny.main.multicity.MultiCityFragment;
 import com.hon.sunny.service.AutoUpdateService;
 import com.hon.sunny.setting.SettingActivity;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dagger.Lazy;
+import dagger.android.support.DaggerAppCompatActivity;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -52,7 +56,7 @@ import rx.android.schedulers.AndroidSchedulers;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     @Bind(R.id.viewPager)
     ViewPager mViewPager;
@@ -66,6 +70,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavView;
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    @Inject
+    Lazy<WeatherFragment> weatherFragmentProvider;
+    @Inject
+    Lazy<MultiCityFragment> multiCityFragmentProvider;
+//    @Inject
+//    WeatherFragment mWeatherFragment;
+//    @Inject
+//    MultiCityFragment mMultiCityFragment;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,11 +130,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initView(){
         setSupportActionBar(mToolbar);
-        // initial Presenter
-        WeatherFragment weatherFragment=new WeatherFragment();
-        MultiCityFragment multiCityFragment=new MultiCityFragment();
-        new WeatherPresent(WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance()),weatherFragment);
-        new MultiCityPresenter(MultiCityRepository.getInstance(MultiCityRemoteDataSource.getInstance()),multiCityFragment);
+
+        WeatherFragment weatherFragment=weatherFragmentProvider.get();
+        MultiCityFragment multiCityFragment=multiCityFragmentProvider.get();
 
         HomePagerAdapter mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
         mHomePagerAdapter.addTab(weatherFragment, "天气详情");

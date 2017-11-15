@@ -3,7 +3,11 @@ package com.hon.sunny.di;
 import android.app.Application;
 
 import com.hon.sunny.Sunny;
-import com.hon.sunny.data.city.CityRepositoryModule;
+import com.hon.sunny.data.city.CityRepository;
+import com.hon.sunny.data.main.multicity.MultiCityRepository;
+import com.hon.sunny.data.main.multicity.MultiCityRepositoryModule;
+import com.hon.sunny.data.main.weather.WeatherRepository;
+import com.hon.sunny.data.main.weather.WeatherRepositoryModule;
 
 import javax.inject.Singleton;
 
@@ -19,10 +23,16 @@ import dagger.android.support.DaggerApplication;
  */
 @Singleton
 @Component(modules = {
-        CityRepositoryModule.class,
+        MultiCityRepositoryModule.class,
+        WeatherRepositoryModule.class,
+        ApplicationModule.class,
+        ActivityBindingModule.class,
         AndroidSupportInjectionModule.class})
 public interface AppComponent extends AndroidInjector<DaggerApplication>{
     void inject(Sunny application);
+
+//    MultiCityRepository getMultiCityRepository();
+//    WeatherRepository getWeatherRepository();
 
     @Component.Builder
     interface Builder{

@@ -7,30 +7,22 @@ import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.data.main.bean.CityORM;
 import com.hon.sunny.data.main.bean.Weather;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
-
+@Singleton
 public class MultiCityRemoteDataSource implements MultiCityDataSource{
 
-    private static MultiCityRemoteDataSource INSTANCE;
     private String mCurrentLoadingCity;
 
-    private MultiCityRemoteDataSource(){}
-
-    public static MultiCityRemoteDataSource getInstance(){
-        if(INSTANCE==null){
-            synchronized (MultiCityRemoteDataSource.class){
-                if(INSTANCE==null){
-                    INSTANCE=new MultiCityRemoteDataSource();
-                }
-            }
-        }
-        return INSTANCE;
-    }
+    @Inject
+    public MultiCityRemoteDataSource(){}
 
     @Override
     public Observable<Weather> fetchMultiCityWeather(Observable<String> citiesObservable) {
