@@ -1,5 +1,8 @@
 package com.hon.sunny.data.city;
 
+import com.hon.sunny.di.ActivityScoped;
+import com.hon.sunny.di.FragmentScoped;
+
 import javax.inject.Singleton;
 
 import dagger.Binds;
@@ -11,7 +14,7 @@ import dagger.Module;
  */
 @Module
 public abstract class CityRepositoryModule {
-    @Singleton
+    @ActivityScoped
     @Binds
     abstract CityDataSource provideCityLocalDataSource(CityLocalDataSource dataSource);
 }

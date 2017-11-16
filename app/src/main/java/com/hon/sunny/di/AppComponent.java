@@ -24,9 +24,6 @@ import dagger.android.support.DaggerApplication;
  */
 @Singleton
 @Component(modules = {
-        CityRepositoryModule.class,
-        MultiCityRepositoryModule.class,
-        WeatherRepositoryModule.class,
         ApplicationModule.class,
         ActivityBindingModule.class,
         AndroidSupportInjectionModule.class})

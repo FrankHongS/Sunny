@@ -1,6 +1,7 @@
 package com.hon.sunny.data.main.multicity;
 
-import javax.inject.Singleton;
+import com.hon.sunny.di.ActivityScoped;
+
 
 import dagger.Binds;
 import dagger.Module;
@@ -12,7 +13,7 @@ import dagger.Module;
 @Module
 public abstract class MultiCityRepositoryModule {
 
-    @Singleton
+    @ActivityScoped
     @Binds
     abstract MultiCityDataSource provideMultiCityRemoteDataSource(MultiCityRemoteDataSource dataSource);
 }

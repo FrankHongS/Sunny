@@ -8,6 +8,8 @@ import com.hon.sunny.Sunny;
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.data.city.db.CityDBUtil;
 import com.hon.sunny.city.view.expandrecycleview.ParentBean;
+import com.hon.sunny.di.ActivityScoped;
+import com.hon.sunny.di.FragmentScoped;
 
 import java.util.List;
 
@@ -22,7 +24,7 @@ import rx.Subscriber;
  * E-mail:frank_hon@foxmail.com
  */
 
-@Singleton
+@ActivityScoped
 public class CityLocalDataSource implements CityDataSource{
 
     private SearchHistoryTable mSearchHistoryTable=SearchHistoryTable.getInstance(Sunny.getAppContext());

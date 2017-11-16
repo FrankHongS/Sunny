@@ -1,6 +1,8 @@
 package com.hon.sunny.data.main.weather;
 
 
+import com.hon.sunny.di.ActivityScoped;
+
 import javax.inject.Singleton;
 
 import dagger.Binds;
@@ -12,7 +14,7 @@ import dagger.Module;
  */
 @Module
 public abstract class WeatherRepositoryModule {
-    @Singleton
+    @ActivityScoped
     @Binds
     abstract WeatherDataSource provideWeatherRemoteDataSource(WeatherRemoteDataSource dataSource);
 }

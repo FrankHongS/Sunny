@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.city.view.expandrecycleview.ParentBean;
+import com.hon.sunny.di.ActivityScoped;
+import com.hon.sunny.di.FragmentScoped;
 
 import java.util.List;
 
@@ -17,7 +19,7 @@ import rx.Observable;
  * Created by Frank on 2017/10/29.
  * E-mail:frank_hon@foxmail.com
  */
-@Singleton
+@ActivityScoped
 public class CityRepository implements CityDataSource{
 
     private final CityDataSource mCityDataSource;
