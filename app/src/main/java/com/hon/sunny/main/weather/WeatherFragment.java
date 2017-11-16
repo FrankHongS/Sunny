@@ -120,8 +120,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mWeatherAdapter = new WeatherAdapter(mWeather);
         mRecyclerView.setAdapter(mWeatherAdapter);
-        if(mWeather.basic!=null)
-            safeSetTitle(mWeather.basic.city);
+        safeSetTitle(mWeather.city);
     }
 
     private void loadWeather(){
@@ -159,12 +158,12 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mWeather.now = weather.now;
         mWeather.dailyForecast = weather.dailyForecast;
         mWeather.hourlyForecast = weather.hourlyForecast;
-        mWeather.basic.city=weather.basic.city;
 
-        safeSetTitle(mWeather.basic.city);
+        safeSetTitle(weather.city);
         mRefreshLayout.setRefreshing(false);
         ToastUtil.showShort(getString(R.string.complete));
         mWeatherAdapter.notifyDataSetChanged();
+        //发通知
         Util.normalStyleNotification(weather,getActivity(),MainActivity.class);
     }
 
@@ -222,4 +221,5 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
             appBarLayout.setTitle(title);
         }
     }
+
 }

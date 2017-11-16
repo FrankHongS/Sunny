@@ -12,7 +12,6 @@ import com.hon.sunny.data.main.bean.Weather;
 public interface MultiCityContract {
 
     interface View extends BaseView<Presenter>{
-        void currentLoadingCity(String currentCityName);
         void doOnRequest();
         void doOnTerminate();
         void onCompleted();

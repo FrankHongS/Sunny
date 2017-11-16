@@ -15,5 +15,4 @@ public interface MultiCityDataSource {
 
     Observable<String> getCities();
 
-    String currentLoadingCity();
 }

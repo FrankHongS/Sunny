@@ -17,7 +17,6 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
 class ChildViewHolder extends AbstractViewHolder<ChildBean> implements View.OnClickListener{
 
     private TextView mText;
-    private Context mContext;
 
     private ExpandAdapter.OnItemClickListener mOnItemClickListener;
 
@@ -25,13 +24,12 @@ class ChildViewHolder extends AbstractViewHolder<ChildBean> implements View.OnCl
         super(parent, R.layout.child_item);
         mText=(TextView)itemView.findViewById(R.id.text);
         mText.setOnClickListener(this);
-        mContext = parent.getContext();
         mOnItemClickListener=onItemClickListener;
     }
 
     @Override
     public void setData(ChildBean data) {
-        mText.setText(String.valueOf(data.text));
+        mText.setText(data.text);
     }
 
     @Override

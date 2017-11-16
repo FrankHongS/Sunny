@@ -11,6 +11,9 @@ import java.util.List;
  */
 
 public class Weather implements Serializable{
+
+    public String city;
+
     @SerializedName("aqi") public AqiEntity aqi;
 
 
@@ -48,7 +51,7 @@ public class Weather implements Serializable{
     }
 
     public static class BasicEntity implements Serializable {
-        @SerializedName("city") public String city;
+//        @SerializedName("city") public String city;
         @SerializedName("cnty") public String cnty;
         @SerializedName("id") public String id;
         @SerializedName("lat") public String lat;

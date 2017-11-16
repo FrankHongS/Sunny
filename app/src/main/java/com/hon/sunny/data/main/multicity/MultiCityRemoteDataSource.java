@@ -1,6 +1,7 @@
 package com.hon.sunny.data.main.multicity;
 
 import com.hon.sunny.base.Constants;
+import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
@@ -17,7 +18,6 @@ import rx.Observable;
 public class MultiCityRemoteDataSource implements MultiCityDataSource{
 
     private static MultiCityRemoteDataSource INSTANCE;
-    private String mCurrentLoadingCity;
 
     private MultiCityRemoteDataSource(){}
 
@@ -38,7 +38,11 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource{
                 s -> RetrofitSingleton.getInstance()
                 .getApiService()
                 .mWeatherAPI(s, Constants.KEY)
-                .map(weatherAPI -> weatherAPI.mHeWeatherDataService30s.get(0))
+                .map(weatherAPI -> {
+                    Weather weather=weatherAPI.mHeWeatherDataService30s.get(0);
+                    weather.city=s;
+                    return weather;
+                    })
         );
 //                .filter(weather -> !Constants.UNKNOWN_CITY.equals(weather.status));
 
@@ -48,16 +52,9 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource{
     public Observable<String> getCities() {
         return Observable
                 .defer(() -> Observable.from(OrmLite.getInstance().query(CityORM.class)))
-                .map(cityORM -> {
-                    mCurrentLoadingCity=Util.replaceCity(cityORM.getName());
-                    return mCurrentLoadingCity;
-                })
+                .map(cityORM ->Util.replaceCity(cityORM.getName()))
                 .distinct()
                 .take(3);
     }
 
-    @Override
-    public String currentLoadingCity() {
-        return mCurrentLoadingCity;
-    }
 }

@@ -38,7 +38,7 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
     private List<Weather> mWeatherList;
     private OnMultiCityClickListener onMultiCityClickListener = null;
 
-    public void setOnMultiCityLongClick(OnMultiCityClickListener onMultiCityClickListener) {
+    public void setOnMultiCityClickListener(OnMultiCityClickListener onMultiCityClickListener) {
         this.onMultiCityClickListener = onMultiCityClickListener;
     }
 
@@ -57,10 +57,10 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
 
         holder.bind(mWeatherList.get(position));
         holder.itemView.setOnClickListener(v->{
-            onMultiCityClickListener.onClick(mWeatherList.get(holder.getAdapterPosition()).basic.city);
+            onMultiCityClickListener.onClick(mWeatherList.get(holder.getAdapterPosition()).city);
         });
         holder.itemView.setOnLongClickListener(v -> {
-            onMultiCityClickListener.onLongClick(mWeatherList.get(holder.getAdapterPosition()).basic.city);
+            onMultiCityClickListener.onLongClick(mWeatherList.get(holder.getAdapterPosition()).city);
             return true;
         });
     }
@@ -99,15 +99,15 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
             if(Constants.UNKNOWN_CITY.equals(weather.status)){
                 weatherDesc="未知";
                 code=-1;
-                mDialogCity.setText(Util.safeText(weather.basic.city));
+                mDialogCity.setText(Util.safeText(weather.city));
                 mDialogTemp.setText("error");
             }else {
                 weatherDesc=weather.now.cond.txt;
                 code = Integer.valueOf(weather.now.cond.code);
-                mDialogCity.setText(Util.safeText(weather.basic.city));
+                mDialogCity.setText(Util.safeText(weather.city));
                 mDialogTemp.setText(String.format("%s℃", weather.now.tmp));
             }
-            cardCityUIHelper.applyStatus(code, weather.basic.city, mCardView);
+            cardCityUIHelper.applyStatus(code, weather.city, mCardView);
 
             Glide.with(mContext)
                     .load(SharedPreferenceUtil.getInstance().getInt(weatherDesc, R.mipmap.none

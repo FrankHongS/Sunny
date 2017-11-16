@@ -116,7 +116,7 @@ public class AutoUpdateService extends Service {
                 PendingIntent.getActivity(AutoUpdateService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(AutoUpdateService.this);
         Notification notification = builder.setContentIntent(pendingIntent)
-                .setContentTitle(weather.basic.city)
+                .setContentTitle(weather.city)
                 .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
 //                .setWhen(System.currentTimeMillis())
 //                .setShowWhen(true)

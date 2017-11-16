@@ -10,6 +10,7 @@
     <string name="string_cb">多城市管理</string>
 
     <string name="city_count">sorry, cities no more than 3...</string>
+    <string name="city_exists">sorry, the city exists already</string>
     <string name="multi_city">开启多城市</string>
     <string name="no_network">网络不好(˵¯͒⌢͗¯͒˵)</string>
     <string name="title_activity_settings">Settings</string>

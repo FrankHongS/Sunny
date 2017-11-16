@@ -39,8 +39,4 @@ public class MultiCityRepository implements MultiCityDataSource{
         return mMultiCityRemoteDataSource.getCities();
     }
 
-    @Override
-    public String currentLoadingCity() {
-        return mMultiCityRemoteDataSource.currentLoadingCity();
-    }
 }

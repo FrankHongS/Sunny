@@ -42,7 +42,7 @@ class ParentViewHolder extends AbstractViewHolder<ParentBean> implements View.On
 
     @Override
     public void setData(ParentBean data) {
-        mText.setText(String.valueOf(data.text));
+        mText.setText(data.text);
         child = data.mChild;
         parent = data;
         mZone=data.zone;

@@ -56,8 +56,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     private List<Weather> mWeathers;
     private MultiCityAdapter mMultiCityAdapter;
     private MultiCityContract.Presenter mMultiCityPresenter;
-    // current loading city when multi load
-    private String mCurrentLoadingCity="unknown city";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +88,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         mMultiCityAdapter = new MultiCityAdapter(mWeathers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mMultiCityAdapter);
-        mMultiCityAdapter.setOnMultiCityLongClick(new MultiCityAdapter.OnMultiCityClickListener() {
+        mMultiCityAdapter.setOnMultiCityClickListener(new MultiCityAdapter.OnMultiCityClickListener() {
             @Override
             public void onLongClick(String city) {
                 showDialog(city);
@@ -117,11 +115,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
                 }
             });
         }
-    }
-
-    @Override
-    public void currentLoadingCity(String currentCityName) {
-        mCurrentLoadingCity=currentCityName;
     }
 
     @Override
@@ -164,8 +157,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     @Override
     public void onNext(Weather weather) {
         if(Constants.UNKNOWN_CITY.equals(weather.status)){
-            weather.basic=new Weather.BasicEntity();
-            weather.basic.city=mCurrentLoadingCity;
             ToastUtil.showLong("there's an unknown city...");
         }
         mWeathers.add(weather);

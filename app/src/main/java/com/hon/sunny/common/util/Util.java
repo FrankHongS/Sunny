@@ -34,6 +34,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -168,7 +169,7 @@ public class Util {
      * 匹配掉错误信息
      */
     public static String replaceCity(String city) {
-        city = safeText(city).replaceAll("(?:省|市|自治区|特别行政区|地区|盟|区|县)", "");
+        city = safeText(city).replaceAll("(?:省|市|自治区|自治县|特别行政区|地区|盟|区|县)", "");
         return city;
     }
 
@@ -259,6 +260,17 @@ public class Util {
         return count>= Constants.CITY_COUNT;
     }
 
+    // check if selected city exists
+    public static boolean checkIfCityExists(String city){
+        List<CityORM> cities=OrmLite.getInstance().query(CityORM.class);
+        for(CityORM cityOrm:cities){
+            if(city!=null&&city.equals(cityOrm.getName())){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void normalStyleNotification(Weather weather,Context context,Class<? extends Activity> target){
         SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
         Intent intent = new Intent(context, MainActivity.class);
@@ -267,7 +279,7 @@ public class Util {
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(context);
         Notification notification = builder.setContentIntent(pendingIntent)
-                .setContentTitle(weather.basic.city)
+                .setContentTitle(weather.city)
                 .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true)

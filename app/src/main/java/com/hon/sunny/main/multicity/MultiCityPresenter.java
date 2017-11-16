@@ -50,7 +50,6 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
 
                     @Override
                     public void onNext(Weather weather) {
-                        mMultiCityView.currentLoadingCity(mMultiCityRepository.currentLoadingCity());
                         mMultiCityView.onNext(weather);
                     }
                 });

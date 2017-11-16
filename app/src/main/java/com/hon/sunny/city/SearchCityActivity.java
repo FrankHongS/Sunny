@@ -17,6 +17,7 @@ import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.R;
 import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
+import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.rxbus.RxBus;
@@ -83,6 +84,10 @@ public class SearchCityActivity extends RxAppCompatActivity implements SearchCit
             public void onItemClick(String text) {
                 String city= Util.replaceCity(text);
                 if (mIsChecked) {
+                    if(Util.checkIfCityExists(city)){
+                        Snackbar.make(mRecyclerView,R.string.city_exists,Snackbar.LENGTH_LONG).show();
+                        return;
+                    }
                     if(Util.checkMultiCitiesCount()){
                         Snackbar.make(mRecyclerView,R.string.city_count,Snackbar.LENGTH_LONG).show();
                         return;

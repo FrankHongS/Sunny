@@ -153,7 +153,11 @@ public class RetrofitSingleton {
                     }
                     return Observable.just(weatherAPI);
                 })
-                .map(weatherAPI -> weatherAPI.mHeWeatherDataService30s.get(0))
+                .map(weatherAPI -> {
+                    Weather weather=weatherAPI.mHeWeatherDataService30s.get(0);
+                    weather.city=city;
+                    return weather;
+                })
                 .compose(RxUtils.rxSchedulerHelper());
     }
 
