@@ -29,7 +29,8 @@ public class SearchCityPresenter implements SearchCityContract.Presenter{
 
     private SQLiteDatabase mCityDatabase;
 
-    public SearchCityPresenter(CityRepository cityRepository){
+    @Inject
+    SearchCityPresenter(CityRepository cityRepository){
         mCityRepository=cityRepository;
     }
 

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.hon.sunny.Sunny;
 import com.hon.sunny.data.city.CityRepository;
+import com.hon.sunny.data.city.CityRepositoryModule;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.multicity.MultiCityRepositoryModule;
 import com.hon.sunny.data.main.weather.WeatherRepository;
@@ -23,6 +24,7 @@ import dagger.android.support.DaggerApplication;
  */
 @Singleton
 @Component(modules = {
+        CityRepositoryModule.class,
         MultiCityRepositoryModule.class,
         WeatherRepositoryModule.class,
         ApplicationModule.class,

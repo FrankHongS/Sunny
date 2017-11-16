@@ -11,6 +11,9 @@ import com.hon.sunny.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import rx.Observable;
 import rx.Subscriber;
 
@@ -19,24 +22,13 @@ import rx.Subscriber;
  * E-mail:frank_hon@foxmail.com
  */
 
+@Singleton
 public class CityLocalDataSource implements CityDataSource{
 
     private SearchHistoryTable mSearchHistoryTable=SearchHistoryTable.getInstance(Sunny.getAppContext());
 
-    private static CityLocalDataSource INSTANCE;
-
-    private CityLocalDataSource(){}
-
-    public static CityLocalDataSource getInstance(){
-        if(INSTANCE==null){
-            synchronized (CityLocalDataSource.class){
-                if(INSTANCE==null){
-                    INSTANCE=new CityLocalDataSource();
-                }
-            }
-        }
-        return INSTANCE;
-    }
+    @Inject
+    CityLocalDataSource(){}
 
     @Override
     public void addItemToHistoryTable(SearchItem item) {

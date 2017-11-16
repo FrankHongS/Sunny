@@ -35,8 +35,11 @@ import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dagger.android.support.DaggerAppCompatActivity;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
 
 /**
@@ -44,7 +47,7 @@ import zlc.season.practicalrecyclerview.PracticalRecyclerView;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class SearchCityActivity extends RxAppCompatActivity implements SearchCityContract.View{
+public class SearchCityActivity extends DaggerAppCompatActivity implements SearchCityContract.View{
 
     @Bind(R.id.searchview)
     PersistentSearchView mSearchView;
@@ -57,7 +60,9 @@ public class SearchCityActivity extends RxAppCompatActivity implements SearchCit
     private CityCardPopup mPopup;
     // if CheckBox is checked
     private boolean mIsChecked = false;
-    private SearchCityContract.Presenter mSearchCityPresenter;
+
+    @Inject
+    SearchCityContract.Presenter mSearchCityPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -193,8 +198,6 @@ public class SearchCityActivity extends RxAppCompatActivity implements SearchCit
         mIsChecked = intent.getBooleanExtra(Constants.MULTI_CHECK, false);
 
         checkBox.setChecked(intent.getBooleanExtra(Constants.MULTI_CHECK, false));
-        // init Presenter
-        mSearchCityPresenter=new SearchCityPresenter(CityRepository.getInstance(CityLocalDataSource.getInstance()));
     }
 
     @Override

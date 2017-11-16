@@ -1,5 +1,7 @@
 package com.hon.sunny.di;
 
+import com.hon.sunny.city.SearchCityActivity;
+import com.hon.sunny.city.SearchCityModule;
 import com.hon.sunny.main.MainActivity;
 import com.hon.sunny.main.multicity.MultiCityModule;
 import com.hon.sunny.main.weather.WeatherModule;
@@ -16,4 +18,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = {WeatherModule.class, MultiCityModule.class})
     abstract MainActivity mainActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = SearchCityModule.class)
+    abstract SearchCityActivity searchCityActivity();
 }
