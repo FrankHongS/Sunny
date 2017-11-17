@@ -19,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.hon.sunny.BuildConfig;
 import com.hon.sunny.R;
 import com.hon.sunny.base.Constants;
 import com.hon.sunny.city.SearchCityActivity;
@@ -28,7 +29,9 @@ import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.common.util.SimpleSubscriber;
 import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
+import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.rxbus.RxBus;
+import com.hon.sunny.data.main.bean.CityORM;
 import com.hon.sunny.data.main.multicity.MultiCityRemoteDataSource;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.weather.WeatherRemoteDataSource;
@@ -75,16 +78,18 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
     Lazy<WeatherFragment> weatherFragmentProvider;
     @Inject
     Lazy<MultiCityFragment> multiCityFragmentProvider;
-//    @Inject
-//    WeatherFragment mWeatherFragment;
-//    @Inject
-//    MultiCityFragment mMultiCityFragment;
 
+    @Inject
+    RxBus mRxBus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(BuildConfig.DEBUG)
+            OrmLite.getInstance().insert(new CityORM("北京"));
+
         registerRxBus();
         ButterKnife.bind(this);
         initView();
@@ -115,13 +120,13 @@ public class MainActivity extends DaggerAppCompatActivity implements NavigationV
     }
 
     private void registerRxBus(){
-        RxBus.getDefault().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        mRxBus.toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 changeCityEvent->
                 {
                     mViewPager.setCurrentItem(0,true);
                 }
         );
-        RxBus.getDefault().toObservable(MultiUpdate.class).subscribe(
+        mRxBus.toObservable(MultiUpdate.class).subscribe(
                 multiUpdate -> {
                     mViewPager.setCurrentItem(1,true);
                 }

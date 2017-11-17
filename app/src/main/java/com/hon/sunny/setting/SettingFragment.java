@@ -1,5 +1,6 @@
 package com.hon.sunny.setting;
 
+import android.app.Fragment;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +34,12 @@ import com.hon.sunny.service.AutoUpdateService;
 
 import java.io.File;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasFragmentInjector;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -51,6 +59,9 @@ public class SettingFragment extends PreferenceFragment
     private Preference mClearCache;
     private CheckBoxPreference mNotificationType;
     private CheckBoxPreference mAnimationOnOff;
+
+    @Inject
+    RxBus mRxBus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +97,13 @@ public class SettingFragment extends PreferenceFragment
 
         mAnimationOnOff.setOnPreferenceChangeListener(this);
     }
+
+    @Override
+    public void onAttach(Context context) {
+        AndroidInjection.inject(this);
+        super.onAttach(context);
+    }
+
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
@@ -169,7 +187,7 @@ public class SettingFragment extends PreferenceFragment
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         getActivity().startActivity(intent);
                         getActivity().finish();
-                        RxBus.getDefault().post(new ChangeCityEvent());
+                        mRxBus.post(new ChangeCityEvent());
                     }).show();
         });
     }

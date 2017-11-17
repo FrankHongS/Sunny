@@ -1,6 +1,7 @@
 package com.hon.sunny.main.weather;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +42,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import dagger.android.support.AndroidSupportInjection;
 import dagger.android.support.DaggerFragment;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -59,6 +62,8 @@ public class WeatherFragment extends DaggerFragment implements WeatherContract.V
 
     @Inject
     WeatherContract.Presenter mWeatherPresenter;
+    @Inject
+    RxBus mRxBus;
 
     private WeatherAdapter mWeatherAdapter;
     private final Weather mWeather=new Weather();
@@ -215,7 +220,7 @@ public class WeatherFragment extends DaggerFragment implements WeatherContract.V
     }
 
     private void registerRxBus(){
-        RxBus.getDefault().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<ChangeCityEvent>() {
+        mRxBus.toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<ChangeCityEvent>() {
             @Override
             public void onNext(ChangeCityEvent changeCityEvent) {
                 loadWeather();

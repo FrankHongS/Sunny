@@ -1,6 +1,10 @@
 package com.hon.sunny.data.main.multicity;
 
+import android.os.Looper;
+import android.util.Log;
+
 import com.hon.sunny.base.Constants;
+import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;

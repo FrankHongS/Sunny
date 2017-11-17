@@ -63,6 +63,8 @@ public class SearchCityActivity extends DaggerAppCompatActivity implements Searc
 
     @Inject
     SearchCityContract.Presenter mSearchCityPresenter;
+    @Inject
+    RxBus mRxBus;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,11 +91,11 @@ public class SearchCityActivity extends DaggerAppCompatActivity implements Searc
                         return;
                     }else{
                         OrmLite.getInstance().save(new CityORM(city));
-                        RxBus.getDefault().post(new MultiUpdate());
+                        mRxBus.post(new MultiUpdate());
                     }
                 } else {
                     SharedPreferenceUtil.getInstance().setCityName(city);
-                    RxBus.getDefault().post(new ChangeCityEvent());
+                    mRxBus.post(new ChangeCityEvent());
                 }
                 quit();
             }

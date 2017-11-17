@@ -8,12 +8,14 @@ import android.view.WindowManager;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
+import dagger.android.support.DaggerAppCompatActivity;
+
 /**
  * Created by Frank on 2017/8/9.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class BaseActivity extends RxAppCompatActivity{
+public class BaseActivity extends DaggerAppCompatActivity{
     private static String TAG = BaseActivity.class.getSimpleName();
 
     /**

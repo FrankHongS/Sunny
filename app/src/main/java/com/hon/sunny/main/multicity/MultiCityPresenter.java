@@ -1,5 +1,9 @@
 package com.hon.sunny.main.multicity;
 
+import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.bean.Weather;
@@ -20,7 +24,7 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
 
     private MultiCityRepository mMultiCityRepository;
 
-    @Nullable
+    @NonNull
     private MultiCityContract.View mMultiCityView;
 
     @Inject

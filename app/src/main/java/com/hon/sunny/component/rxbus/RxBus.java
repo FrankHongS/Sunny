@@ -18,13 +18,16 @@ public class RxBus {
         mBus = new SerializedSubject<>(PublishSubject.create());
     }
 
-    public static RxBus getDefault() {
-        return RxBusHolder.sInstance;
+    public static RxBus getInstance(){
+        return new RxBus();
     }
-
-    private static class RxBusHolder {
-        private static final RxBus sInstance = new RxBus();
-    }
+//    public static RxBus getDefault() {
+//        return RxBusHolder.sInstance;
+//    }
+//
+//    private static class RxBusHolder {
+//        private static final RxBus sInstance = new RxBus();
+//    }
 
 
     // 提供了一个新的事件

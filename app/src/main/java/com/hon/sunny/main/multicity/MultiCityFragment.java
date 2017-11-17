@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,9 @@ public class MultiCityFragment extends DaggerFragment implements MultiCityContra
 
     @Inject
     MultiCityContract.Presenter mMultiCityPresenter;
+    @Inject
+    RxBus mRxBus;
+
     // current loading city when multi load
     private String mCurrentLoadingCity="unknown city";
 
@@ -104,7 +108,7 @@ public class MultiCityFragment extends DaggerFragment implements MultiCityContra
             @Override
             public void onClick(String city) {
                 SharedPreferenceUtil.getInstance().setCityName(city);
-                RxBus.getDefault().post(new ChangeCityEvent());
+                mRxBus.post(new ChangeCityEvent());
             }
         });
 
@@ -182,7 +186,7 @@ public class MultiCityFragment extends DaggerFragment implements MultiCityContra
     }
 
     private void registerRxBus(){
-        RxBus.getDefault().toObservable(MultiUpdate.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<MultiUpdate>() {
+        mRxBus.toObservable(MultiUpdate.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<MultiUpdate>() {
             @Override
             public void onNext(MultiUpdate multiUpdate) {
                 multiLoad();

@@ -8,6 +8,9 @@ import com.hon.sunny.data.main.weather.WeatherRepositoryModule;
 import com.hon.sunny.main.MainActivity;
 import com.hon.sunny.main.multicity.MultiCityModule;
 import com.hon.sunny.main.weather.WeatherModule;
+import com.hon.sunny.setting.SettingActivity;
+import com.hon.sunny.setting.SettingFragment;
+import com.hon.sunny.setting.SettingModule;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -26,4 +29,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = {SearchCityModule.class, CityRepositoryModule.class})
     abstract SearchCityActivity searchCityActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = {SettingModule.class})
+    abstract SettingActivity settingActivity();
 }
