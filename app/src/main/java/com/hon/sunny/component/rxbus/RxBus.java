@@ -11,6 +11,9 @@ import rx.subjects.Subject;
  */
 
 public class RxBus {
+
+    private static volatile RxBus sRxBus;
+
     // 主题
     private final Subject<Object, Object> mBus;
     // PublishSubject只会把在订阅发生的时间点之后来自原始Observable的数据发射给观察者
@@ -18,14 +21,17 @@ public class RxBus {
         mBus = new SerializedSubject<>(PublishSubject.create());
     }
 
-    public static RxBus getDefault() {
-        return RxBusHolder.sInstance;
-    }
+    public static RxBus getInstance(){
+        if(sRxBus==null){
+            synchronized (RxBus.class){
+                if(sRxBus==null){
+                    sRxBus=new RxBus();
+                }
+            }
+        }
 
-    private static class RxBusHolder {
-        private static final RxBus sInstance = new RxBus();
+        return sRxBus;
     }
-
 
     // 提供了一个新的事件
     public void post(Object o) {

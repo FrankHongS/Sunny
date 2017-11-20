@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import com.hon.sunny.R;
 import com.hon.sunny.base.Constants;
 import com.hon.sunny.city.SearchCityActivity;
+import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.CircularAnimUtil;
 import com.hon.sunny.common.util.RxDrawer;
 import com.hon.sunny.common.util.RxUtils;
@@ -43,8 +44,12 @@ import com.hon.sunny.main.multicity.MultiCityFragment;
 import com.hon.sunny.service.AutoUpdateService;
 import com.hon.sunny.setting.SettingActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -66,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView mNavView;
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    private List<Subscription> mSubscriptionList=new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +97,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterRxBus();
+    }
+
+    @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -101,17 +114,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void registerRxBus(){
-        RxBus.getDefault().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(
+        Subscription changeCitySubscription=RxBus.getInstance().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(
                 changeCityEvent->
                 {
                     mViewPager.setCurrentItem(0,true);
                 }
         );
-        RxBus.getDefault().toObservable(MultiUpdate.class).subscribe(
+        Subscription multiUpdateSubscription=RxBus.getInstance().toObservable(MultiUpdate.class).subscribe(
                 multiUpdate -> {
                     mViewPager.setCurrentItem(1,true);
                 }
         );
+
+        mSubscriptionList.add(changeCitySubscription);
+        mSubscriptionList.add(multiUpdateSubscription);
+    }
+
+    private void unRegisterRxBus(){
+        for(Subscription subscription:mSubscriptionList)
+            subscription.unsubscribe();
     }
 
     private void initView(){

@@ -35,6 +35,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -56,6 +57,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     private List<Weather> mWeathers;
     private MultiCityAdapter mMultiCityAdapter;
     private MultiCityContract.Presenter mMultiCityPresenter;
+    private List<Subscription> mSubscriptionList=new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,6 +81,12 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unRegisterRxBus();
+    }
+
+    @Override
     public void setPresenter(MultiCityContract.Presenter presenter) {
         mMultiCityPresenter=presenter;
     }
@@ -97,7 +105,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
             @Override
             public void onClick(String city) {
                 SharedPreferenceUtil.getInstance().setCityName(city);
-                RxBus.getDefault().post(new ChangeCityEvent());
+                RxBus.getInstance().post(new ChangeCityEvent());
             }
         });
 
@@ -168,12 +176,19 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     }
 
     private void registerRxBus(){
-        RxBus.getDefault().toObservable(MultiUpdate.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<MultiUpdate>() {
+        Subscription multiUpdateSubscription=RxBus.getInstance().toObservable(MultiUpdate.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<MultiUpdate>() {
             @Override
             public void onNext(MultiUpdate multiUpdate) {
                 multiLoad();
             }
         });
+
+        mSubscriptionList.add(multiUpdateSubscription);
+    }
+
+    private void unRegisterRxBus(){
+        for(Subscription subscription:mSubscriptionList)
+            subscription.unsubscribe();
     }
 
     private void showDialog(String city){

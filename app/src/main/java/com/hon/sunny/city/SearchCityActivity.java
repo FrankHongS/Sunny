@@ -93,11 +93,11 @@ public class SearchCityActivity extends RxAppCompatActivity implements SearchCit
                         return;
                     }else{
                         OrmLite.getInstance().save(new CityORM(city));
-                        RxBus.getDefault().post(new MultiUpdate());
+                        RxBus.getInstance().post(new MultiUpdate());
                     }
                 } else {
                     SharedPreferenceUtil.getInstance().setCityName(city);
-                    RxBus.getDefault().post(new ChangeCityEvent());
+                    RxBus.getInstance().post(new ChangeCityEvent());
                 }
                 quit();
             }
