@@ -10,6 +10,7 @@ import com.hon.sunny.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -55,7 +56,17 @@ public class SearchCityPresenter implements SearchCityContract.Presenter{
         mCityRepository.searchCity(mCityDataBase,query)
                 .doOnSubscribe(()->mSearchCityView.doOnSubscribe())
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SimpleSubscriber<List<ParentBean>>() {
+                .subscribe(new Subscriber<List<ParentBean>>() {
+                    @Override
+                    public void onCompleted() {
+                        mSearchCityView.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
                     @Override
                     public void onNext(List<ParentBean> list) {
                         mSearchCityView.onNext(list);

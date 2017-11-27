@@ -1,7 +1,5 @@
 package com.hon.sunny.city.view.expandrecycleview;
 
-import com.hon.sunny.city.view.searchview.RecyclerItemType;
-
 import zlc.season.practicalrecyclerview.ItemType;
 
 /**

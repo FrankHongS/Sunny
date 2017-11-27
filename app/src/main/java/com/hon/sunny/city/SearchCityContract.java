@@ -17,6 +17,7 @@ public interface SearchCityContract {
     interface View extends BaseView<Presenter>{
         void doOnSubscribe();
         void onNext(List<ParentBean> list);
+        void onCompleted();
     }
 
     interface Presenter extends BasePresenter{

@@ -49,7 +49,8 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
     @Override
     public MultiCityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        return new MultiCityViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_city, parent, false));
+        View itemView=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_city, parent, false);
+        return new MultiCityViewHolder(itemView);
     }
 
     @Override

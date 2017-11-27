@@ -8,7 +8,7 @@
     <color name="colorSunset">#201D45</color>
 
     <color name="textHint">#8C8C8C</color>
-
+    <color name="cityHint">#26a69a</color>
 
     <color name="aboutIcon">#106c99</color>
     <!--多城市列表和卡片配色-->

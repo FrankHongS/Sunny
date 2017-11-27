@@ -10,15 +10,7 @@
         android:layout_height="match_parent"
         android:paddingTop="64dp"
         android:background="#FFFFFF"
-        android:visibility="gone"/>
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/recyclerview_success_search_result"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:paddingTop="64dp"-->
-    <!--android:elevation="2dp"-->
-    <!--android:background="#FFFFFF"-->
-    <!--android:visibility="gone"/>-->
+        />
     <View
         android:id="@+id/searchview_tint"
         android:layout_width="match_parent"

@@ -2,8 +2,6 @@ package com.hon.sunny.city.view.expandrecycleview;
 
 import android.view.ViewGroup;
 
-import com.hon.sunny.city.view.searchview.RecyclerItemType;
-
 import zlc.season.practicalrecyclerview.AbstractAdapter;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
 import zlc.season.practicalrecyclerview.ItemType;

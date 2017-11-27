@@ -7,6 +7,9 @@ import android.widget.TextView;
 
 import com.hon.sunny.R;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 /**
@@ -14,16 +17,15 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  * E-mail:frank_hon@foxmail.com
  */
 
-class ChildViewHolder extends AbstractViewHolder<ChildBean> implements View.OnClickListener{
-
-    private TextView mText;
+class ChildViewHolder extends AbstractViewHolder<ChildBean>{
+    @Bind(R.id.text)
+    TextView mText;
 
     private ExpandAdapter.OnItemClickListener mOnItemClickListener;
 
     ChildViewHolder(ExpandAdapter.OnItemClickListener onItemClickListener,ViewGroup parent) {
         super(parent, R.layout.child_item);
-        mText=(TextView)itemView.findViewById(R.id.text);
-        mText.setOnClickListener(this);
+        ButterKnife.bind(this,itemView);
         mOnItemClickListener=onItemClickListener;
     }
 
@@ -32,8 +34,8 @@ class ChildViewHolder extends AbstractViewHolder<ChildBean> implements View.OnCl
         mText.setText(data.text);
     }
 
-    @Override
-    public void onClick(View view) {
+    @OnClick(R.id.text)
+    public void onClick() {
         if(mOnItemClickListener!=null)
             mOnItemClickListener.onItemClick(mText.getText().toString());
     }
