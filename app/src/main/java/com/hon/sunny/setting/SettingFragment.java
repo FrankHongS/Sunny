@@ -169,7 +169,7 @@ public class SettingFragment extends PreferenceFragment
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         getActivity().startActivity(intent);
                         getActivity().finish();
-                        RxBus.getDefault().post(new ChangeCityEvent());
+                        RxBus.getInstance().post(new ChangeCityEvent());
                     }).show();
         });
     }

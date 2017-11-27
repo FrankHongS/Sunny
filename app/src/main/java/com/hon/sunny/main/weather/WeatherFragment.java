@@ -35,8 +35,12 @@ import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -56,6 +60,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     private WeatherContract.Presenter mWeatherPresenter;
     private WeatherAdapter mWeatherAdapter;
     private final Weather mWeather=new Weather();
+    private List<Subscription> mSubscriptionList=new ArrayList<>();
     //  locate current cities by AMap
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
@@ -100,6 +105,8 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         super.onDestroy();
         mLocationClient = null;
         mLocationOption = null;
+
+        unRegisterRxBus();
     }
 
     @Override
@@ -207,12 +214,19 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     }
 
     private void registerRxBus(){
-        RxBus.getDefault().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<ChangeCityEvent>() {
+        Subscription changeCitySubscription=RxBus.getInstance().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<ChangeCityEvent>() {
             @Override
             public void onNext(ChangeCityEvent changeCityEvent) {
                 loadWeather();
             }
         });
+
+        mSubscriptionList.add(changeCitySubscription);
+    }
+
+    private void unRegisterRxBus(){
+        for(Subscription subscription:mSubscriptionList)
+            subscription.unsubscribe();
     }
 
     private void safeSetTitle(String title) {
