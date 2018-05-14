@@ -69,6 +69,23 @@ public class Weather implements Serializable{
         }
     }
 
+    /**
+     * now: {
+     cloud: "0",
+     cond_code: "100",
+     cond_txt: "晴",
+     fl: "17",
+     hum: "29",
+     pcpn: "0.0",
+     pres: "1014",
+     tmp: "19",
+     vis: "10",
+     wind_deg: "172",
+     wind_dir: "南风",
+     wind_sc: "2",
+     wind_spd: "6"
+     }
+     */
     public static class NowEntity implements Serializable {
         /**
          * code : 101
@@ -91,16 +108,16 @@ public class Weather implements Serializable{
 
         @SerializedName("wind") public WindEntity wind;
 
-        public static class CondEntity implements Serializable {
-            @SerializedName("code") public String code;
-            @SerializedName("txt") public String txt;
-        }
-
         public static class WindEntity implements Serializable {
             @SerializedName("deg") public String deg;
             @SerializedName("dir") public String dir;
             @SerializedName("sc") public String sc;
             @SerializedName("spd") public String spd;
+        }
+
+        public static class CondEntity implements Serializable {
+            @SerializedName("code") public String code;
+            @SerializedName("txt") public String txt;
         }
     }
 
@@ -232,16 +249,16 @@ public class Weather implements Serializable{
             @SerializedName("txt_n") public String txtN;
         }
 
-        public static class TmpEntity implements Serializable {
-            @SerializedName("max") public String max;
-            @SerializedName("min") public String min;
-        }
-
         public static class WindEntity implements Serializable {
             @SerializedName("deg") public String deg;
             @SerializedName("dir") public String dir;
             @SerializedName("sc") public String sc;
             @SerializedName("spd") public String spd;
+        }
+
+        public static class TmpEntity implements Serializable {
+            @SerializedName("max") public String max;
+            @SerializedName("min") public String min;
         }
     }
 

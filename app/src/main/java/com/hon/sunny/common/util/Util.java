@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import android.view.ViewConfiguration;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hon.sunny.R;
+import com.hon.sunny.Sunny;
 import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.component.OrmLite;
@@ -278,15 +280,19 @@ public class Util {
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(context);
-        Notification notification = builder.setContentIntent(pendingIntent)
+        Notification notification = builder
+                .setContentIntent(pendingIntent)
+                // 这里部分 ROM 无法成功
+                .setSmallIcon(R.mipmap.ic_launch_logo)
+                .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),sharedPreferenceUtil.getInt(weather.now.cond.txt, R.mipmap.none)))
+//                .setTicker(weather.city+"'s weather updating...") //无法显示 ？
                 .setContentTitle(weather.city)
                 .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true)
-                // 这里部分 ROM 无法成功
-                .setSmallIcon(sharedPreferenceUtil.getInt(weather.now.cond.txt, R.mipmap.none))
                 .build();
         notification.flags = sharedPreferenceUtil.getNotificationModel();
+        notification.defaults |=Notification.DEFAULT_ALL;
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // tag和id都是可以拿来区分不同的通知的
         manager.notify(1, notification);

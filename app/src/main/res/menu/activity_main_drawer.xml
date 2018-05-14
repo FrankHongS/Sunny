@@ -19,12 +19,7 @@
                 android:id="@+id/nav_set"
                 android:icon="@drawable/ic_menu_set"
                 android:title="@string/setting"/>
-            <!--<item-->
-                <!--android:id="@+id/nav_about"-->
-                <!--android:icon="@drawable/ic_menu_about"-->
-                <!--android:title="@string/about"/>-->
         </menu>
     </item>
-
 
 </menu>

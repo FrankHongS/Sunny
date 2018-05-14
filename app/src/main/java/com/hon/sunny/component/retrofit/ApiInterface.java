@@ -14,7 +14,7 @@ import rx.Observable;
 public interface ApiInterface {
     String HOST = "https://free-api.heweather.com/v5/";
 
-    @GET("weather")
+    @GET("forecast")
     Observable<WeatherAPI> mWeatherAPI(@Query("city") String city, @Query("key") String key);
 
     //而且在Retrofit 2.0中我们还可以在@Url里面定义完整的URL：这种情况下Base URL会被忽略。

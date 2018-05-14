@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.hon.sunny.R;
+import com.hon.sunny.about.ui.AboutActivity;
 import com.hon.sunny.base.Constants;
 import com.hon.sunny.city.SearchCityActivity;
 import com.hon.sunny.common.PLog;
@@ -51,6 +52,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by Frank on 2017/10/27.
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-    private List<Subscription> mSubscriptionList=new ArrayList<>();
+    private CompositeSubscription mCompositeSubscription=new CompositeSubscription();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -126,13 +128,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
         );
 
-        mSubscriptionList.add(changeCitySubscription);
-        mSubscriptionList.add(multiUpdateSubscription);
+        mCompositeSubscription.add(changeCitySubscription);
+        mCompositeSubscription.add(multiUpdateSubscription);
     }
 
     private void unRegisterRxBus(){
-        for(Subscription subscription:mSubscriptionList)
-            subscription.unsubscribe();
+//        mCompositeSubscription.unsubscribe();
+        mCompositeSubscription.clear();
+        mCompositeSubscription.unsubscribe();
     }
 
     private void initView(){
@@ -144,8 +147,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new MultiCityPresenter(MultiCityRepository.getInstance(MultiCityRemoteDataSource.getInstance()),multiCityFragment);
 
         HomePagerAdapter mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
-        mHomePagerAdapter.addTab(weatherFragment, "天气详情");
-        mHomePagerAdapter.addTab(multiCityFragment, "多城市");
+        mHomePagerAdapter.addTab(weatherFragment, getResources().getString(R.string.weather_fragment));
+        mHomePagerAdapter.addTab(multiCityFragment, getResources().getString(R.string.multi_city_fragment));
         mViewPager.setAdapter(mHomePagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

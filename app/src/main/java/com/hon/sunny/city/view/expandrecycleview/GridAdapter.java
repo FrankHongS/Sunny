@@ -2,6 +2,11 @@ package com.hon.sunny.city.view.expandrecycleview;
 
 import android.view.ViewGroup;
 
+import com.hon.sunny.R;
+import com.hon.sunny.Sunny;
+
+import java.util.List;
+
 import zlc.season.practicalrecyclerview.AbstractAdapter;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
 import zlc.season.practicalrecyclerview.ItemType;
@@ -16,14 +21,11 @@ public class GridAdapter extends AbstractAdapter<ItemType,AbstractViewHolder>{
     private OnCityHintItemClickListener mOnCityHintItemClickListener;
 
     public GridAdapter(){
-        GridBean bean1=new GridBean("北京");
-        GridBean bean2=new GridBean("上海");
-        GridBean bean3=new GridBean("广州");
-        GridBean bean4=new GridBean("深圳");
-        add(bean1);
-        add(bean2);
-        add(bean3);
-        add(bean4);
+        String[] cityList= Sunny.getAppContext().getResources().getStringArray(R.array.city_hint);
+        for(String city:cityList){
+            GridBean bean=new GridBean(city);
+            add(bean);
+        }
     }
 
     @Override

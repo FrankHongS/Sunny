@@ -9,6 +9,8 @@
     <string name="desc_expand">expand</string>
     <string name="string_cb">多城市管理</string>
 
+    <string name="weather_fragment">天气详情</string>
+    <string name="multi_city_fragment">多城市</string>
     <string name="city_count">sorry, cities no more than 3...</string>
     <string name="city_exists">sorry, the city exists already</string>
     <string name="multi_city">开启多城市</string>
@@ -47,6 +49,13 @@
         <item>每1小时</item>
         <item>每3小时</item>
         <item>每6小时</item>
+    </string-array>
+
+    <string-array name="city_hint">
+        <item>北京</item>
+        <item>上海</item>
+        <item>广州</item>
+        <item>深圳</item>
     </string-array>
 
 </resources>

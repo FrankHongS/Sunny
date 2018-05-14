@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.hon.sunny.R;
+import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
@@ -30,14 +31,10 @@ import rx.subscriptions.CompositeSubscription;
 
 public class AutoUpdateService extends Service {
 
-    private final String TAG = AutoUpdateService.class.getSimpleName();
     private SharedPreferenceUtil mSharedPreferenceUtil;
     // http://blog.csdn.net/lzyzsd/article/details/45033611
     // 在生命周期的某个时刻取消订阅。一个很常见的模式就是使用CompositeSubscription来持有所有的Subscriptions，然后在onDestroy()或者onDestroyView()里取消所有的订阅
     private CompositeSubscription mCompositeSubscription;
-    private Subscription mNetSubscription;
-
-    private boolean mIsUnSubscribed = true;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -53,30 +50,15 @@ public class AutoUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        fetchDataByNetWork();
-        Log.d(TAG, "onStartCommand: ");
-        synchronized (this) {
-            unSubscribed();
-            if (mIsUnSubscribed) {
-                unSubscribed();
-                if (mSharedPreferenceUtil.getAutoUpdate() != 0) {
-                    mNetSubscription = Observable.interval(mSharedPreferenceUtil.getAutoUpdate(), TimeUnit.HOURS)
-                            .subscribe(aLong -> {
-                                Log.d(TAG, "fetchDataByNetWork: ");
-                                mIsUnSubscribed = false;
-                                //PLog.i(TAG, SystemClock.elapsedRealtime() + " 当前设置" + mSharedPreferenceUtil.getAutoUpdate());
-                                fetchDataByNetWork();
-                            });
-                    mCompositeSubscription.add(mNetSubscription);
-                }
-            }
+        mCompositeSubscription.clear();
+        if (mSharedPreferenceUtil.getAutoUpdate() != 0) {
+            Subscription netSubscription = Observable.interval(mSharedPreferenceUtil.getAutoUpdate(), TimeUnit.HOURS)
+                    .subscribe(aLong -> {
+                        fetchDataByNetWork();
+                    });
+            mCompositeSubscription.add(netSubscription);
         }
         return START_REDELIVER_INTENT;
-    }
-
-    private void unSubscribed() {
-        mIsUnSubscribed = true;
-        mCompositeSubscription.remove(mNetSubscription);
     }
 
     @Override
@@ -85,6 +67,7 @@ public class AutoUpdateService extends Service {
     }
 
     private void fetchDataByNetWork() {
+        PLog.d("fetchDataByNetwork");
         String cityName = mSharedPreferenceUtil.getCityName();
         if (cityName != null) {
             cityName = Util.replaceCity(cityName);
@@ -104,29 +87,10 @@ public class AutoUpdateService extends Service {
 
                     @Override
                     public void onNext(Weather weather) {
-                        Util.normalStyleNotification(weather,AutoUpdateService.this,MainActivity.class);
+                        Util.normalStyleNotification(weather, AutoUpdateService.this, MainActivity.class);
                     }
                 });
     }
 
-    private void normalStyleNotification(Weather weather) {
-        Intent intent = new Intent(AutoUpdateService.this, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(AutoUpdateService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.Builder builder = new Notification.Builder(AutoUpdateService.this);
-        Notification notification = builder.setContentIntent(pendingIntent)
-                .setContentTitle(weather.city)
-                .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
-//                .setWhen(System.currentTimeMillis())
-//                .setShowWhen(true)
-                // 这里部分 ROM 无法成功
-                .setSmallIcon(mSharedPreferenceUtil.getInt(weather.now.cond.txt, R.mipmap.none))
-                .build();
-        notification.flags = mSharedPreferenceUtil.getNotificationModel();
-        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // tag和id都是可以拿来区分不同的通知的
-        manager.notify(1, notification);
-    }
 }
 

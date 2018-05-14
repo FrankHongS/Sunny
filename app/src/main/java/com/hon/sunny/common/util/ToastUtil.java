@@ -11,7 +11,7 @@ import com.hon.sunny.Sunny;
 
 public class ToastUtil {
 
-    private static Toast sToast=null;
+    private volatile static Toast sToast=null;
 
     private ToastUtil(){}
 
@@ -19,7 +19,7 @@ public class ToastUtil {
         if(sToast==null){
             synchronized (ToastUtil.class){
                 if(sToast==null){
-                    sToast=Toast.makeText(Sunny.sAppContext,content,Toast.LENGTH_SHORT);
+                    sToast=Toast.makeText(Sunny.getAppContext(),content,Toast.LENGTH_SHORT);
                 }
             }
         }else {
@@ -32,7 +32,7 @@ public class ToastUtil {
         if(sToast==null){
             synchronized (ToastUtil.class){
                 if(sToast==null){
-                    sToast=Toast.makeText(Sunny.sAppContext,content,Toast.LENGTH_LONG);
+                    sToast=Toast.makeText(Sunny.getAppContext(),content,Toast.LENGTH_LONG);
                 }
             }
         }else {

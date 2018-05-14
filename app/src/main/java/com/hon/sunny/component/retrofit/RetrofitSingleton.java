@@ -70,7 +70,7 @@ public class RetrofitSingleton {
 
     private static void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
-        if (!BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             // https://drakeet.me/retrofit-2-0-okhttp-3-0-config
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

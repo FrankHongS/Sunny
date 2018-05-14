@@ -1,6 +1,7 @@
 package com.hon.sunny.main.adapter;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +20,9 @@ import com.hon.sunny.component.AnimRecyclerViewAdapter;
 import com.hon.sunny.component.ImageLoader;
 import com.hon.sunny.data.main.bean.Weather;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import butterknife.Bind;
 
 /**
@@ -35,6 +39,10 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
     private static final int TYPE_TWO = 1;
     private static final int TYPE_THREE = 2;
     private static final int TYPE_FOUR = 3;
+
+//    @IntDef({TYPE_ONE,TYPE_TWO,TYPE_THREE,TYPE_FOUR})
+//    @Retention(RetentionPolicy.SOURCE)//?? todo
+//    private @interface WeatherType{}
 
     private Weather mWeatherData;
 

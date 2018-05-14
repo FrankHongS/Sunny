@@ -2,6 +2,7 @@ package com.hon.sunny;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatDelegate;
 
 /**
@@ -13,7 +14,7 @@ import android.support.v7.app.AppCompatDelegate;
 
 public class Sunny extends Application{
     private static String sCacheDir;
-    public static Context sAppContext;
+    private static Context sAppContext;
 
     // TODO: 16/8/1 这里的夜间模式 UI 有些没有适配好 暂时放弃夜间模式
     static {
