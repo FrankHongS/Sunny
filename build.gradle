@@ -3,11 +3,11 @@
 
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.4' //加上这句依赖，这会使用retrolambda来编译Java代码
+        classpath 'com.android.tools.build:gradle:3.0.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -15,13 +15,17 @@ buildscript {
 
 allprojects {
     repositories {
+        google()
         jcenter()
-//        maven {
-//            url 'https://dl.bintray.com/frank-hon/maven'
-//        }
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext{
+    supportLibraryVersion='27.0.2'
+    retrofitVersion='2.3.0'
+    okhttpVersion='3.4.1'
 }
