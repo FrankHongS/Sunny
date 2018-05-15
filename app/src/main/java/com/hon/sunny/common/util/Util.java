@@ -284,10 +284,10 @@ public class Util {
                 .setContentIntent(pendingIntent)
                 // 这里部分 ROM 无法成功
                 .setSmallIcon(R.mipmap.ic_launch_logo)
-                .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),sharedPreferenceUtil.getInt(weather.now.cond.txt, R.mipmap.none)))
+                .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),sharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
 //                .setTicker(weather.city+"'s weather updating...") //无法显示 ？
                 .setContentTitle(weather.city)
-                .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.cond.txt, weather.now.tmp))
+                .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.txt, weather.now.tmp))
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true)
                 .build();

@@ -103,8 +103,8 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
                 mDialogCity.setText(Util.safeText(weather.city));
                 mDialogTemp.setText("error");
             }else {
-                weatherDesc=weather.now.cond.txt;
-                code = Integer.valueOf(weather.now.cond.code);
+                weatherDesc=weather.now.txt;
+                code = Integer.valueOf(weather.now.code);
                 mDialogCity.setText(Util.safeText(weather.city));
                 mDialogTemp.setText(String.format("%s℃", weather.now.tmp));
             }

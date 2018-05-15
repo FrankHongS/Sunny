@@ -144,14 +144,14 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
             try {
                 tempFlu.setText(String.format("%s℃", weather.now.tmp));
                 tempMax.setText(
-                        String.format("↑ %s ℃", weather.dailyForecast.get(0).tmp.max));
+                        String.format("↑ %s ℃", weather.dailyForecast.get(0).max));
                 tempMin.setText(
-                        String.format("↓ %s ℃", weather.dailyForecast.get(0).tmp.min));
+                        String.format("↓ %s ℃", weather.dailyForecast.get(0).min));
 
-                tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.aqi.city.pm25)));
-                tempQuality.setText(Util.safeText("空气质量： ", weather.aqi.city.qlty));
+//                tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.aqi.city.pm25)));
+//                tempQuality.setText(Util.safeText("空气质量： ", weather.aqi.city.qlty));TODO
                 ImageLoader.load(itemView.getContext(),
-                        SharedPreferenceUtil.getInstance().getInt(weather.now.cond.txt, R.mipmap.none),
+                        SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none),
                         weatherIcon);
             } catch (Exception e) {
                 PLog.e(TAG, e.toString());
@@ -201,7 +201,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
                             String.format("%s%%", weather.hourlyForecast.get(i).hum)
                     );
                     mWind[i].setText(
-                            String.format("%sKm/h", weather.hourlyForecast.get(i).wind.spd)
+                            String.format("%sKm/h", weather.hourlyForecast.get(i).spd)
                     );
                 }
             } catch (Exception e) {
@@ -237,17 +237,17 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
 
         protected void bind(Weather weather) {
             try {
-                clothBrief.setText(String.format("穿衣指数---%s", weather.suggestion.drsg.brf));
-                clothTxt.setText(weather.suggestion.drsg.txt);
+                clothBrief.setText(String.format("穿衣指数---%s", weather.lifestyle.get(0).brf));
+                clothTxt.setText(weather.lifestyle.get(0).txt);
 
-                sportBrief.setText(String.format("运动指数---%s", weather.suggestion.sport.brf));
-                sportTxt.setText(weather.suggestion.sport.txt);
+                sportBrief.setText(String.format("运动指数---%s", weather.lifestyle.get(1).brf));
+                sportTxt.setText(weather.lifestyle.get(1).txt);
 
-                travelBrief.setText(String.format("旅游指数---%s", weather.suggestion.trav.brf));
-                travelTxt.setText(weather.suggestion.trav.txt);
+                travelBrief.setText(String.format("旅游指数---%s", weather.lifestyle.get(2).brf));
+                travelTxt.setText(weather.lifestyle.get(2).txt);
 
-                fluBrief.setText(String.format("感冒指数---%s", weather.suggestion.flu.brf));
-                fluTxt.setText(weather.suggestion.flu.txt);
+                fluBrief.setText(String.format("感冒指数---%s", weather.lifestyle.get(3).brf));
+                fluTxt.setText(weather.lifestyle.get(3).txt);
             } catch (Exception e) {
                 PLog.e(e.toString());
             }
@@ -292,18 +292,18 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
                         }
                     }
                     ImageLoader.load(mContext,
-                            SharedPreferenceUtil.getInstance().getInt(weather.dailyForecast.get(i).cond.txtD, R.mipmap.none),
+                            SharedPreferenceUtil.getInstance().getInt(weather.dailyForecast.get(i).txtD, R.mipmap.none),
                             forecastIcon[i]);
                     forecastTemp[i].setText(
                             String.format("%s℃ - %s℃",
-                                    weather.dailyForecast.get(i).tmp.min,
-                                    weather.dailyForecast.get(i).tmp.max));
+                                    weather.dailyForecast.get(i).min,
+                                    weather.dailyForecast.get(i).max));
                     forecastTxt[i].setText(
                             String.format("%s。 %s %s %s km/h。 降水几率 %s%%。",
-                                    weather.dailyForecast.get(i).cond.txtD,
-                                    weather.dailyForecast.get(i).wind.sc,
-                                    weather.dailyForecast.get(i).wind.dir,
-                                    weather.dailyForecast.get(i).wind.spd,
+                                    weather.dailyForecast.get(i).txtD,
+                                    weather.dailyForecast.get(i).sc,
+                                    weather.dailyForecast.get(i).dir,
+                                    weather.dailyForecast.get(i).spd,
                                     weather.dailyForecast.get(i).pop));
                 }
             } catch (Exception e) {

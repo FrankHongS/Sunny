@@ -159,9 +159,9 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     @Override
     public void onNext(Weather weather) {
         mWeather.status = weather.status;
-        mWeather.aqi = weather.aqi;
+//        mWeather.aqi = weather.aqi;TODO
         mWeather.basic = weather.basic;
-        mWeather.suggestion = weather.suggestion;
+        mWeather.lifestyle = weather.lifestyle;
         mWeather.now = weather.now;
         mWeather.dailyForecast = weather.dailyForecast;
         mWeather.hourlyForecast = weather.hourlyForecast;
