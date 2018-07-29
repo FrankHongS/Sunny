@@ -28,20 +28,20 @@ public class CardCityUIHelper {
 
     static {
         // 上海
-        sMap.put(new WeatherInfo(SUNNY_CODE, SHANG_HAI), R.mipmap.city_shanghai_sunny);
-        sMap.put(new WeatherInfo(RAINY_CODE, SHANG_HAI), R.mipmap.city_shanghai_rainy);
+        sMap.put(new WeatherInfo(SUNNY_CODE, SHANG_HAI), R.mipmap.city_shanghai_cloudy);
+        sMap.put(new WeatherInfo(RAINY_CODE, SHANG_HAI), R.mipmap.city_shanghai_cloudy);
         sMap.put(new WeatherInfo(CLOUDY_CODE, SHANG_HAI), R.mipmap.city_shanghai_cloudy);
         // 北京
-        sMap.put(new WeatherInfo(SUNNY_CODE, BEI_JING), R.mipmap.city_beijing_sunny);
-        sMap.put(new WeatherInfo(RAINY_CODE, BEI_JING), R.mipmap.city_beijing_rainy);
+        sMap.put(new WeatherInfo(SUNNY_CODE, BEI_JING), R.mipmap.city_beijing_cloudy);
+        sMap.put(new WeatherInfo(RAINY_CODE, BEI_JING), R.mipmap.city_beijing_cloudy);
         sMap.put(new WeatherInfo(CLOUDY_CODE, BEI_JING), R.mipmap.city_beijing_cloudy);
         // 苏州
-        sMap.put(new WeatherInfo(SUNNY_CODE, SU_ZHOU), R.mipmap.city_suzhou_sunny);
-        sMap.put(new WeatherInfo(RAINY_CODE, SU_ZHOU), R.mipmap.city_suzhou_rain);
+        sMap.put(new WeatherInfo(SUNNY_CODE, SU_ZHOU), R.mipmap.city_suzhou_cloudy);
+        sMap.put(new WeatherInfo(RAINY_CODE, SU_ZHOU), R.mipmap.city_suzhou_cloudy);
         sMap.put(new WeatherInfo(CLOUDY_CODE, SU_ZHOU), R.mipmap.city_suzhou_cloudy);
         // 其他
-        sMap.put(new WeatherInfo(SUNNY_CODE, Other), R.mipmap.city_other_sunny);
-        sMap.put(new WeatherInfo(RAINY_CODE, Other), R.mipmap.city_other_rainy);
+        sMap.put(new WeatherInfo(SUNNY_CODE, Other), R.mipmap.city_other_cloudy);
+        sMap.put(new WeatherInfo(RAINY_CODE, Other), R.mipmap.city_other_cloudy);
         sMap.put(new WeatherInfo(CLOUDY_CODE, Other), R.mipmap.city_other_cloudy);
     }
 

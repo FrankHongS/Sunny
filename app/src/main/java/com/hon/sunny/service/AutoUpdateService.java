@@ -10,6 +10,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.hon.sunny.R;
+import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.Util;
@@ -67,7 +68,6 @@ public class AutoUpdateService extends Service {
     }
 
     private void fetchDataByNetWork() {
-        PLog.d("fetchDataByNetwork");
         String cityName = mSharedPreferenceUtil.getCityName();
         if (cityName != null) {
             cityName = Util.replaceCity(cityName);
@@ -87,7 +87,7 @@ public class AutoUpdateService extends Service {
 
                     @Override
                     public void onNext(Weather weather) {
-                        Util.normalStyleNotification(weather, AutoUpdateService.this, MainActivity.class);
+                        Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER,weather, AutoUpdateService.this, MainActivity.class);
                     }
                 });
     }

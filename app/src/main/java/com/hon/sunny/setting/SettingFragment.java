@@ -115,17 +115,17 @@ public class SettingFragment extends PreferenceFragment
 
     private void showIconDialog() {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogLayout = inflater.inflate(R.layout.icon_dialog, (ViewGroup) getActivity().findViewById(R.id.dialog_root));
+        View dialogLayout = inflater.inflate(R.layout.icon_dialog,  getActivity().findViewById(R.id.dialog_root));
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setView(dialogLayout);
         final AlertDialog alertDialog = builder.create();
 
-        LinearLayout layoutTypeOne = (LinearLayout) dialogLayout.findViewById(R.id.layout_one);
+        LinearLayout layoutTypeOne =  dialogLayout.findViewById(R.id.layout_one);
         layoutTypeOne.setClickable(true);
-        RadioButton radioTypeOne = (RadioButton) dialogLayout.findViewById(R.id.radio_one);
-        LinearLayout layoutTypeTwo = (LinearLayout) dialogLayout.findViewById(R.id.layout_two);
+        RadioButton radioTypeOne =  dialogLayout.findViewById(R.id.radio_one);
+        LinearLayout layoutTypeTwo =  dialogLayout.findViewById(R.id.layout_two);
         layoutTypeTwo.setClickable(true);
-        RadioButton radioTypeTwo = (RadioButton) dialogLayout.findViewById(R.id.radio_two);
-        TextView done = (TextView) dialogLayout.findViewById(R.id.done);
+        RadioButton radioTypeTwo =  dialogLayout.findViewById(R.id.radio_two);
+        TextView done =  dialogLayout.findViewById(R.id.done);
 
         radioTypeOne.setClickable(false);
         radioTypeTwo.setClickable(false);
@@ -222,7 +222,7 @@ public class SettingFragment extends PreferenceFragment
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference == mAnimationOnOff) {
             SharedPreferenceUtil.getInstance().setMainAnim((Boolean) newValue);
-        } else if (mNotificationType == preference) {
+        } else if (preference == mNotificationType) {
             SharedPreferenceUtil.getInstance().setNotificationModel(
                     (boolean) newValue ? Notification.FLAG_ONGOING_EVENT : Notification.FLAG_AUTO_CANCEL);
         }

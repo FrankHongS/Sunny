@@ -66,9 +66,9 @@ public class FirstActivity extends Activity {
     }
 
     private int setCountTime(){
-        if(BuildConfig.DEBUG){
-            return 1;
-        }
+//        if(BuildConfig.DEBUG){
+//            return 1;
+//        }
         return COUNT_DOWN_TIME;
     }
 }

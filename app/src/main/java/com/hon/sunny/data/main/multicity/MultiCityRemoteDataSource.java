@@ -32,6 +32,7 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource{
         return INSTANCE;
     }
 
+    // todo
     @Override
     public Observable<Weather> fetchMultiCityWeather(Observable<String> citiesObservable) {
         return citiesObservable.flatMap(

@@ -1,8 +1,10 @@
 package com.hon.sunny.common.util;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
@@ -15,7 +17,10 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
@@ -273,19 +278,30 @@ public class Util {
         return false;
     }
 
-    public static void normalStyleNotification(Weather weather,Context context,Class<? extends Activity> target){
+    @TargetApi(Build.VERSION_CODES.O)
+    public static void createNotificationChannel(String channelId,
+                                                 String channelName,
+                                                 int importance){
+        NotificationChannel channel=new NotificationChannel(channelId,
+                channelName,importance);
+        NotificationManager notificationManager=
+                (NotificationManager) Sunny.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.createNotificationChannel(channel);
+
+    }
+
+    public static void normalStyleNotification(String channelId,Weather weather,Context context,Class<? extends Activity> target){
         SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
         Intent intent = new Intent(context, MainActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.Builder builder = new Notification.Builder(context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,channelId);
         Notification notification = builder
                 .setContentIntent(pendingIntent)
                 // 这里部分 ROM 无法成功
                 .setSmallIcon(R.mipmap.ic_launch_logo)
                 .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),sharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
-//                .setTicker(weather.city+"'s weather updating...") //无法显示 ？
                 .setContentTitle(weather.city)
                 .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.txt, weather.now.tmp))
                 .setWhen(System.currentTimeMillis())

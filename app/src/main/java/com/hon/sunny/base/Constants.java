@@ -17,5 +17,9 @@ public class Constants {
     public static final String UNKNOWN_CITY = "unknown city";
 
     public static final int CITY_COUNT=3;
+
+    // notification channel
+    public static final String CHANNEL_ID_WEATHER="weather";
+    public static final String CHANNEL_NAME_WEATHER="weather";
 }
 

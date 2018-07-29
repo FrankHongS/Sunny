@@ -74,9 +74,19 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         return view;
     }
 
+    /**
+     * Fragment's onStart invoked after Activity's onCreate, which
+     * ensure that mMultiCityPresenter has been instantiated.
+     * (
+     *  bug should be fixed. 2018/7/24
+     *  crash :caused by java.lang.NullPointerException:
+     *  Attempt to invoke interface method
+     *  'void com.hon.sunny.main.multicity.MultiCityContract$Presenter.start()
+     * )
+     */
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onStart() {
+        super.onStart();
         multiLoad();
     }
 
@@ -197,7 +207,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("name=?", city));
-                        OrmLite.OrmTest(CityORM.class);
                         multiLoad();
                         Snackbar.make(getView(), "已经将" + city + "删掉了 Ծ‸ Ծ", Snackbar.LENGTH_LONG).setAction("撤销",
                                 v -> {

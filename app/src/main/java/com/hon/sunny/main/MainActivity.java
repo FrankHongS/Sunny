@@ -1,8 +1,10 @@
 package com.hon.sunny.main;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         ButterKnife.bind(this);
         initView();
         Util.initIcons();
+        createNotificationChannel();
     }
 
     @Override
@@ -101,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unRegisterRxBus();
+        unregisterRxBus();
     }
 
     @Override
@@ -132,7 +135,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mCompositeSubscription.add(multiUpdateSubscription);
     }
 
-    private void unRegisterRxBus(){
+    /**
+     * unregister RxBus . If not,there will be a bug
+     */
+    private void unregisterRxBus(){
 //        mCompositeSubscription.unsubscribe();
         mCompositeSubscription.clear();
         mCompositeSubscription.unsubscribe();
@@ -259,5 +265,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void launch(Class<? extends Activity> target){
         startActivity(new Intent(this,target));
+    }
+
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            Util.createNotificationChannel(Constants.CHANNEL_ID_WEATHER,Constants.CHANNEL_NAME_WEATHER,
+                    NotificationManager.IMPORTANCE_DEFAULT);
+        }
     }
 }

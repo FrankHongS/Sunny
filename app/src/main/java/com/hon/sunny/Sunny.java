@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.hon.sunny.common.CrashHandler;
+
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
@@ -26,6 +28,8 @@ public class Sunny extends Application{
     public void onCreate() {
         super.onCreate();
         sAppContext=getApplicationContext();
+
+        CrashHandler.init(new CrashHandler(this));
 
         if (getApplicationContext().getExternalCacheDir() != null && ExistSDCard()) {
             sCacheDir = getApplicationContext().getExternalCacheDir().toString();

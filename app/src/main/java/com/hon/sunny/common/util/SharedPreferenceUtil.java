@@ -1,8 +1,11 @@
 package com.hon.sunny.common.util;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
+import android.service.notification.StatusBarNotification;
 
 import com.hon.sunny.Sunny;
 
@@ -103,6 +106,15 @@ public class SharedPreferenceUtil {
     //  通知栏模式 默认为常驻
     public void setNotificationModel(int t) {
         mPrefs.edit().putInt(NOTIFICATION_MODEL, t).apply();
+        if(Build.VERSION.SDK_INT>=23){
+            NotificationManager manager= (NotificationManager) Sunny.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            StatusBarNotification[] notifications=manager.getActiveNotifications();
+            for(StatusBarNotification notification:notifications){
+                notification.getNotification().flags=t;
+                manager.notify(1,notification.getNotification());
+            }
+        }
+
     }
 
     public int getNotificationModel() {

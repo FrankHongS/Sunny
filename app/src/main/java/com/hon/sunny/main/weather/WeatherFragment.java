@@ -20,6 +20,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
+import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.CheckVersion;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
@@ -152,7 +153,6 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         SharedPreferenceUtil.getInstance().setCityName("北京");
         safeSetTitle("找不到城市");
         mRefreshLayout.setRefreshing(false);
-        PLog.e(e.toString());
         RetrofitSingleton.disposeFailureInfo(e);
     }
 
@@ -171,7 +171,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         ToastUtil.showShort(getString(R.string.complete));
         mWeatherAdapter.notifyDataSetChanged();
         //发通知
-        Util.normalStyleNotification(weather,getActivity(),MainActivity.class);
+        Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER,weather,getActivity(),MainActivity.class);
     }
 
     private void location(){
