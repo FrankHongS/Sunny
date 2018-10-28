@@ -75,7 +75,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     }
 
     /**
-     * Fragment's onStart invoked after Activity's onCreate, which
+     * Fragment's onActivityCreated invoked after Activity's onCreate, which
      * ensure that mMultiCityPresenter has been instantiated.
      * (
      *  bug should be fixed. 2018/7/24
@@ -85,8 +85,8 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
      * )
      */
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         multiLoad();
     }
 
@@ -186,12 +186,16 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     }
 
     private void registerRxBus(){
-        Subscription multiUpdateSubscription=RxBus.getInstance().toObservable(MultiUpdate.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<MultiUpdate>() {
-            @Override
-            public void onNext(MultiUpdate multiUpdate) {
-                multiLoad();
-            }
-        });
+        Subscription multiUpdateSubscription=
+                RxBus.getInstance()
+                        .toObservable(MultiUpdate.class)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new SimpleSubscriber<MultiUpdate>() {
+                            @Override
+                            public void onNext(MultiUpdate multiUpdate) {
+                                multiLoad();
+                            }
+                        });
 
         mSubscriptionList.add(multiUpdateSubscription);
     }
