@@ -39,11 +39,6 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
                 .doOnTerminate(()->mMultiCityView.doOnTerminate())
                 .subscribe(new Subscriber<Weather>() {
                     @Override
-                    public void onCompleted() {
-                        mMultiCityView.onCompleted();
-                    }
-
-                    @Override
                     public void onError(Throwable e) {
                         mMultiCityView.onError(e);
                     }
@@ -51,6 +46,11 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
                     @Override
                     public void onNext(Weather weather) {
                         mMultiCityView.onNext(weather);
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        mMultiCityView.onCompleted();
                     }
                 });
     }
