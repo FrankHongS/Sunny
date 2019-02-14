@@ -22,13 +22,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.hon.sunny.R;
-import com.hon.sunny.about.ui.AboutActivity;
-import com.hon.sunny.base.Constants;
+import com.hon.sunny.common.Constants;
 import com.hon.sunny.city.SearchCityActivity;
-import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.CircularAnimUtil;
 import com.hon.sunny.common.util.RxDrawer;
 import com.hon.sunny.common.util.RxUtils;
+import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.SimpleSubscriber;
 import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
@@ -46,9 +45,6 @@ import com.hon.sunny.component.rxbus.event.MultiUpdate;
 import com.hon.sunny.main.multicity.MultiCityFragment;
 import com.hon.sunny.service.AutoUpdateService;
 import com.hon.sunny.setting.SettingActivity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -85,20 +81,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         registerRxBus();
         ButterKnife.bind(this);
         initView();
-        Util.initIcons();
+        Util.initIcons(false);
         createNotificationChannel();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startService(new Intent(this, AutoUpdateService.class));
-    }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Util.initIcons();
+        if(SharedPreferenceUtil.getInstance().getBoolean(Constants.AUTO_UPDATE)){
+            startService(new Intent(this, AutoUpdateService.class));
+        }
     }
 
     @Override

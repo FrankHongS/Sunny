@@ -1,10 +1,8 @@
 package com.hon.sunny.component.retrofit;
 
-import android.util.Log;
-
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.base.Constants;
+import com.hon.sunny.common.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.common.util.ToastUtil;

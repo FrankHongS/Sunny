@@ -25,6 +25,7 @@ public class FirstActivity extends Activity {
     private static final int COUNT_DOWN_INTERVAL=1;
     private SvgView mSvgView;
     private TextView mCount;
+    private TextView mSkip;
     private FrameLayout mContainer;
 
 
@@ -37,8 +38,7 @@ public class FirstActivity extends Activity {
         @Override
         public void onFinish() {
             mCount.setText("0s");
-            finish();
-            startActivity(new Intent(FirstActivity.this, MainActivity.class));
+            finishSelf();
         }
     };
     @Override
@@ -48,9 +48,14 @@ public class FirstActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        mCount=(TextView)findViewById(R.id.tv_count);
-        mContainer=(FrameLayout)findViewById(R.id.container);
+        mCount=findViewById(R.id.tv_count);
+        mSkip=findViewById(R.id.tv_skip);
+        mContainer=findViewById(R.id.container);
         addSvgView(getLayoutInflater(),mContainer);
+
+        mSkip.setOnClickListener(
+                v->finishSelf()
+        );
     }
 
     private void addSvgView(LayoutInflater inflater, FrameLayout container){
@@ -70,5 +75,10 @@ public class FirstActivity extends Activity {
 //            return 1;
 //        }
         return COUNT_DOWN_TIME;
+    }
+
+    private void finishSelf(){
+        startActivity(new Intent(FirstActivity.this, MainActivity.class));
+        finish();
     }
 }

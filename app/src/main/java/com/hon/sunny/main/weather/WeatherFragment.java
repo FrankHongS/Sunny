@@ -20,8 +20,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.base.Constants;
-import com.hon.sunny.common.PLog;
+import com.hon.sunny.common.Constants;
 import com.hon.sunny.common.util.CheckVersion;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.SimpleSubscriber;
@@ -43,6 +42,9 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+
+import static com.hon.sunny.common.Constants.CHANGE_UPDATE_TIME;
+import static com.hon.sunny.common.Constants.ONE_HOUR;
 
 /**
  * Created by Frank on 2017/10/27.
@@ -184,11 +186,11 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mLocationOption.setOnceLocation(false);
         mLocationOption.setWifiActiveScan(true);
         mLocationOption.setMockEnable(false);
-        int tempTime = SharedPreferenceUtil.getInstance().getAutoUpdate();
+        int tempTime = SharedPreferenceUtil.getInstance().getInt(CHANGE_UPDATE_TIME,3);
         if (tempTime == 0) {
             tempTime = 100;
         }
-        mLocationOption.setInterval(tempTime * SharedPreferenceUtil.ONE_HOUR);
+        mLocationOption.setInterval(tempTime * ONE_HOUR);
         mLocationClient.setLocationOption(mLocationOption);
         mLocationClient.startLocation();
     }

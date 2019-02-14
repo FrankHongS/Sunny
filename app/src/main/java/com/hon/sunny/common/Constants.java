@@ -1,4 +1,4 @@
-package com.hon.sunny.base;
+package com.hon.sunny.common;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -21,5 +21,22 @@ public class Constants {
     // notification channel
     public static final String CHANNEL_ID_WEATHER="weather";
     public static final String CHANNEL_NAME_WEATHER="weather";
+
+    public static final String CITY_NAME = "城市";
+    public static final String HOUR = "current_hour";
+
+    // if init icons
+    public static final String INIT_ICONS="init_icons";
+
+    // setting desc
+    public static final String CHANGE_ICONS = "change_icons";
+    public static final String CLEAR_CACHE = "clear_cache";
+    public static final String CHANGE_UPDATE_TIME = "change_update_time";
+    public static final String AUTO_UPDATE="auto_update";
+    public static final String NOTIFICATION_MODEL = "notification_model";
+    public static final String ANIM_START = "animation_start";
+
+    public static int ONE_HOUR = 1000 * 60 * 60;
+
 }
 

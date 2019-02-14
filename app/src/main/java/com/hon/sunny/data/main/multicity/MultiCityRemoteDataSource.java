@@ -1,7 +1,6 @@
 package com.hon.sunny.data.main.multicity;
 
-import com.hon.sunny.base.Constants;
-import com.hon.sunny.common.util.ToastUtil;
+import com.hon.sunny.common.Constants;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;

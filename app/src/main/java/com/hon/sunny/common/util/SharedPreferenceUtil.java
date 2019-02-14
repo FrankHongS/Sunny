@@ -9,22 +9,19 @@ import android.service.notification.StatusBarNotification;
 
 import com.hon.sunny.Sunny;
 
+import static com.hon.sunny.common.Constants.ANIM_START;
+import static com.hon.sunny.common.Constants.AUTO_UPDATE;
+import static com.hon.sunny.common.Constants.CHANGE_ICONS;
+import static com.hon.sunny.common.Constants.CITY_NAME;
+import static com.hon.sunny.common.Constants.HOUR;
+import static com.hon.sunny.common.Constants.NOTIFICATION_MODEL;
+
 /**
  * Created by Frank on 2017/8/9.
  * E-mail:frank_hon@foxmail.com
  */
 
 public class SharedPreferenceUtil {
-    public static final String CITY_NAME = "城市";//选择城市
-    public static final String HOUR = "current_hour";//当前小时
-
-    public static final String CHANGE_ICONS = "change_icons";//切换图标
-    public static final String CLEAR_CACHE = "clear_cache";//清空缓存
-    public static final String AUTO_UPDATE = "change_update_time"; //自动更新时长
-    public static final String NOTIFICATION_MODEL = "notification_model";
-    public static final String ANIM_START = "animation_start";
-
-    public static int ONE_HOUR = 1000 * 60 * 60;
 
     private SharedPreferences mPrefs;
 
@@ -40,58 +37,32 @@ public class SharedPreferenceUtil {
         mPrefs = Sunny.getAppContext().getSharedPreferences("setting", Context.MODE_PRIVATE);
     }
 
-    public SharedPreferenceUtil putInt(String key, int value) {
+    public void putInt(String key, int value) {
         mPrefs.edit().putInt(key, value).apply();
-        return this;
     }
 
     public int getInt(String key, int defValue) {
         return mPrefs.getInt(key, defValue);
     }
 
-    public SharedPreferenceUtil putString(String key, String value) {
+    public void putString(String key, String value) {
         mPrefs.edit().putString(key, value).apply();
-        return this;
     }
 
     public String getString(String key, String defValue) {
         return mPrefs.getString(key, defValue);
     }
 
-    public SharedPreferenceUtil putBoolean(String key, boolean value) {
+    public void putBoolean(String key, boolean value) {
         mPrefs.edit().putBoolean(key, value).apply();
-        return this;
     }
 
-    public boolean getBoolean(String key, boolean defValue) {
-        return mPrefs.getBoolean(key, defValue);
+    public boolean getBoolean(String key) {
+        return mPrefs.getBoolean(key,false);
     }
 
-    // 设置当前小时
-    public void setCurrentHour(int h) {
-        mPrefs.edit().putInt(HOUR, h).apply();
-    }
-
-    public int getCurrentHour() {
-        return mPrefs.getInt(HOUR, 0);
-    }
-
-    // 图标种类相关
-    public void setIconType(int type) {
-        mPrefs.edit().putInt(CHANGE_ICONS, type).apply();
-    }
-
-    public int getIconType() {
-        return mPrefs.getInt(CHANGE_ICONS, 0);
-    }
-
-    // 自动更新时间 hours
-    public void setAutoUpdate(int t) {
-        mPrefs.edit().putInt(AUTO_UPDATE, t).apply();
-    }
-
-    public int getAutoUpdate() {
-        return mPrefs.getInt(AUTO_UPDATE, 3);
+    public boolean getBoolean(String key,boolean defValue) {
+        return mPrefs.getBoolean(key,defValue);
     }
 
     //当前城市

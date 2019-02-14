@@ -20,7 +20,6 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
@@ -29,7 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.base.Constants;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.main.MainActivity;
@@ -42,6 +40,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+
+import static com.hon.sunny.common.Constants.CHANGE_ICONS;
+import static com.hon.sunny.common.Constants.CITY_COUNT;
+import static com.hon.sunny.common.Constants.INIT_ICONS;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -264,7 +266,7 @@ public class Util {
     public static boolean checkMultiCitiesCount(){
         int count=(int) OrmLite.getInstance().queryCount(CityORM.class);
 
-        return count>= Constants.CITY_COUNT;
+        return count>= CITY_COUNT;
     }
 
     // check if selected city exists
@@ -314,36 +316,47 @@ public class Util {
         manager.notify(1, notification);
     }
 
-    public static void initIcons(){
-        if (SharedPreferenceUtil.getInstance().getIconType() == 0) {
-            SharedPreferenceUtil.getInstance().putInt("未知", R.mipmap.none);
-            SharedPreferenceUtil.getInstance().putInt("晴", R.mipmap.type_one_sunny);
-            SharedPreferenceUtil.getInstance().putInt("阴", R.mipmap.type_one_cloudy);
-            SharedPreferenceUtil.getInstance().putInt("多云", R.mipmap.type_one_cloudy);
-            SharedPreferenceUtil.getInstance().putInt("少云", R.mipmap.type_one_cloudy);
-            SharedPreferenceUtil.getInstance().putInt("晴间多云", R.mipmap.type_one_cloudytosunny);
-            SharedPreferenceUtil.getInstance().putInt("小雨", R.mipmap.type_one_light_rain);
-            SharedPreferenceUtil.getInstance().putInt("中雨", R.mipmap.type_one_light_rain);
-            SharedPreferenceUtil.getInstance().putInt("大雨", R.mipmap.type_one_heavy_rain);
-            SharedPreferenceUtil.getInstance().putInt("阵雨", R.mipmap.type_one_thunderstorm);
-            SharedPreferenceUtil.getInstance().putInt("雷阵雨", R.mipmap.type_one_thunder_rain);
-            SharedPreferenceUtil.getInstance().putInt("霾", R.mipmap.type_one_fog);
-            SharedPreferenceUtil.getInstance().putInt("雾", R.mipmap.type_one_fog);
+    public static void initIcons(boolean reset){
+
+        SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
+
+        if(!reset){
+            if(sharedPreferenceUtil.getBoolean(INIT_ICONS)){
+                return;
+            }else{
+                sharedPreferenceUtil.putBoolean(INIT_ICONS,true);
+            }
+        }
+
+        if (sharedPreferenceUtil.getInt(CHANGE_ICONS,0) == 0) {
+            sharedPreferenceUtil.putInt("未知", R.mipmap.none);
+            sharedPreferenceUtil.putInt("晴", R.mipmap.type_one_sunny);
+            sharedPreferenceUtil.putInt("阴", R.mipmap.type_one_cloudy);
+            sharedPreferenceUtil.putInt("多云", R.mipmap.type_one_cloudy);
+            sharedPreferenceUtil.putInt("少云", R.mipmap.type_one_cloudy);
+            sharedPreferenceUtil.putInt("晴间多云", R.mipmap.type_one_cloudytosunny);
+            sharedPreferenceUtil.putInt("小雨", R.mipmap.type_one_light_rain);
+            sharedPreferenceUtil.putInt("中雨", R.mipmap.type_one_light_rain);
+            sharedPreferenceUtil.putInt("大雨", R.mipmap.type_one_heavy_rain);
+            sharedPreferenceUtil.putInt("阵雨", R.mipmap.type_one_thunderstorm);
+            sharedPreferenceUtil.putInt("雷阵雨", R.mipmap.type_one_thunder_rain);
+            sharedPreferenceUtil.putInt("霾", R.mipmap.type_one_fog);
+            sharedPreferenceUtil.putInt("雾", R.mipmap.type_one_fog);
         } else {
-            SharedPreferenceUtil.getInstance().putInt("未知", R.mipmap.none);
-            SharedPreferenceUtil.getInstance().putInt("晴", R.mipmap.type_two_sunny);
-            SharedPreferenceUtil.getInstance().putInt("阴", R.mipmap.type_two_cloudy);
-            SharedPreferenceUtil.getInstance().putInt("多云", R.mipmap.type_two_cloudy);
-            SharedPreferenceUtil.getInstance().putInt("少云", R.mipmap.type_two_cloudy);
-            SharedPreferenceUtil.getInstance().putInt("晴间多云", R.mipmap.type_two_cloudytosunny);
-            SharedPreferenceUtil.getInstance().putInt("小雨", R.mipmap.type_two_light_rain);
-            SharedPreferenceUtil.getInstance().putInt("中雨", R.mipmap.type_two_rain);
-            SharedPreferenceUtil.getInstance().putInt("大雨", R.mipmap.type_two_rain);
-            SharedPreferenceUtil.getInstance().putInt("阵雨", R.mipmap.type_two_rain);
-            SharedPreferenceUtil.getInstance().putInt("雷阵雨", R.mipmap.type_two_thunderstorm);
-            SharedPreferenceUtil.getInstance().putInt("霾", R.mipmap.type_two_haze);
-            SharedPreferenceUtil.getInstance().putInt("雾", R.mipmap.type_two_fog);
-            SharedPreferenceUtil.getInstance().putInt("雨夹雪", R.mipmap.type_two_snowrain);
+            sharedPreferenceUtil.putInt("未知", R.mipmap.none);
+            sharedPreferenceUtil.putInt("晴", R.mipmap.type_two_sunny);
+            sharedPreferenceUtil.putInt("阴", R.mipmap.type_two_cloudy);
+            sharedPreferenceUtil.putInt("多云", R.mipmap.type_two_cloudy);
+            sharedPreferenceUtil.putInt("少云", R.mipmap.type_two_cloudy);
+            sharedPreferenceUtil.putInt("晴间多云", R.mipmap.type_two_cloudytosunny);
+            sharedPreferenceUtil.putInt("小雨", R.mipmap.type_two_light_rain);
+            sharedPreferenceUtil.putInt("中雨", R.mipmap.type_two_rain);
+            sharedPreferenceUtil.putInt("大雨", R.mipmap.type_two_rain);
+            sharedPreferenceUtil.putInt("阵雨", R.mipmap.type_two_rain);
+            sharedPreferenceUtil.putInt("雷阵雨", R.mipmap.type_two_thunderstorm);
+            sharedPreferenceUtil.putInt("霾", R.mipmap.type_two_haze);
+            sharedPreferenceUtil.putInt("雾", R.mipmap.type_two_fog);
+            sharedPreferenceUtil.putInt("雨夹雪", R.mipmap.type_two_snowrain);
         }
     }
 }

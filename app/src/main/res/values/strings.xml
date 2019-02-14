@@ -58,4 +58,6 @@
         <item>深圳</item>
     </string-array>
 
+    <string name="skip">跳过</string>
+
 </resources>

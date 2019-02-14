@@ -16,10 +16,9 @@ import android.widget.CompoundButton;
 import com.hon.persistentsearchview.PersistentSearchView;
 import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.R;
-import com.hon.sunny.base.Constants;
+import com.hon.sunny.common.Constants;
 import com.hon.sunny.city.view.expandrecycleview.GridAdapter;
 import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.rxbus.RxBus;
@@ -42,8 +41,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import zlc.season.practicalrecyclerview.PracticalRecyclerView;
-
-import static android.R.id.list;
 
 /**
  * Created by Frank on 2017/10/29.

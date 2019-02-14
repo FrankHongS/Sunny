@@ -35,20 +35,30 @@ import java.io.File;
 import rx.Observable;
 import rx.functions.Func1;
 
+import static com.hon.sunny.common.Constants.ANIM_START;
+import static com.hon.sunny.common.Constants.AUTO_UPDATE;
+import static com.hon.sunny.common.Constants.CHANGE_ICONS;
+import static com.hon.sunny.common.Constants.CHANGE_UPDATE_TIME;
+import static com.hon.sunny.common.Constants.CLEAR_CACHE;
+import static com.hon.sunny.common.Constants.NOTIFICATION_MODEL;
+
 /**
  * Created by Frank on 2017/8/10.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class SettingFragment extends PreferenceFragment
-        implements Preference.OnPreferenceClickListener,
+public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener,
         Preference.OnPreferenceChangeListener {
     private static String TAG = SettingFragment.class.getSimpleName();
-    //private SettingActivity mActivity;
+
     private SharedPreferenceUtil mSharedPreferenceUtil;
+
     private Preference mChangeIcons;
-    private Preference mChangeUpdate;
+    private Preference mChangeUpdateTime;
     private Preference mClearCache;
+
+    // if auto update
+    private CheckBoxPreference mAutoUpdate;
     private CheckBoxPreference mNotificationType;
     private CheckBoxPreference mAnimationOnOff;
 
@@ -58,34 +68,41 @@ public class SettingFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.setting);
         mSharedPreferenceUtil = SharedPreferenceUtil.getInstance();
 
-        mChangeIcons = findPreference(SharedPreferenceUtil.CHANGE_ICONS);
-        mChangeUpdate = findPreference(SharedPreferenceUtil.AUTO_UPDATE);
-        mClearCache = findPreference(SharedPreferenceUtil.CLEAR_CACHE);
+        initView();
+    }
 
-        mAnimationOnOff = (CheckBoxPreference) findPreference(SharedPreferenceUtil.ANIM_START);
-        mNotificationType = (CheckBoxPreference) findPreference(SharedPreferenceUtil.NOTIFICATION_MODEL);
+    private void initView() {
+        mChangeIcons = findPreference(CHANGE_ICONS);
+        mAutoUpdate = (CheckBoxPreference) findPreference(AUTO_UPDATE);
+        mChangeUpdateTime = findPreference(CHANGE_UPDATE_TIME);
+        mClearCache = findPreference(CLEAR_CACHE);
 
-        if (SharedPreferenceUtil.getInstance().getNotificationModel() != Notification.FLAG_ONGOING_EVENT) {
-            mNotificationType.setChecked(false);
-        } else {
-            mNotificationType.setChecked(true);
-        }
+        mAnimationOnOff = (CheckBoxPreference) findPreference(ANIM_START);
+        mNotificationType = (CheckBoxPreference) findPreference(NOTIFICATION_MODEL);
 
-        mAnimationOnOff.setChecked(SharedPreferenceUtil.getInstance().getMainAnim());
+        mNotificationType.setChecked(
+                mSharedPreferenceUtil.getNotificationModel()
+                        == Notification.FLAG_ONGOING_EVENT
+        );
+        mAnimationOnOff.setChecked(mSharedPreferenceUtil.getMainAnim());
+        mChangeIcons.setSummary(
+                getResources().getStringArray(R.array.icons)[mSharedPreferenceUtil.getInt(CHANGE_ICONS,0)]);
 
-        mChangeIcons.setSummary(getResources().getStringArray(R.array.icons)[mSharedPreferenceUtil.getIconType()]);
-
-        mChangeUpdate.setSummary(
-                mSharedPreferenceUtil.getAutoUpdate() == 0 ? "禁止刷新" : "每" + mSharedPreferenceUtil.getAutoUpdate() + "小时更新");
-        mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir()+"/NetCache"));
+        mAutoUpdate.setChecked(mSharedPreferenceUtil.getBoolean(AUTO_UPDATE));
+        mChangeUpdateTime.setEnabled(mSharedPreferenceUtil.getBoolean(AUTO_UPDATE));
+        mChangeUpdateTime.setSummary(
+                "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME,3) + "小时更新");
+        mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
 
         mChangeIcons.setOnPreferenceClickListener(this);
-        mChangeUpdate.setOnPreferenceClickListener(this);
+        mChangeUpdateTime.setOnPreferenceClickListener(this);
         mClearCache.setOnPreferenceClickListener(this);
-        mNotificationType.setOnPreferenceChangeListener(this);
 
+        mAutoUpdate.setOnPreferenceChangeListener(this);
+        mNotificationType.setOnPreferenceChangeListener(this);
         mAnimationOnOff.setOnPreferenceChangeListener(this);
     }
+
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
@@ -94,7 +111,7 @@ public class SettingFragment extends PreferenceFragment
         } else if (mClearCache == preference) {
 
             ImageLoader.clear(getActivity());
-            Observable.just(FileUtil.delete(new File(Sunny.getAppCacheDir()+"/NetCache")))
+            Observable.just(FileUtil.delete(new File(Sunny.getAppCacheDir() + "/NetCache")))
                     .filter(new Func1<Boolean, Boolean>() {
                         @Override
                         public Boolean call(Boolean aBoolean) {
@@ -103,36 +120,65 @@ public class SettingFragment extends PreferenceFragment
                     }).compose(RxUtils.rxSchedulerHelper()).subscribe(new SimpleSubscriber<Boolean>() {
                 @Override
                 public void onNext(Boolean aBoolean) {
-                    mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir()+"/NetCache"));
+                    mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
                     Snackbar.make(getView(), "缓存已清除", Snackbar.LENGTH_SHORT).show();
                 }
             });
-        } else if (mChangeUpdate == preference) {
+        } else if (mChangeUpdateTime == preference) {
             showUpdateDialog();
         }
         return true;
     }
 
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+        Boolean newSetting = (Boolean) newValue;
+
+        if (preference == mAnimationOnOff) {
+            mSharedPreferenceUtil.setMainAnim(newSetting);
+        } else if (preference == mAutoUpdate) {
+            if (newSetting) {
+
+                getActivity().startService(new Intent(getActivity(), AutoUpdateService.class));
+
+                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE,true);
+                mChangeUpdateTime.setEnabled(true);
+            } else {
+
+                getActivity().stopService(new Intent(getActivity(), AutoUpdateService.class));
+
+                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE,false);
+                mChangeUpdateTime.setEnabled(false);
+            }
+        } else if (preference == mNotificationType) {
+            mSharedPreferenceUtil.setNotificationModel(
+                    newSetting ? Notification.FLAG_ONGOING_EVENT : Notification.FLAG_AUTO_CANCEL);
+        }
+
+        return true;
+    }
+
     private void showIconDialog() {
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogLayout = inflater.inflate(R.layout.icon_dialog,  getActivity().findViewById(R.id.dialog_root));
+        View dialogLayout = inflater.inflate(R.layout.icon_dialog, getActivity().findViewById(R.id.dialog_root));
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setView(dialogLayout);
         final AlertDialog alertDialog = builder.create();
 
-        LinearLayout layoutTypeOne =  dialogLayout.findViewById(R.id.layout_one);
+        LinearLayout layoutTypeOne = dialogLayout.findViewById(R.id.layout_one);
         layoutTypeOne.setClickable(true);
-        RadioButton radioTypeOne =  dialogLayout.findViewById(R.id.radio_one);
-        LinearLayout layoutTypeTwo =  dialogLayout.findViewById(R.id.layout_two);
+        RadioButton radioTypeOne = dialogLayout.findViewById(R.id.radio_one);
+        LinearLayout layoutTypeTwo = dialogLayout.findViewById(R.id.layout_two);
         layoutTypeTwo.setClickable(true);
-        RadioButton radioTypeTwo =  dialogLayout.findViewById(R.id.radio_two);
-        TextView done =  dialogLayout.findViewById(R.id.done);
+        RadioButton radioTypeTwo = dialogLayout.findViewById(R.id.radio_two);
+        TextView done = dialogLayout.findViewById(R.id.done);
 
         radioTypeOne.setClickable(false);
         radioTypeTwo.setClickable(false);
 
         alertDialog.show();
 
-        switch (mSharedPreferenceUtil.getIconType()) {
+        switch (mSharedPreferenceUtil.getInt(CHANGE_ICONS,0)) {
             case 0:
                 radioTypeOne.setChecked(true);
                 radioTypeTwo.setChecked(false);
@@ -154,10 +200,11 @@ public class SettingFragment extends PreferenceFragment
         });
 
         done.setOnClickListener(v -> {
-            mSharedPreferenceUtil.setIconType(radioTypeOne.isChecked() ? 0 : 1);
+            mSharedPreferenceUtil.putInt(CHANGE_ICONS,radioTypeOne.isChecked() ? 0 : 1);
             String[] iconsText = getResources().getStringArray(R.array.icons);
             mChangeIcons.setSummary(radioTypeOne.isChecked() ? iconsText[0] :
                     iconsText[1]);
+
             alertDialog.dismiss();
             Snackbar.make(getView(), "切换成功,重启应用生效",
                     Snackbar.LENGTH_INDEFINITE).setAction("重启",
@@ -183,19 +230,19 @@ public class SettingFragment extends PreferenceFragment
                 .setView(dialogLayout);
         final AlertDialog alertDialog = builder.create();
 
-        final SeekBar mSeekBar = (SeekBar) dialogLayout.findViewById(R.id.time_seekbar);
-        final TextView tvShowHour = (TextView) dialogLayout.findViewById(R.id.tv_showhour);
-        TextView tvDone = (TextView) dialogLayout.findViewById(R.id.done);
+        final SeekBar mSeekBar = dialogLayout.findViewById(R.id.time_seekbar);
+        final TextView tvShowHour = dialogLayout.findViewById(R.id.tv_showhour);
+        TextView tvDone = dialogLayout.findViewById(R.id.done);
 
         mSeekBar.setMax(24);
-        mSeekBar.setProgress(mSharedPreferenceUtil.getAutoUpdate());
+        mSeekBar.setProgress(mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME,3));
         tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress()));
         alertDialog.show();
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress()));
+                tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress()+1));
             }
 
             @Override
@@ -209,24 +256,13 @@ public class SettingFragment extends PreferenceFragment
             }
         });
         tvDone.setOnClickListener(v -> {
-            mSharedPreferenceUtil.setAutoUpdate(mSeekBar.getProgress());
-            mChangeUpdate.setSummary(
-                    mSharedPreferenceUtil.getAutoUpdate() == 0 ? "禁止刷新" : "每" + mSharedPreferenceUtil.getAutoUpdate() + "小时更新");
-            //需要再调用一次才能生效设置 不会重复的执行onCreate()， 而是会调用onStart()和onStartCommand()。
+            mSharedPreferenceUtil.putInt(CHANGE_UPDATE_TIME,mSeekBar.getProgress()+1);
+            mChangeUpdateTime.setSummary(
+                    "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME,3) + "小时更新");
+            getActivity().stopService(new Intent(getActivity(), AutoUpdateService.class));
             getActivity().startService(new Intent(getActivity(), AutoUpdateService.class));
             alertDialog.dismiss();
         });
     }
 
-    @Override
-    public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference == mAnimationOnOff) {
-            SharedPreferenceUtil.getInstance().setMainAnim((Boolean) newValue);
-        } else if (preference == mNotificationType) {
-            SharedPreferenceUtil.getInstance().setNotificationModel(
-                    (boolean) newValue ? Notification.FLAG_ONGOING_EVENT : Notification.FLAG_AUTO_CANCEL);
-        }
-
-        return true;
-    }
 }
