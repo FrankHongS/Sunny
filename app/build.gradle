@@ -58,6 +58,10 @@ dependencies {
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+
+    def work_version = "1.0.0-beta05"
+    implementation "android.arch.work:work-runtime:$work_version"
+
     // Rx
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'

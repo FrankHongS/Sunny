@@ -19,11 +19,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.hon.sunny.R;
 import com.hon.sunny.common.Constants;
 import com.hon.sunny.city.SearchCityActivity;
+import com.hon.sunny.common.MyLogger;
 import com.hon.sunny.common.util.CircularAnimUtil;
 import com.hon.sunny.common.util.RxDrawer;
 import com.hon.sunny.common.util.RxUtils;
@@ -44,8 +47,12 @@ import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
 import com.hon.sunny.component.rxbus.event.MultiUpdate;
 import com.hon.sunny.main.multicity.MultiCityFragment;
 import com.hon.sunny.service.AutoUpdateService;
+import com.hon.sunny.service.AutoUpdateWorker;
 import com.hon.sunny.setting.SettingActivity;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
+    private WorkRequest mWorkRequest=null;
     private CompositeSubscription mCompositeSubscription=new CompositeSubscription();
 
     @Override
@@ -83,20 +91,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initView();
         Util.initIcons(false);
         createNotificationChannel();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
 
         if(SharedPreferenceUtil.getInstance().getBoolean(Constants.AUTO_UPDATE)){
-            startService(new Intent(this, AutoUpdateService.class));
+//            stopService(new Intent(this, AutoUpdateService.class));
+//            startService(new Intent(this, AutoUpdateService.class));
+            mWorkRequest=new OneTimeWorkRequest
+                    .Builder(AutoUpdateWorker.class)
+                    .build();
+
+            WorkManager.getInstance().getWorkInfoByIdLiveData(mWorkRequest.getId())
+                    .observe(this, workInfo -> {
+                                if (workInfo != null) {
+                                    MyLogger.d("workInfo: " + workInfo.getState().ordinal());
+                                    if (workInfo.getState().isFinished()) {
+                                        MyLogger.d( "auto update :)");
+                                        Toast.makeText(this, "auto update", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            }
+                    );
+
+            WorkManager.getInstance().enqueue(mWorkRequest);
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        WorkManager.getInstance().cancelWorkById(mWorkRequest.getId());
+
         unregisterRxBus();
     }
 

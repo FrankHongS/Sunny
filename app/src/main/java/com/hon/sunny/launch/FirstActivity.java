@@ -54,7 +54,10 @@ public class FirstActivity extends Activity {
         addSvgView(getLayoutInflater(),mContainer);
 
         mSkip.setOnClickListener(
-                v->finishSelf()
+                v->{
+                    finishSelf();
+                    mCountDownTimer.cancel();
+                }
         );
     }
 
