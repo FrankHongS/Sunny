@@ -7,7 +7,7 @@ import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.data.city.db.CityDBUtil;
-import com.hon.sunny.city.view.expandrecycleview.ParentBean;
+import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 

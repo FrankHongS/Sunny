@@ -1,7 +1,7 @@
 package com.hon.sunny.service;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.hon.sunny.common.Constants;
 import com.hon.sunny.common.MyLogger;
@@ -9,7 +9,6 @@ import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.data.main.bean.Weather;
-import com.hon.sunny.main.MainActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -67,7 +66,7 @@ public class AutoUpdateWorker extends Worker {
 
                             @Override
                             public void onNext(Weather weather) {
-                                Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER, weather, mContext, MainActivity.class);
+//                                Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER, weather, mContext, MainActivity.class);
                             }
                         }
                 );

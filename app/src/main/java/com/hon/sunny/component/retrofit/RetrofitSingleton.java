@@ -7,7 +7,7 @@ import com.hon.sunny.common.PLog;
 import com.hon.sunny.common.util.RxUtils;
 import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
-import com.hon.sunny.about.domain.VersionAPI;
+import com.hon.sunny.ui.about.domain.VersionAPI;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.data.main.bean.CityORM;
 import com.hon.sunny.data.main.bean.Weather;

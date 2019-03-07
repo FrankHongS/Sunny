@@ -3,6 +3,7 @@ package com.hon.sunny.common.util;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,7 +19,7 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
+import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -28,16 +29,18 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
+import com.hon.sunny.common.MyLogger;
 import com.hon.sunny.common.PLog;
 import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.main.MainActivity;
-import com.hon.sunny.about.domain.VersionBean;
+import com.hon.sunny.ui.main.MainActivity;
+import com.hon.sunny.ui.about.domain.VersionBean;
 import com.hon.sunny.data.main.bean.CityORM;
 import com.hon.sunny.data.main.bean.Weather;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -358,5 +361,23 @@ public class Util {
             sharedPreferenceUtil.putInt("雾", R.mipmap.type_two_fog);
             sharedPreferenceUtil.putInt("雨夹雪", R.mipmap.type_two_snowrain);
         }
+    }
+
+    public static boolean isServiceRunning(Context context, String ServiceName) {
+        if (TextUtils.isEmpty(ServiceName)) {
+            return false;
+        }
+        ActivityManager myManager = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+
+        List<ActivityManager.RunningServiceInfo> runningService = myManager
+                .getRunningServices(200);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName()
+                    .equals(ServiceName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

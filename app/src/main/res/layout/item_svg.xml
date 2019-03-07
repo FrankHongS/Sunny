@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
-    <com.hon.sunny.launch.SvgView
+    <com.hon.sunny.ui.launch.SvgView
         android:id="@+id/svg"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,6 +12,6 @@
         r:fadeFactor="10.0"
         r:phase="1.0"
         r:strokeColor="#ffffffff"
-        r:strokeWidth="2.0">
-    </com.hon.sunny.launch.SvgView>
+        r:svgStrokeWidth="2.0">
+    </com.hon.sunny.ui.launch.SvgView>
 </merge>

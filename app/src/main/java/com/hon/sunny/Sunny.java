@@ -2,8 +2,8 @@ package com.hon.sunny;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.res.Resources;
-import android.support.v7.app.AppCompatDelegate;
+
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.hon.sunny.common.CrashHandler;
 

@@ -1,7 +1,7 @@
 package com.hon.sunny.common.util;
 
 import android.content.res.Resources;
-import android.support.annotation.DimenRes;
+import androidx.annotation.DimenRes;
 
 import com.hon.sunny.Sunny;
 

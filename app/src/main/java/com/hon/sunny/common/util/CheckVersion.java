@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
+import androidx.appcompat.app.AlertDialog;
 
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.about.domain.VersionAPI;
-import com.hon.sunny.about.domain.VersionBean;
+import com.hon.sunny.ui.about.domain.VersionAPI;
+import com.hon.sunny.ui.about.domain.VersionBean;
 import com.pgyersdk.update.PgyUpdateManager;
 import com.pgyersdk.update.UpdateManagerListener;
 

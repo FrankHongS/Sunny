@@ -1,7 +1,7 @@
 package com.hon.sunny.common.util;
 
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.View;
 
 import rx.Observable;

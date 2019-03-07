@@ -4,7 +4,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
-import com.hon.sunny.city.view.expandrecycleview.ParentBean;
+import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 

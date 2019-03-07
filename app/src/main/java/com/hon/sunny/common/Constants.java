@@ -28,6 +28,9 @@ public class Constants {
     // if init icons
     public static final String INIT_ICONS="init_icons";
 
+    // init service
+    public static final String INIT_SERVICE="init service";
+
     // setting desc
     public static final String CHANGE_ICONS = "change_icons";
     public static final String CLEAR_CACHE = "clear_cache";
