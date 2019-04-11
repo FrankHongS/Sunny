@@ -30,7 +30,7 @@ import com.hon.sunny.component.rxbus.RxBus;
 import com.hon.sunny.ui.main.adapter.WeatherAdapter;
 import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
-import com.tbruyelle.rxpermissions.RxPermissions;
+import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
 import java.util.ArrayList;
@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -66,6 +67,8 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
 
+    private Disposable mPermissionsDisposable;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +87,11 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RxPermissions.getInstance(getActivity()).request(Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        final RxPermissions rxPermissions=new RxPermissions(this);
+
+        mPermissionsDisposable=rxPermissions
+                .request(Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(granted -> {
                     if (granted) {
                         location();
@@ -92,6 +99,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
                         loadWeather();
                     }
                 });
+
         CheckVersion.checkVersionByPgy(getActivity());
     }
 
@@ -99,6 +107,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+        mPermissionsDisposable.dispose();
     }
 
     @Override

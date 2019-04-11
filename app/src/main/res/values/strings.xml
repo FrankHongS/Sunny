@@ -60,4 +60,9 @@
 
     <string name="skip">跳过</string>
 
+    <string name="weather_suggesetion_clothes">穿衣指数</string>
+    <string name="weather_suggesetion_sports">运动指数</string>
+    <string name="weather_suggesetion_illness">感冒指数</string>
+    <string name="weather_suggesetion_travel">旅游指数</string>
+
 </resources>

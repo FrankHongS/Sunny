@@ -32,7 +32,6 @@ import com.hon.sunny.component.rxbus.RxBus;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
 import com.hon.sunny.service.AutoUpdateService;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.File;
 

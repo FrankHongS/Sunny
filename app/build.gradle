@@ -10,11 +10,10 @@ android {
         targetSdkVersion 28
         versionCode 7
         versionName "1.1.2@alpha"
-        resConfigs "zh"
         javaCompileOptions{
             annotationProcessorOptions{
                 includeCompileClasspath true
-            }// ButterKnife注解的原因
+            }// for ButterKnife
         }
     }
 
@@ -51,25 +50,23 @@ android {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     // 默认 UI
     implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
     implementation "com.google.android.material:material:$rootProject.supportLibraryVersion"
     implementation "androidx.cardview:cardview:$rootProject.supportLibraryVersion"
     implementation "androidx.legacy:legacy-support-v4:$rootProject.supportLibraryVersion"
 
-    def work_version = "1.0.0-beta05"
-    implementation "android.arch.work:work-runtime:$work_version"
-
     // Rx
-    compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
-    compile 'com.trello:rxlifecycle:0.7.0'
+    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
+    implementation "com.github.tbruyelle:rxpermissions:$rootProject.rxPermissionsVersion"
+    implementation 'com.trello:rxlifecycle:0.7.0'
     // If you want to bind to Android-specific lifecycles
-    compile 'com.trello:rxlifecycle-android:0.7.0'
+    implementation 'com.trello:rxlifecycle-android:0.7.0'
     // If you want pre-written Activities and Fragments you can subclass as providers
-    compile 'com.trello:rxlifecycle-components:0.7.0'
+    implementation 'com.trello:rxlifecycle-components:0.7.0'
     // network
     implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
@@ -82,17 +79,16 @@ dependencies {
 
     implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     //amap sdk
-    compile 'com.amap.api:location:latest.integration'
+    implementation 'com.amap.api:location:latest.integration'
     //search view
-    compile 'com.hon.searchview:persistentsearchview:0.2.2'
+    implementation 'com.hon.searchview:persistentsearchview:0.2.2'
     //practical recycle view
-    compile 'zlc.season:practicalrecyclerview:1.1.5'
+    implementation 'zlc.season:practicalrecyclerview:1.1.5'
     //popup window
-    compile 'com.labo.kaji:relativepopupwindow:0.3.1'
+    implementation 'com.labo.kaji:relativepopupwindow:0.3.1'
     //dialog & diolog effect
-    compile 'com.nineoldandroids:library:2.4.0'
-    compile 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
     //check version
-    testCompile 'junit:junit:4.12'
-    compile files('libs/pgyer_sdk_2.7.6.jar')
+    testImplementation 'junit:junit:4.12'
 }

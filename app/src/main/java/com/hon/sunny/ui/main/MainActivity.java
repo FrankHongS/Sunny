@@ -6,21 +6,12 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import android.view.MenuItem;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.viewpager.widget.ViewPager;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.view.MenuItem;
-
 import com.hon.sunny.R;
 import com.hon.sunny.common.Constants;
 import com.hon.sunny.common.util.CircularAnimUtil;
@@ -30,22 +21,29 @@ import com.hon.sunny.common.util.SimpleSubscriber;
 import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.rxbus.RxBus;
+import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
+import com.hon.sunny.component.rxbus.event.MultiUpdate;
 import com.hon.sunny.data.main.multicity.MultiCityRemoteDataSource;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.weather.WeatherRemoteDataSource;
 import com.hon.sunny.data.main.weather.WeatherRepository;
 import com.hon.sunny.ui.city.SearchCityActivity;
+import com.hon.sunny.ui.main.adapter.HomePagerAdapter;
+import com.hon.sunny.ui.main.multicity.MultiCityFragment;
 import com.hon.sunny.ui.main.multicity.MultiCityPresenter;
 import com.hon.sunny.ui.main.weather.WeatherFragment;
 import com.hon.sunny.ui.main.weather.WeatherPresent;
-import com.hon.sunny.ui.main.adapter.HomePagerAdapter;
-import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
-import com.hon.sunny.component.rxbus.event.MultiUpdate;
-import com.hon.sunny.ui.main.multicity.MultiCityFragment;
 import com.hon.sunny.ui.setting.SettingActivity;
 
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Subscription;
@@ -72,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
-//    private WorkRequest mWorkRequest=null;
     private CompositeSubscription mCompositeSubscription=new CompositeSubscription();
 
     @Override
@@ -85,34 +82,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Util.initIcons(false);
         createNotificationChannel();
 
-//        if(SharedPreferenceUtil.getInstance().getBoolean(Constants.AUTO_UPDATE)){
-//            stopService(new Intent(this, AutoUpdateService.class));
-//            startService(new Intent(this, AutoUpdateService.class));
-//            mWorkRequest=new OneTimeWorkRequest
-//                    .Builder(AutoUpdateWorker.class)
-//                    .build();
-//
-//            WorkManager.getInstance().getWorkInfoByIdLiveData(mWorkRequest.getId())
-//                    .observe(this, workInfo -> {
-//                                if (workInfo != null) {
-//                                    MyLogger.d("workInfo: " + workInfo.getState().ordinal());
-//                                    if (workInfo.getState().isFinished()) {
-//                                        MyLogger.d( "auto update :)");
-//                                        Toast.makeText(this, "auto update", Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            }
-//                    );
-//
-//            WorkManager.getInstance().enqueue(mWorkRequest);
-//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-//        WorkManager.getInstance().cancelWorkById(mWorkRequest.getId());
 
         unregisterRxBus();
     }

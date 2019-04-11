@@ -1,6 +1,9 @@
 package com.hon.sunny.ui.main.adapter;
 
 import android.content.Context;
+
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -19,6 +22,9 @@ import com.hon.sunny.component.AnimRecyclerViewAdapter;
 import com.hon.sunny.component.ImageLoader;
 import com.hon.sunny.data.main.bean.Weather;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import butterknife.Bind;
 
 /**
@@ -26,7 +32,9 @@ import butterknife.Bind;
  * E-mail:frank_hon@foxmail.com
  */
 
+@SuppressWarnings("all")
 public class WeatherAdapter extends AnimRecyclerViewAdapter {
+
     private static String TAG = WeatherAdapter.class.getSimpleName();
 
     private Context mContext;
@@ -36,10 +44,6 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
     private static final int TYPE_THREE = 2;
     private static final int TYPE_FOUR = 3;
 
-//    @IntDef({TYPE_ONE,TYPE_TWO,TYPE_THREE,TYPE_FOUR})
-//    @Retention(RetentionPolicy.SOURCE)//?? todo
-//    private @interface WeatherType{}
-
     private Weather mWeatherData;
 
     public WeatherAdapter(Weather weatherData) {
@@ -48,23 +52,12 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (position == WeatherAdapter.TYPE_ONE) {
-            return WeatherAdapter.TYPE_ONE;
-        }
-        if (position == WeatherAdapter.TYPE_TWO) {
-            return WeatherAdapter.TYPE_TWO;
-        }
-        if (position == WeatherAdapter.TYPE_THREE) {
-            return WeatherAdapter.TYPE_THREE;
-        }
-        if (position == WeatherAdapter.TYPE_FOUR) {
-            return WeatherAdapter.TYPE_FOUR;
-        }
-        return super.getItemViewType(position);
+        return position;
     }
 
+    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         switch (viewType) {
             case TYPE_ONE:
@@ -84,7 +77,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         int itemType = getItemViewType(position);
         switch (itemType) {
             case TYPE_ONE:
