@@ -88,7 +88,7 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
         }
 
         @Override
-        protected void bind(Weather weather) {
+        public void bind(Weather weather) {
 
             String weatherDesc;
             int code;

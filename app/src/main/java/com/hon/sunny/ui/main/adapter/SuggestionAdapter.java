@@ -1,46 +1,73 @@
 package com.hon.sunny.ui.main.adapter;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.data.main.bean.SuggestionEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import butterknife.Bind;
 
 /**
  * Created by Frank_Hon on 4/11/2019.
  * E-mail: v-shhong@microsoft.com
  */
-public class SuggestionAdapter extends RecyclerView.Adapter {
+@SuppressWarnings("all")
+public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.SuggestionSubItemViewHolder> {
+
+    private List<SuggestionEntity> mSuggestionList;
+
+    public SuggestionAdapter(@NonNull List<SuggestionEntity> suggestionList){
+        this.mSuggestionList=suggestionList;
+    }
+
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SuggestionAdapter.SuggestionSubItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
+        View view= LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_suggestion_subitem,parent,false);
 
-
-        return null;
+        return new SuggestionSubItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull SuggestionAdapter.SuggestionSubItemViewHolder holder, int position) {
+        holder.bind(mSuggestionList.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return mSuggestionList.size();
     }
 
-    static class SuggestionViewHolder extends BaseViewHolder<String> {
+    static class SuggestionSubItemViewHolder extends BaseViewHolder<SuggestionEntity> {
 
-        public SuggestionViewHolder(@NonNull View itemView) {
+        @Bind(R.id.iv_suggestion_icon)
+        ImageView suggestionIcon;
+        @Bind(R.id.tv_suggestion_title)
+        TextView suggestionTitle;
+        @Bind(R.id.tv_suggestion_desc)
+        TextView suggestionDesc;
+
+        SuggestionSubItemViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
         @Override
-        protected void bind(String o) {
-
+        public void bind(SuggestionEntity entity) {
+            suggestionIcon.setImageResource(entity.getImageId());
+            suggestionTitle.setText(entity.getTitle());
+            suggestionDesc.setText(entity.getDesc());
         }
     }
 }

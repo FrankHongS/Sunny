@@ -2,9 +2,9 @@ package com.hon.sunny.ui.main.adapter;
 
 import android.content.Context;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,10 +20,13 @@ import com.hon.sunny.common.util.SharedPreferenceUtil;
 import com.hon.sunny.common.util.Util;
 import com.hon.sunny.component.AnimRecyclerViewAdapter;
 import com.hon.sunny.component.ImageLoader;
+import com.hon.sunny.data.main.bean.HourInfoEntity;
+import com.hon.sunny.data.main.bean.SuggestionEntity;
 import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.ui.main.viewholder.HoursWeatherViewHolder;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -33,7 +36,7 @@ import butterknife.Bind;
  */
 
 @SuppressWarnings("all")
-public class WeatherAdapter extends AnimRecyclerViewAdapter {
+public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
     private static String TAG = WeatherAdapter.class.getSimpleName();
 
@@ -57,7 +60,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         switch (viewType) {
             case TYPE_ONE:
@@ -65,7 +68,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
                         LayoutInflater.from(mContext).inflate(R.layout.item_temperature, parent, false));
             case TYPE_TWO:
                 return new HoursWeatherViewHolder(
-                        LayoutInflater.from(mContext).inflate(R.layout.item_hour_info, parent, false));
+                        LayoutInflater.from(mContext).inflate(R.layout.item_hour_info_01, parent, false));
             case TYPE_THREE:
                 return new SuggestionViewHolder(
                         LayoutInflater.from(mContext).inflate(R.layout.item_suggestion, parent, false));
@@ -77,24 +80,8 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        int itemType = getItemViewType(position);
-        switch (itemType) {
-            case TYPE_ONE:
-                ((NowWeatherViewHolder) holder).bind(mWeatherData);
-                break;
-            case TYPE_TWO:
-                ((HoursWeatherViewHolder) holder).bind(mWeatherData);
-                break;
-            case TYPE_THREE:
-                ((SuggestionViewHolder) holder).bind(mWeatherData);
-                break;
-            case TYPE_FOUR:
-                ((ForecastViewHolder) holder).bind(mWeatherData);
-                break;
-            default:
-                break;
-        }
+    public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+        holder.bind(mWeatherData);
         if (SharedPreferenceUtil.getInstance().getMainAnim()) {
             showItemAnim(holder.itemView, position);
         }
@@ -129,7 +116,8 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
             super(itemView);
         }
 
-        protected void bind(Weather weather) {
+        @Override
+        public void bind(Weather weather) {
             try {
                 tempFlu.setText(String.format("%s℃", weather.now.tmp));
                 tempMax.setText(
@@ -149,97 +137,63 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
     }
 
     /**
-     * 当日小时预告
-     */
-    private class HoursWeatherViewHolder extends BaseViewHolder<Weather> {
-        private LinearLayout itemHourInfoLayout;
-        private TextView[] mClock = new TextView[mWeatherData.hourlyForecast.size()];
-        private TextView[] mTemp = new TextView[mWeatherData.hourlyForecast.size()];
-        private TextView[] mHumidity = new TextView[mWeatherData.hourlyForecast.size()];
-        private TextView[] mWind = new TextView[mWeatherData.hourlyForecast.size()];
-
-
-        HoursWeatherViewHolder(View itemView) {
-            super(itemView);
-
-            itemHourInfoLayout = (LinearLayout) itemView.findViewById(R.id.item_hour_info_linearlayout);
-
-            for (int i = 0; i < mWeatherData.hourlyForecast.size(); i++) {
-                View view = View.inflate(mContext, R.layout.item_hour_info_line, null);
-                mClock[i] = (TextView) view.findViewById(R.id.one_clock);
-                mTemp[i] = (TextView) view.findViewById(R.id.one_temp);
-                mHumidity[i] = (TextView) view.findViewById(R.id.one_humidity);
-                mWind[i] = (TextView) view.findViewById(R.id.one_wind);
-                itemHourInfoLayout.addView(view);
-            }
-        }
-
-        protected void bind(Weather weather) {
-
-            try {
-                for (int i = 0; i < weather.hourlyForecast.size(); i++) {
-
-                    //s.subString(s.length-3,s.length);
-                    //第一个参数是开始截取的位置，第二个是结束位置。
-                    String mDate = weather.hourlyForecast.get(i).date;
-                    mClock[i].setText(
-                            mDate.substring(mDate.length() - 5, mDate.length()));
-                    mTemp[i].setText(
-                            String.format("%s℃", weather.hourlyForecast.get(i).tmp));
-                    mHumidity[i].setText(
-                            String.format("%s%%", weather.hourlyForecast.get(i).hum)
-                    );
-                    mWind[i].setText(
-                            String.format("%sKm/h", weather.hourlyForecast.get(i).spd)
-                    );
-                }
-            } catch (Exception e) {
-                PLog.e(e.toString());
-            }
-        }
-    }
-
-    /**
-     * 当日建议
+     * suggestions
      */
     class SuggestionViewHolder extends BaseViewHolder<Weather> {
-        @Bind(R.id.cloth_brief)
-        TextView clothBrief;
-        @Bind(R.id.cloth_txt)
-        TextView clothTxt;
-        @Bind(R.id.sport_brief)
-        TextView sportBrief;
-        @Bind(R.id.sport_txt)
-        TextView sportTxt;
-        @Bind(R.id.travel_brief)
-        TextView travelBrief;
-        @Bind(R.id.travel_txt)
-        TextView travelTxt;
-        @Bind(R.id.flu_brief)
-        TextView fluBrief;
-        @Bind(R.id.flu_txt)
-        TextView fluTxt;
+
+        @Bind(R.id.rv_suggestions)
+        RecyclerView suggestions;
 
         SuggestionViewHolder(View itemView) {
             super(itemView);
         }
 
-        protected void bind(Weather weather) {
-            try {
-                clothBrief.setText(String.format("穿衣指数---%s", weather.lifestyle.get(0).brf));
-                clothTxt.setText(weather.lifestyle.get(0).txt);
+        @Override
+        public void bind(Weather weather) {
 
-                sportBrief.setText(String.format("运动指数---%s", weather.lifestyle.get(1).brf));
-                sportTxt.setText(weather.lifestyle.get(1).txt);
+            List<SuggestionEntity> suggestionList=new ArrayList<>();
 
-                travelBrief.setText(String.format("旅游指数---%s", weather.lifestyle.get(2).brf));
-                travelTxt.setText(weather.lifestyle.get(2).txt);
+            if(weather.lifestyle!=null){
+                for(int i=0;i<weather.lifestyle.size();i++){
+                    Weather.LifestyleEntity lifestyleEntity=weather.lifestyle.get(i);
+                    SuggestionEntity suggestionEntity=null;
+                    switch (i){
+                        case 0:
+                            suggestionEntity=new SuggestionEntity(R.drawable.icon_cloth,
+                                    String.format(itemView.getResources().getString(R.string.weather_suggesetion_clothes),
+                                            lifestyleEntity.brf),
+                                    lifestyleEntity.txt);
+                            break;
+                        case 1:
+                            suggestionEntity=new SuggestionEntity(R.drawable.icon_sport,
+                                    String.format(itemView.getResources().getString(R.string.weather_suggesetion_sports),
+                                            lifestyleEntity.brf),
+                                    lifestyleEntity.txt);
+                            break;
+                        case 2:
+                            suggestionEntity=new SuggestionEntity(R.drawable.icon_flu,
+                                    String.format(itemView.getResources().getString(R.string.weather_suggesetion_illness),
+                                            lifestyleEntity.brf),
+                                    lifestyleEntity.txt);
+                            break;
+                        case 3:
+                            suggestionEntity=new SuggestionEntity(R.drawable.icon_travel,
+                                    String.format(itemView.getResources().getString(R.string.weather_suggesetion_travel),
+                                            lifestyleEntity.brf),
+                                    lifestyleEntity.txt);
+                            break;
+                        default:
+                            break;
+                    }
 
-                fluBrief.setText(String.format("感冒指数---%s", weather.lifestyle.get(3).brf));
-                fluTxt.setText(weather.lifestyle.get(3).txt);
-            } catch (Exception e) {
-                PLog.e(e.toString());
+                    if(suggestionEntity!=null)
+                        suggestionList.add(suggestionEntity);
+                }
+
+                suggestions.setAdapter(new SuggestionAdapter(suggestionList));
+                suggestions.setLayoutManager(new LinearLayoutManager(itemView.getContext()));
             }
+
         }
     }
 
@@ -266,7 +220,8 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter {
             }
         }
 
-        protected void bind(Weather weather) {
+        @Override
+        public void bind(Weather weather) {
             try {
                 //今日 明日
                 forecastDate[0].setText("今日");

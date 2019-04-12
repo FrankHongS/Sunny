@@ -6,17 +6,17 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tv_suggestion_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="13dp"
-        tools:text="@string/weather_suggesetion_clothes"
-        app:layout_constraintStart_toEndOf="@+id/imageView3"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toEndOf="@+id/iv_suggestion_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/weather_suggesetion_clothes" />
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/iv_suggestion_icon"
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginStart="32dp"
@@ -28,14 +28,17 @@
         android:src="@drawable/icon_cloth" />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_suggestion_desc"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="13dp"
-        tools:text="TextView"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="12dp"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_suggestion_title"
+        app:layout_constraintTop_toBottomOf="@+id/tv_suggestion_title"
+        tools:text="TextView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
