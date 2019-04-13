@@ -1,6 +1,6 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
-import com.hon.sunny.common.PLog;
+import com.hon.sunny.utils.PLog;
 
 import rx.Subscriber;
 

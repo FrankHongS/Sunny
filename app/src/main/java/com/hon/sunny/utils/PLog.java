@@ -1,10 +1,9 @@
-package com.hon.sunny.common;
+package com.hon.sunny.utils;
 
 import android.util.Log;
 
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.util.Time;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -1,10 +1,6 @@
-package com.hon.sunny.common;
+package com.hon.sunny.utils;
 
 import android.content.Context;
-
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.Util;
-import com.hon.sunny.component.OrmLite;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

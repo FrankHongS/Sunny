@@ -1,10 +1,10 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import android.text.format.Formatter;
 import android.util.Log;
 
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.PLog;
+import com.hon.sunny.utils.PLog;
 
 import java.io.File;
 import java.io.FileInputStream;

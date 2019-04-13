@@ -13,13 +13,13 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.hon.sunny.R;
-import com.hon.sunny.common.Constants;
-import com.hon.sunny.common.util.CircularAnimUtil;
-import com.hon.sunny.common.util.RxDrawer;
-import com.hon.sunny.common.util.RxUtils;
-import com.hon.sunny.common.util.SimpleSubscriber;
-import com.hon.sunny.common.util.ToastUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.CircularAnimUtil;
+import com.hon.sunny.utils.RxDrawer;
+import com.hon.sunny.utils.RxUtils;
+import com.hon.sunny.utils.SimpleSubscriber;
+import com.hon.sunny.utils.ToastUtil;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.component.rxbus.RxBus;
 import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
 import com.hon.sunny.component.rxbus.event.MultiUpdate;
@@ -255,6 +255,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             Util.createNotificationChannel(Constants.CHANNEL_ID_WEATHER,Constants.CHANNEL_NAME_WEATHER,
                     NotificationManager.IMPORTANCE_LOW);
+        }
+    }
+
+    public void displayFabMaterial(boolean isScrolledDown){
+        if (isScrolledDown&&!mFab.isShown()){
+            mFab.show();
+        }else if(!isScrolledDown&&mFab.isShown()){
+            mFab.hide();
         }
     }
 }

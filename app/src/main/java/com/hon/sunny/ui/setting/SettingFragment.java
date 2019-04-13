@@ -1,10 +1,8 @@
 package com.hon.sunny.ui.setting;
 
-import android.Manifest;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
@@ -21,12 +19,12 @@ import android.widget.TextView;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.util.FileSizeUtil;
-import com.hon.sunny.common.util.FileUtil;
-import com.hon.sunny.common.util.RxUtils;
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.SimpleSubscriber;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.FileSizeUtil;
+import com.hon.sunny.utils.FileUtil;
+import com.hon.sunny.utils.RxUtils;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.SimpleSubscriber;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.component.ImageLoader;
 import com.hon.sunny.component.rxbus.RxBus;
 import com.hon.sunny.ui.main.MainActivity;
@@ -38,13 +36,13 @@ import java.io.File;
 import rx.Observable;
 import rx.functions.Func1;
 
-import static com.hon.sunny.common.Constants.ANIM_START;
-import static com.hon.sunny.common.Constants.AUTO_UPDATE;
-import static com.hon.sunny.common.Constants.CHANGE_ICONS;
-import static com.hon.sunny.common.Constants.CHANGE_UPDATE_TIME;
-import static com.hon.sunny.common.Constants.CLEAR_CACHE;
-import static com.hon.sunny.common.Constants.INIT_SERVICE;
-import static com.hon.sunny.common.Constants.NOTIFICATION_MODEL;
+import static com.hon.sunny.utils.Constants.ANIM_START;
+import static com.hon.sunny.utils.Constants.AUTO_UPDATE;
+import static com.hon.sunny.utils.Constants.CHANGE_ICONS;
+import static com.hon.sunny.utils.Constants.CHANGE_UPDATE_TIME;
+import static com.hon.sunny.utils.Constants.CLEAR_CACHE;
+import static com.hon.sunny.utils.Constants.INIT_SERVICE;
+import static com.hon.sunny.utils.Constants.NOTIFICATION_MODEL;
 
 /**
  * Created by Frank on 2017/8/10.

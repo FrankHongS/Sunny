@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseActivity;
-import com.hon.sunny.common.util.CheckVersion;
-import com.hon.sunny.common.util.StatusBarUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.CheckVersion;
+import com.hon.sunny.utils.StatusBarUtil;
+import com.hon.sunny.utils.Util;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

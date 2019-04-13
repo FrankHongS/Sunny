@@ -1,4 +1,4 @@
-package com.hon.sunny.common;
+package com.hon.sunny.utils;
 
 import android.util.Log;
 

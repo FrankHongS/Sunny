@@ -1,4 +1,4 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -29,24 +29,24 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.MyLogger;
-import com.hon.sunny.common.PLog;
+import com.hon.sunny.utils.PLog;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.about.domain.VersionBean;
 import com.hon.sunny.data.main.bean.CityORM;
 import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.ToastUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static com.hon.sunny.common.Constants.CHANGE_ICONS;
-import static com.hon.sunny.common.Constants.CITY_COUNT;
-import static com.hon.sunny.common.Constants.INIT_ICONS;
+import static com.hon.sunny.utils.Constants.CHANGE_ICONS;
+import static com.hon.sunny.utils.Constants.CITY_COUNT;
+import static com.hon.sunny.utils.Constants.INIT_ICONS;
 
 /**
  * Created by Frank on 2017/8/9.

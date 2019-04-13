@@ -15,10 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hon.sunny.R;
-import com.hon.sunny.common.Constants;
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.SimpleSubscriber;
-import com.hon.sunny.common.util.ToastUtil;
+import com.hon.sunny.ui.common.MaterialScorllListener;
+import com.hon.sunny.ui.main.MainActivity;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.SimpleSubscriber;
+import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.component.rxbus.RxBus;
@@ -106,6 +108,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         mMultiCityAdapter = new MultiCityAdapter(mWeathers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mMultiCityAdapter);
+        mRecyclerView.addOnScrollListener(new MaterialScorllListener((MainActivity) getActivity()));
         mMultiCityAdapter.setOnMultiCityClickListener(new MultiCityAdapter.OnMultiCityClickListener() {
             @Override
             public void onLongClick(String city) {

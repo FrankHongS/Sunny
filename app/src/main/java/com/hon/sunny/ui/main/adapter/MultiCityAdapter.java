@@ -16,9 +16,9 @@ import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.common.Constants;
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.data.main.bean.Weather;
 
 import java.util.List;

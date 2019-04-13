@@ -2,6 +2,8 @@ package com.hon.sunny.ui.main.weather;
 
 import android.Manifest;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.ActionBar;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -20,13 +23,15 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.util.CheckVersion;
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.SimpleSubscriber;
-import com.hon.sunny.common.util.ToastUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.ui.common.MaterialScorllListener;
+import com.hon.sunny.utils.CheckVersion;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.SimpleSubscriber;
+import com.hon.sunny.utils.ToastUtil;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.component.rxbus.RxBus;
+import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.WeatherAdapter;
 import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
@@ -42,14 +47,15 @@ import io.reactivex.disposables.Disposable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-import static com.hon.sunny.common.Constants.CHANGE_UPDATE_TIME;
-import static com.hon.sunny.common.Constants.ONE_HOUR;
+import static com.hon.sunny.utils.Constants.CHANGE_UPDATE_TIME;
+import static com.hon.sunny.utils.Constants.ONE_HOUR;
 
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
  */
 
+@SuppressWarnings("all")
 public class WeatherFragment extends RxFragment implements WeatherContract.View,AMapLocationListener{
 
     @Bind(R.id.recyclerview)
@@ -77,7 +83,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.content_main,container,false);
         ButterKnife.bind(this,view);
         initView();
@@ -137,6 +143,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mWeatherAdapter = new WeatherAdapter(mWeather);
         mRecyclerView.setAdapter(mWeatherAdapter);
+        mRecyclerView.addOnScrollListener(new MaterialScorllListener((MainActivity) getActivity()));
         safeSetTitle(mWeather.city);
     }
 

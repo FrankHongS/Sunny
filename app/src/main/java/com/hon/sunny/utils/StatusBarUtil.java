@@ -1,4 +1,4 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+
+import com.hon.sunny.utils.EnvUtil;
+import com.hon.sunny.utils.SdkUtil;
 
 /**
  * Created by Frank on 2017/8/10.

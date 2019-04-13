@@ -1,4 +1,4 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import rx.Observable;
 import rx.Scheduler;

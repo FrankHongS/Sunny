@@ -11,10 +11,9 @@ import android.util.Log;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.Constants;
-import com.hon.sunny.common.MyLogger;
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.ui.main.MainActivity;
@@ -24,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
-import rx.functions.Func1;
 import rx.subscriptions.CompositeSubscription;
 
 /**

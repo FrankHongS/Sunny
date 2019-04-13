@@ -2,11 +2,11 @@ package com.hon.sunny.component.retrofit;
 
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.Constants;
-import com.hon.sunny.common.PLog;
-import com.hon.sunny.common.util.RxUtils;
-import com.hon.sunny.common.util.ToastUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.PLog;
+import com.hon.sunny.utils.RxUtils;
+import com.hon.sunny.utils.ToastUtil;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.ui.about.domain.VersionAPI;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.data.main.bean.CityORM;

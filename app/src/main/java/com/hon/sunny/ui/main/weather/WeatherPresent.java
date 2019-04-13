@@ -2,7 +2,7 @@ package com.hon.sunny.ui.main.weather;
 
 import androidx.annotation.NonNull;
 
-import com.hon.sunny.common.util.SharedPreferenceUtil;
+import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.data.main.weather.WeatherRepository;
 import com.hon.sunny.data.main.bean.Weather;
 import com.trello.rxlifecycle.components.support.RxFragment;

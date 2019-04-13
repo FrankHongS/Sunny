@@ -1,4 +1,4 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;

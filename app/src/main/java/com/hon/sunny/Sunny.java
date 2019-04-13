@@ -5,7 +5,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
-import com.hon.sunny.common.CrashHandler;
+import com.hon.sunny.utils.CrashHandler;
 
 /**
  * Created by Frank on 2017/10/27.

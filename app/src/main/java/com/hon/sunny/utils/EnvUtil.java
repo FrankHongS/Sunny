@@ -1,9 +1,10 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import android.content.Context;
 import android.util.TypedValue;
 
 import com.hon.sunny.Sunny;
+import com.hon.sunny.utils.DensityUtil;
 
 /**
  * Created by Frank on 2017/8/10.

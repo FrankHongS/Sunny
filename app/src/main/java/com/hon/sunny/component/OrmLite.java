@@ -2,7 +2,7 @@ package com.hon.sunny.component;
 
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.Constants;
+import com.hon.sunny.utils.Constants;
 import com.litesuits.orm.LiteOrm;
 
 /**

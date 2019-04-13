@@ -1,6 +1,6 @@
 package com.hon.sunny.ui.main.multicity;
 
-import com.hon.sunny.common.util.RxUtils;
+import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.bean.Weather;
 import com.trello.rxlifecycle.components.support.RxFragment;

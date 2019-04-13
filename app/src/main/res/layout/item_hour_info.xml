@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cv_hour_info"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/cardview_margin"
-    android:clickable="false"
+    android:clickable="true"
+    android:focusable="true"
     android:foreground="?android:attr/selectableItemBackground"
     card_view:cardCornerRadius="3dp"
     card_view:cardElevation="2dp">
 
-    <LinearLayout
-        android:id="@+id/item_hour_info_linearlayout"
+    <com.hon.sunny.ui.view.SunnyRecyclerView
+        android:id="@+id/rv_hour_info"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
 </androidx.cardview.widget.CardView>

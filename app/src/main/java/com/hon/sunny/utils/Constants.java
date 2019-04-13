@@ -1,4 +1,4 @@
-package com.hon.sunny.common;
+package com.hon.sunny.utils;
 
 /**
  * Created by Frank on 2017/8/9.

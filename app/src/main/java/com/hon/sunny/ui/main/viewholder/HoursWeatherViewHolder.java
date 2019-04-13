@@ -1,15 +1,9 @@
 package com.hon.sunny.ui.main.viewholder;
 
-/**
- * Created by Frank_Hon on 4/12/2019.
- * E-mail: v-shhong@microsoft.com
- */
-
 import android.view.View;
 
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.common.util.ToastUtil;
 import com.hon.sunny.data.main.bean.HourInfoEntity;
 import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.ui.main.adapter.HourInfoAdapter;
@@ -23,7 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.Bind;
 
 /**
- * 当日小时预告
+ * Created by Frank_Hon on 4/12/2019.
+ * E-mail: v-shhong@microsoft.com
+ *
+ *  hour weather info
  */
 public class HoursWeatherViewHolder extends BaseViewHolder<Weather> {
 

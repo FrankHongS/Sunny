@@ -1,4 +1,4 @@
-package com.hon.sunny.common.util;
+package com.hon.sunny.utils;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,12 +9,9 @@ import android.service.notification.StatusBarNotification;
 
 import com.hon.sunny.Sunny;
 
-import static com.hon.sunny.common.Constants.ANIM_START;
-import static com.hon.sunny.common.Constants.AUTO_UPDATE;
-import static com.hon.sunny.common.Constants.CHANGE_ICONS;
-import static com.hon.sunny.common.Constants.CITY_NAME;
-import static com.hon.sunny.common.Constants.HOUR;
-import static com.hon.sunny.common.Constants.NOTIFICATION_MODEL;
+import static com.hon.sunny.utils.Constants.ANIM_START;
+import static com.hon.sunny.utils.Constants.CITY_NAME;
+import static com.hon.sunny.utils.Constants.NOTIFICATION_MODEL;
 
 /**
  * Created by Frank on 2017/8/9.

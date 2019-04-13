@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hon.persistentsearchview.SearchHistoryTable;
 import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.util.RxUtils;
+import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.data.city.db.CityDBUtil;
 import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
 
