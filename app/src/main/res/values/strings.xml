@@ -68,4 +68,6 @@
     <string name="weather_forecast_desc">%s。 %s %s %s km/h。 降水几率 %s%%</string>
     <string name="weather_forecast_temp">%s℃ - %s℃</string>
 
+    <string name="multi_city_empty">你还没有添加城市噢 (´･_･`)</string>
+
 </resources>

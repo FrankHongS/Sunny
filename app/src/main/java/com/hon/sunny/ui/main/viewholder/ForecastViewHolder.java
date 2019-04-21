@@ -1,5 +1,6 @@
 package com.hon.sunny.ui.main.viewholder;
 
+import android.util.Log;
 import android.view.View;
 
 import com.hon.sunny.R;
@@ -51,6 +52,7 @@ public class ForecastViewHolder extends BaseViewHolder<Weather> {
         if(weather.dailyForecast!=null){
             for(Weather.DailyForecastEntity entity:weather.dailyForecast){
                 ForecastEntity forecastEntity=new ForecastEntity(
+                        weather.city,
                         entity.date,
                         entity.max,
                         entity.min,

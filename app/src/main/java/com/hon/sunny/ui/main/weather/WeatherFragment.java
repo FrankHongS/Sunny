@@ -181,6 +181,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mWeather.now = weather.now;
         mWeather.dailyForecast = weather.dailyForecast;
         mWeather.hourlyForecast = weather.hourlyForecast;
+        mWeather.city=weather.city;
 
         safeSetTitle(weather.city);
         mRefreshLayout.setRefreshing(false);

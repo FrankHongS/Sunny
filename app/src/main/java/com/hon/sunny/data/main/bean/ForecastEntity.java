@@ -6,6 +6,7 @@ package com.hon.sunny.data.main.bean;
  */
 public class ForecastEntity {
 
+    private String city;
     private String date;
     private String max;
     private String min;
@@ -15,8 +16,9 @@ public class ForecastEntity {
     private String spd;
     private String pop;
 
-    public ForecastEntity(String date, String max, String min,
+    public ForecastEntity(String city,String date, String max, String min,
                           String txtD, String sc, String dir, String spd, String pop) {
+        this.city=city;
         this.date = date;
         this.max = max;
         this.min = min;
@@ -25,6 +27,10 @@ public class ForecastEntity {
         this.dir = dir;
         this.spd = spd;
         this.pop = pop;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public String getDate() {

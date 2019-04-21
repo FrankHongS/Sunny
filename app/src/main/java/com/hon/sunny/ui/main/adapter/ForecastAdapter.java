@@ -67,16 +67,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    return mForecastList.get(oldItemPosition).getDate()
-                            .equals(forecastList.get(newItemPosition).getDate());
+                    ForecastEntity oldEntity=mForecastList.get(oldItemPosition);
+                    ForecastEntity newEntity=forecastList.get(newItemPosition);
+                    return oldEntity.getDate().equals(newEntity.getDate());
                 }
 
                 @Override
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-                    ForecastEntity newForecast = forecastList.get(newItemPosition);
-                    ForecastEntity oldForecast = mForecastList.get(oldItemPosition);
-                    return oldForecast.getDate()
-                            .equals(newForecast.getDate());
+                    ForecastEntity oldEntity = mForecastList.get(oldItemPosition);
+                    ForecastEntity newEntity = forecastList.get(newItemPosition);
+                    return oldEntity.getDate().equals(newEntity.getDate())&&oldEntity.getCity().equals(newEntity.getCity());
                 }
             });
 
