@@ -40,6 +40,7 @@ import com.hon.sunny.utils.ToastUtil;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -107,7 +108,7 @@ public class Util {
      * @return dayForWeek 判断结果
      * @Exception 发生异常
      */
-    public static String dayForWeek(String pTime) throws Exception {
+    public static String dayForWeek(String pTime) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         c.setTime(format.parse(pTime));

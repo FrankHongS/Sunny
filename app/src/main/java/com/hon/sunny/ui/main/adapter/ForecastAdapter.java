@@ -9,10 +9,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.data.main.bean.ForecastEntity;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
-import com.hon.sunny.data.main.bean.ForecastEntity;
 
+import java.text.ParseException;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -104,7 +105,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             try {
                 forecastDate.setText(
                         Util.dayForWeek(forecast.getDate()));
-            } catch (Exception e) {
+            } catch (ParseException e) {
                 forecastDate.setText(
                         forecast.getDate());
             }

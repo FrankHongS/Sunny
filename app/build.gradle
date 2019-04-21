@@ -19,20 +19,20 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(STORE_FILE)
-            storePassword STORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
+//            storeFile file(STORE_FILE)
+//            storePassword STORE_PASSWORD
+//            keyAlias KEY_ALIAS
+//            keyPassword KEY_PASSWORD
         }
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            shrinkResources false
-            signingConfig signingConfigs.release
-        }
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            shrinkResources false
+//            signingConfig signingConfigs.release
+//        }
 
         debug {
             minifyEnabled false
@@ -89,6 +89,8 @@ dependencies {
     //dialog & diolog effect
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
-    //check version
+
+    implementation "com.hon.simplechartview:simplechartview:$rootProject.simplechartviewVersion"
+
     testImplementation 'junit:junit:4.12'
 }

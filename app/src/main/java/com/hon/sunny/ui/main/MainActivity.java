@@ -136,10 +136,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new WeatherPresent(WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance()),weatherFragment);
         new MultiCityPresenter(MultiCityRepository.getInstance(MultiCityRemoteDataSource.getInstance()),multiCityFragment);
 
-        HomePagerAdapter mHomePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
-        mHomePagerAdapter.addTab(weatherFragment, getResources().getString(R.string.weather_fragment));
-        mHomePagerAdapter.addTab(multiCityFragment, getResources().getString(R.string.multi_city_fragment));
-        mViewPager.setAdapter(mHomePagerAdapter);
+        HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
+        homePagerAdapter.addTab(weatherFragment, getResources().getString(R.string.weather_fragment));
+        homePagerAdapter.addTab(multiCityFragment, getResources().getString(R.string.multi_city_fragment));
+        mViewPager.setAdapter(homePagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override

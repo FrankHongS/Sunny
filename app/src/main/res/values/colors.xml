@@ -30,5 +30,9 @@
     <color name="lineColor">#60d3d3d3</color>
     <color name="defaultTextColor">#6f6f6f</color>
 
+    <color name="chartDotColor">#212121</color>
+    <color name="maxLineColor">#455A64</color>
+    <color name="minLineColor">#9E9E9E</color>
+
 </resources>
 

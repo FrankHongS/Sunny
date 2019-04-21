@@ -15,4 +15,7 @@
 
     <dimen name="margin_child_start">10dp</dimen>
     <dimen name="margin_child_end">10dp</dimen>
+
+    <dimen name="chart_x_distance">70dp</dimen>
+    <dimen name="chart_y_distance">55dp</dimen>
 </resources>

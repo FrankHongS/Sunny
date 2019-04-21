@@ -19,6 +19,7 @@ allprojects {
         jcenter()
 
         maven { url 'https://jitpack.io' }
+
     }
 }
 
@@ -36,4 +37,5 @@ ext{
     gsonVersion='2.4'
     glideVersion='3.7.0'
     butterknifeVersion='7.0.1'
+    simplechartviewVersion='0.0.2'
 }

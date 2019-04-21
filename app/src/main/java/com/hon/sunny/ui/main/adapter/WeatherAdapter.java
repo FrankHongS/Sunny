@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
 import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.component.AnimRecyclerViewAdapter;
@@ -32,12 +33,11 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
     private static String TAG = WeatherAdapter.class.getSimpleName();
 
-    private Context mContext;
-
-    private static final int TYPE_ONE = 0;
-    private static final int TYPE_TWO = 1;
-    private static final int TYPE_THREE = 2;
-    private static final int TYPE_FOUR = 3;
+    private static final int NOW_WEATHER = 0;
+    private static final int HOURS_WEATHER = 1;
+    private static final int SUGGESTION = 2;
+    private static final int FORECAST = 3;
+    private static final int FORECAST_CHART = 4;
 
     private Weather mWeatherData;
 
@@ -48,20 +48,23 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mContext = parent.getContext();
         switch (viewType) {
-            case TYPE_ONE:
+            case NOW_WEATHER:
                 return new NowWeatherViewHolder(
-                        LayoutInflater.from(mContext).inflate(R.layout.item_temperature, parent, false));
-            case TYPE_TWO:
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_temperature, parent, false));
+            case HOURS_WEATHER:
                 return new HoursWeatherViewHolder(
-                        LayoutInflater.from(mContext).inflate(R.layout.item_hour_info, parent, false));
-            case TYPE_THREE:
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hour_info, parent, false));
+            case SUGGESTION:
                 return new SuggestionViewHolder(
-                        LayoutInflater.from(mContext).inflate(R.layout.item_suggestion, parent, false));
-            case TYPE_FOUR:
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_suggestion, parent, false));
+            case FORECAST:
                 return new ForecastViewHolder(
-                        LayoutInflater.from(mContext).inflate(R.layout.item_forecast_01, parent, false));
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forecast, parent, false));
+            case FORECAST_CHART:
+                return new ForecastChartViewHolder(
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forecast_chart, parent, false)
+                );
         }
         return null;
     }
@@ -76,7 +79,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mWeatherData.status != null ? 4 : 0;
+        return mWeatherData.status != null ? 5 : 0;
     }
 
     @Override
@@ -110,21 +113,23 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
         @Override
         public void bind(Weather weather) {
-            try {
+            if (weather.now != null)
                 tempFlu.setText(String.format("%s℃", weather.now.tmp));
+            if (weather.dailyForecast != null) {
+
                 tempMax.setText(
                         String.format("↑ %s ℃", weather.dailyForecast.get(0).max));
                 tempMin.setText(
                         String.format("↓ %s ℃", weather.dailyForecast.get(0).min));
 
+            }
+
 //                tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.aqi.city.pm25)));
 //                tempQuality.setText(Util.safeText("空气质量： ", weather.aqi.city.qlty));服务端不支持
+            if (weather.now != null)
                 ImageLoader.load(itemView.getContext(),
                         SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none),
                         weatherIcon);
-            } catch (Exception e) {
-                PLog.e(TAG, e.toString());
-            }
         }
     }
 
