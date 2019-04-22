@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -23,7 +22,7 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.ui.common.MaterialScorllListener;
+import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.utils.CheckVersion;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.SimpleSubscriber;
@@ -143,7 +142,7 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mWeatherAdapter = new WeatherAdapter(mWeather);
         mRecyclerView.setAdapter(mWeatherAdapter);
-        mRecyclerView.addOnScrollListener(new MaterialScorllListener((MainActivity) getActivity()));
+        mRecyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
         safeSetTitle(mWeather.city);
     }
 

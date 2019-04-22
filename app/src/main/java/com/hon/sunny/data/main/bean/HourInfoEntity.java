@@ -6,16 +6,22 @@ package com.hon.sunny.data.main.bean;
  */
 public class HourInfoEntity {
 
+    private String city;
     private String time;
     private String tmp;
     private String hum;
     private String spd;
 
-    public HourInfoEntity(String time, String tmp, String hum, String spd) {
+    public HourInfoEntity(String city,String time, String tmp, String hum, String spd) {
+        this.city=city;
         this.time = time;
         this.tmp = tmp;
         this.hum = hum;
         this.spd = spd;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     public String getTime() {

@@ -52,6 +52,7 @@ public class HoursWeatherViewHolder extends BaseViewHolder<Weather> {
         if(weather.hourlyForecast!=null){
             for(Weather.HourlyForecastEntity entity:weather.hourlyForecast){
                 HourInfoEntity hourInfo=new HourInfoEntity(
+                        weather.city,
                         entity.date.substring(entity.date.length()-5),
                         String.format("%s℃", entity.tmp),
                         String.format("%s%%", entity.hum),

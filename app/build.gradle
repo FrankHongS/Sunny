@@ -8,8 +8,8 @@ android {
         applicationId "com.hon.sunny"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 7
-        versionName "1.1.2@alpha"
+        versionCode 8
+        versionName "1.1.2"
         javaCompileOptions{
             annotationProcessorOptions{
                 includeCompileClasspath true
@@ -19,26 +19,34 @@ android {
 
     signingConfigs {
         release {
-//            storeFile file(STORE_FILE)
-//            storePassword STORE_PASSWORD
-//            keyAlias KEY_ALIAS
-//            keyPassword KEY_PASSWORD
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
         }
     }
 
     buildTypes {
-//        release {
-//            minifyEnabled false
-//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//            shrinkResources false
-//            signingConfig signingConfigs.release
-//        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            signingConfig signingConfigs.release
+        }
 
         debug {
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false
             //signingConfig signingConfigs.release
+        }
+    }
+
+    android.applicationVariants.all { variant ->
+        if (variant.buildType.name == 'release') {
+            variant.outputs.each { output ->
+                output.outputFileName = "Sunny_v${defaultConfig.versionCode}_${defaultConfig.versionName}.apk"
+            }
         }
     }
 

@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hon.sunny.R;
-import com.hon.sunny.ui.common.MaterialScorllListener;
+import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.SharedPreferenceUtil;
@@ -108,7 +108,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         mMultiCityAdapter = new MultiCityAdapter(mWeathers);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mMultiCityAdapter);
-        mRecyclerView.addOnScrollListener(new MaterialScorllListener((MainActivity) getActivity()));
+        mRecyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
         mMultiCityAdapter.setOnMultiCityClickListener(new MultiCityAdapter.OnMultiCityClickListener() {
             @Override
             public void onLongClick(String city) {

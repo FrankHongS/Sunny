@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
  * Created by Frank Hon on 2019/4/13 10:28 AM.
  * E-mail: frank_hon@foxmail.com
  */
-public class MaterialScorllListener extends RecyclerView.OnScrollListener {
+public class MaterialScrollListener extends RecyclerView.OnScrollListener {
 
     private MainActivity mActivity;
 
-    public MaterialScorllListener(MainActivity mainActivity) {
+    public MaterialScrollListener(MainActivity mainActivity) {
         this.mActivity=mainActivity;
     }
 

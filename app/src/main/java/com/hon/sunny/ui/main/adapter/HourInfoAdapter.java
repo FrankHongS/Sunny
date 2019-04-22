@@ -70,8 +70,8 @@ public class HourInfoAdapter extends RecyclerView.Adapter<HourInfoAdapter.HourIn
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     HourInfoEntity newHourInfo = hourInfoList.get(newItemPosition);
                     HourInfoEntity oldHourInfo = mHourInfoList.get(oldItemPosition);
-                    return oldHourInfo.getTime()
-                            .equals(newHourInfo.getTime());
+                    return oldHourInfo.getTmp().equals(newHourInfo.getTmp())
+                            &&oldHourInfo.getCity().equals(newHourInfo.getCity());
                 }
             });
 
