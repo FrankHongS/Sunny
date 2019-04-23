@@ -3,12 +3,12 @@
 
 ## Screenshots
 <div align="center">
-<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/Screenshot_20170919-215045.png" width="270" height="480"/>
-<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/Screenshot_20170919-215051.png" width="270" height="480"/>
-<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/Screenshot_20170919-215153.png" width="270" height="480"/>
-<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/Screenshot_20170919-215245.png" width="270" height="480"/>
-<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/Screenshot_20170919-215416.png" width="270" height="480"/>
-<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/Screenshot_20170919-215459.png" width="270" height="480"/>
+<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/1.png" width="270" height="480"/>
+<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/2.png" width="270" height="480"/>
+<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/3.png" width="270" height="480"/>
+<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/4.png" width="270" height="480"/>
+<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/5.png" width="270" height="480"/>
+<img src="https://raw.githubusercontent.com/FrankHongS/Sunny/master/screenshots/6.png" width="270" height="480"/>
 </div>
 
 ## Library
