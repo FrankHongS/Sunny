@@ -58,4 +58,16 @@
         <item>深圳</item>
     </string-array>
 
+    <string name="skip">跳过</string>
+
+    <string name="weather_suggesetion_clothes">穿衣指数---%s</string>
+    <string name="weather_suggesetion_sports">运动指数---%s</string>
+    <string name="weather_suggesetion_illness">感冒指数---%s</string>
+    <string name="weather_suggesetion_travel">旅游指数---%s</string>
+
+    <string name="weather_forecast_desc">%s。 %s %s %s km/h。 降水几率 %s%%</string>
+    <string name="weather_forecast_temp">%s℃ - %s℃</string>
+
+    <string name="multi_city_empty">你还没有添加城市噢 (´･_･`)</string>
+
 </resources>

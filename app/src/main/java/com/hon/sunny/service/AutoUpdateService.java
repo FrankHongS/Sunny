@@ -1,22 +1,22 @@
 package com.hon.sunny.service;
 
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 
 import com.hon.sunny.R;
-import com.hon.sunny.base.Constants;
-import com.hon.sunny.common.PLog;
-import com.hon.sunny.common.util.SharedPreferenceUtil;
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.Sunny;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.main.MainActivity;
 import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.ui.main.MainActivity;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,10 +32,11 @@ import rx.subscriptions.CompositeSubscription;
 
 public class AutoUpdateService extends Service {
 
+    private static final String TAG=AutoUpdateService.class.getSimpleName();
+    
     private SharedPreferenceUtil mSharedPreferenceUtil;
-    // http://blog.csdn.net/lzyzsd/article/details/45033611
-    // 在生命周期的某个时刻取消订阅。一个很常见的模式就是使用CompositeSubscription来持有所有的Subscriptions，然后在onDestroy()或者onDestroyView()里取消所有的订阅
     private CompositeSubscription mCompositeSubscription;
+    private int mCount=0;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -51,29 +52,40 @@ public class AutoUpdateService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        mCompositeSubscription.clear();
-        if (mSharedPreferenceUtil.getAutoUpdate() != 0) {
-            Subscription netSubscription = Observable.interval(mSharedPreferenceUtil.getAutoUpdate(), TimeUnit.HOURS)
-                    .subscribe(aLong -> {
-                        fetchDataByNetWork();
-                    });
-            mCompositeSubscription.add(netSubscription);
+
+        Log.d(TAG, "onStartCommand: ");
+
+        boolean initService=intent.getBooleanExtra(Constants.INIT_SERVICE,false);
+        if(initService){
+            fetchDataByNetWork();
         }
+
+        Subscription netSubscription = Observable
+                .interval(SharedPreferenceUtil.getInstance().getInt(Constants.CHANGE_UPDATE_TIME, 3),
+                        TimeUnit.HOURS)
+                .subscribe(
+                            aLong -> fetchDataByNetWork()
+                        );
+        mCompositeSubscription.add(netSubscription);
         return START_REDELIVER_INTENT;
     }
 
     @Override
-    public boolean stopService(Intent name) {
-        return super.stopService(name);
+    public void onDestroy() {
+        super.onDestroy();
+        mCompositeSubscription.clear();
+        Log.d(TAG, "onDestroy: ");
     }
 
     private void fetchDataByNetWork() {
+
+        Log.d(TAG, "fetchDataByNetWork: ");
+
         String cityName = mSharedPreferenceUtil.getCityName();
         if (cityName != null) {
             cityName = Util.replaceCity(cityName);
         }
         RetrofitSingleton.getInstance().fetchWeather(cityName)
-//                .doOnError(throwable -> RetrofitSingleton.disposeFailureInfo(throwable))
                 .subscribe(new Subscriber<Weather>() {
                     @Override
                     public void onCompleted() {
@@ -82,14 +94,34 @@ public class AutoUpdateService extends Service {
 
                     @Override
                     public void onError(Throwable e) {
-//                        RetrofitSingleton.disposeFailureInfo(e);
+
                     }
 
                     @Override
                     public void onNext(Weather weather) {
-                        Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER,weather, AutoUpdateService.this, MainActivity.class);
+                        sendNotification(weather);
                     }
                 });
+    }
+
+    private void sendNotification(Weather weather){
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
+        Notification notification =
+                new NotificationCompat.Builder(this, Constants.CHANNEL_ID_WEATHER)
+                        .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),mSharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
+                        .setContentTitle(weather.city)
+                        .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.txt, weather.now.tmp))
+                        // important!, not showing if not set
+                        .setSmallIcon(R.mipmap.ic_launch_logo)
+                        .setContentIntent(pendingIntent)
+                        .setTicker("ticker")
+                        .build();
+
+        startForeground(1,notification);
+
     }
 
 }

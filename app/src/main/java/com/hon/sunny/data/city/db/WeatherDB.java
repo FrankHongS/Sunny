@@ -3,7 +3,7 @@ package com.hon.sunny.data.city.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.hon.sunny.common.util.Util;
+import com.hon.sunny.utils.Util;
 import com.hon.sunny.data.city.bean.City;
 import com.hon.sunny.data.city.bean.Province;
 

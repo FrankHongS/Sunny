@@ -1,6 +1,6 @@
 package com.hon.sunny.component.retrofit;
 
-import com.hon.sunny.about.domain.VersionAPI;
+import com.hon.sunny.ui.about.domain.VersionAPI;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;

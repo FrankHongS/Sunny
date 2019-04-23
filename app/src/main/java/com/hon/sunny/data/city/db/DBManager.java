@@ -3,11 +3,11 @@ package com.hon.sunny.data.city.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.PLog;
+import com.hon.sunny.utils.PLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;

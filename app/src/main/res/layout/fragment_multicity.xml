@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/layout">
+    android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiprefresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/empty"
@@ -23,34 +23,25 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/empty"/>
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="你还没有添加城市噢 (´･_･`)"
-            android:textColor="@color/cloudyText"
-            />
+            android:textSize="18sp"
+            android:text="@string/multi_city_empty"
+            android:textColor="@color/cloudyText" />
 
     </LinearLayout>
 
     <ImageView
         android:id="@+id/iv_erro"
-        android:visibility="gone"
-        android:layout_centerInParent="true"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="@mipmap/erro"
+        android:layout_centerInParent="true"
         android:layout_marginBottom="50dp"
-        />
+        android:src="@mipmap/erro"
+        android:visibility="gone" />
 
 </RelativeLayout>

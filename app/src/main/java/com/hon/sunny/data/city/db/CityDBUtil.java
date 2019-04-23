@@ -3,8 +3,8 @@ package com.hon.sunny.data.city.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.hon.sunny.city.view.expandrecycleview.ChildBean;
-import com.hon.sunny.city.view.expandrecycleview.ParentBean;
+import com.hon.sunny.ui.city.view.expandrecycleview.ChildBean;
+import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
 
 import java.util.ArrayList;
 import java.util.List;

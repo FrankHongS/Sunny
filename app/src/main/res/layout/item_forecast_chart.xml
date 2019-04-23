@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cardview_margin">
+
+    <com.hon.simplechartview.ChartView
+        android:id="@+id/chart_forecast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:x_unit_distance="@dimen/chart_x_distance"
+        app:y_unit_distance="@dimen/chart_y_distance"/>
+
+</androidx.cardview.widget.CardView>

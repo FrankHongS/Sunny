@@ -1,6 +1,6 @@
 package com.hon.sunny.base;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import butterknife.ButterKnife;
@@ -17,5 +17,5 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    protected abstract void bind(T t);
+    public abstract void bind(T t);
 }
