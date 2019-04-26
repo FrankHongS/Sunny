@@ -130,10 +130,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void initView(){
         setSupportActionBar(mToolbar);
-        // initial Presenter
+        // init Presenter
         WeatherFragment weatherFragment=new WeatherFragment();
         MultiCityFragment multiCityFragment=new MultiCityFragment();
-        new WeatherPresent(WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance()),weatherFragment);
+        new WeatherPresent(WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance()),
+                weatherFragment);
         new MultiCityPresenter(MultiCityRepository.getInstance(MultiCityRemoteDataSource.getInstance()),multiCityFragment);
 
         HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());

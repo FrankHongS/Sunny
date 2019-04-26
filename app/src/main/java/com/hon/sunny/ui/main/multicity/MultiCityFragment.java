@@ -2,6 +2,8 @@ package com.hon.sunny.ui.main.multicity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -61,6 +63,8 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     private MultiCityContract.Presenter mMultiCityPresenter;
     private List<Subscription> mSubscriptionList=new ArrayList<>();
 
+    private boolean mFirstTime;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,15 +73,17 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_multicity,container,false);
         ButterKnife.bind(this,view);
         initView();
+
+        mFirstTime=true;
+
         return view;
     }
 
     /**
-     * Fragment's onActivityCreated invoked after Activity's onCreate, which
      * ensure that mMultiCityPresenter has been instantiated.
      * (
      *  bug should be fixed. 2018/7/24
@@ -87,9 +93,12 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
      * )
      */
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        multiLoad();
+    public void onResume() {
+        super.onResume();
+        if(mFirstTime){
+            multiLoad();
+            mFirstTime=false;
+        }
     }
 
     @Override
