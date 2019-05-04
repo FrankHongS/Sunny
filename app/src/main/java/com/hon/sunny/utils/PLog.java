@@ -17,7 +17,7 @@ import java.io.IOException;
 
 public class PLog {
     public static boolean isDebug = BuildConfig.DEBUG;
-    public static final String PATH = Sunny.getAppCacheDir();
+    public static final String PATH = Sunny.getAppFileDir();
     public static final String PLOG_FILE_NAME = "log.txt";
 
     /**
@@ -87,6 +87,10 @@ public class PLog {
 
     public static void i(String msg) {
         i(getClassName(), msg);
+    }
+
+    public static void d(Class<?> clazz,String msg) {
+        d(clazz.getSimpleName(),msg);
     }
 
     /**

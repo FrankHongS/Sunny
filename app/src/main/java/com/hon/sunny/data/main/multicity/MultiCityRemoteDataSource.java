@@ -7,6 +7,8 @@ import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.data.main.bean.CityORM;
 import com.hon.sunny.data.main.bean.Weather;
 
+import java.util.List;
+
 import rx.Observable;
 
 /**
@@ -50,8 +52,14 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource{
 
     @Override
     public Observable<String> getCities() {
-        return Observable
-                .defer(() -> Observable.from(OrmLite.getInstance().query(CityORM.class)))
+
+        List<CityORM> cityList=OrmLite.getInstance().query(CityORM.class);
+
+        if(cityList==null||cityList.size()==0)
+            return null;
+        else
+            return Observable
+                .defer(() -> Observable.from(cityList))
                 .map(cityORM ->Util.replaceCity(cityORM.getName()))
                 .distinct()
                 .take(3);

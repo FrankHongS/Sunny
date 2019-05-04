@@ -49,4 +49,8 @@ public class Sunny extends Application{
     public static String getAppCacheDir() {
         return sCacheDir;
     }
+
+    public static String getAppFileDir(){
+        return sAppContext.getFilesDir().toString();
+    }
 }
