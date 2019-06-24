@@ -6,24 +6,24 @@ import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+
 import androidx.core.app.NotificationCompat;
-import android.util.Log;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.utils.Constants;
-import com.hon.sunny.utils.SharedPreferenceUtil;
-import com.hon.sunny.utils.Util;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
 import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.ui.main.MainActivity;
+import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.PLog;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.Util;
 
 import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -35,7 +35,7 @@ public class AutoUpdateService extends Service {
     private static final String TAG=AutoUpdateService.class.getSimpleName();
     
     private SharedPreferenceUtil mSharedPreferenceUtil;
-    private CompositeSubscription mCompositeSubscription;
+    private CompositeDisposable mAutoUpdateCompositeDisposable;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -46,61 +46,42 @@ public class AutoUpdateService extends Service {
     public void onCreate() {
         super.onCreate();
         mSharedPreferenceUtil = SharedPreferenceUtil.getInstance();
-        mCompositeSubscription = new CompositeSubscription();
+        mAutoUpdateCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.d(TAG, "onStartCommand: ");
-
         boolean initService=intent.getBooleanExtra(Constants.INIT_SERVICE,false);
-        if(initService){
-            fetchDataByNetWork();
-        }
+//        if(initService){ todo 如何实现启动之后立即更新，下面的interval应该不可以
+//            fetchDataByNetWork();
+//        }
 
-        Subscription netSubscription = Observable
+        Disposable netSubscription = Flowable
                 .interval(SharedPreferenceUtil.getInstance().getInt(Constants.CHANGE_UPDATE_TIME, 3),
                         TimeUnit.HOURS)
+                .flatMap(l->{
+                    String cityName = mSharedPreferenceUtil.getCityName();
+                    if (cityName != null) {
+                        cityName = Util.replaceCity(cityName);
+                        return RetrofitSingleton.getInstance()
+                                .fetchWeather(cityName);
+                    }else {
+                        return Flowable.error(new IllegalArgumentException("city name is null"));
+                    }
+                })
                 .subscribe(
-                            aLong -> fetchDataByNetWork()
-                        );
-        mCompositeSubscription.add(netSubscription);
+                        this::sendNotification,
+                        throwable -> PLog.e(throwable.getMessage())
+                );
+        mAutoUpdateCompositeDisposable.add(netSubscription);
         return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mCompositeSubscription.clear();
-        Log.d(TAG, "onDestroy: ");
-    }
-
-    private void fetchDataByNetWork() {
-
-        Log.d(TAG, "fetchDataByNetWork: ");
-
-        String cityName = mSharedPreferenceUtil.getCityName();
-        if (cityName != null) {
-            cityName = Util.replaceCity(cityName);
-        }
-        RetrofitSingleton.getInstance().fetchWeather(cityName)
-                .subscribe(new Subscriber<Weather>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(Weather weather) {
-                        sendNotification(weather);
-                    }
-                });
+        mAutoUpdateCompositeDisposable.dispose();
     }
 
     private void sendNotification(Weather weather){

@@ -19,7 +19,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank Hon on 2019/4/12 11:34 PM.
@@ -87,13 +87,13 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     static class ForecastItemViewHolder extends BaseViewHolder<ForecastEntity>{
 
-        @Bind(R.id.iv_forecast_icon)
+        @BindView(R.id.iv_forecast_icon)
         ImageView forecastIcon;
-        @Bind(R.id.tv_forecast_date)
+        @BindView(R.id.tv_forecast_date)
         TextView forecastDate;
-        @Bind(R.id.tv_forecast_desc)
+        @BindView(R.id.tv_forecast_desc)
         TextView forecastDesc;
-        @Bind(R.id.tv_forecast_temp)
+        @BindView(R.id.tv_forecast_temp)
         TextView forecastTemp;
 
         ForecastItemViewHolder(View itemView) {

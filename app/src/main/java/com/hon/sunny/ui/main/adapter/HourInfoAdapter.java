@@ -14,7 +14,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank_Hon on 4/12/2019.
@@ -82,13 +82,13 @@ public class HourInfoAdapter extends RecyclerView.Adapter<HourInfoAdapter.HourIn
 
     static class HourInfoViewHolder extends BaseViewHolder<HourInfoEntity>{
 
-        @Bind(R.id.tv_time)
+        @BindView(R.id.tv_time)
         TextView time;
-        @Bind(R.id.tv_tmp)
+        @BindView(R.id.tv_tmp)
         TextView tmp;
-        @Bind(R.id.tv_hum)
+        @BindView(R.id.tv_hum)
         TextView hum;
-        @Bind(R.id.tv_spd)
+        @BindView(R.id.tv_spd)
         TextView spd;
 
         HourInfoViewHolder(View itemView) {

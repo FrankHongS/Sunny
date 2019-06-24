@@ -15,7 +15,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank_Hon on 4/11/2019.
@@ -52,11 +52,11 @@ public class SuggestionAdapter extends RecyclerView.Adapter<SuggestionAdapter.Su
 
     static class SuggestionSubItemViewHolder extends BaseViewHolder<SuggestionEntity> {
 
-        @Bind(R.id.iv_suggestion_icon)
+        @BindView(R.id.iv_suggestion_icon)
         ImageView suggestionIcon;
-        @Bind(R.id.tv_suggestion_title)
+        @BindView(R.id.tv_suggestion_title)
         TextView suggestionTitle;
-        @Bind(R.id.tv_suggestion_desc)
+        @BindView(R.id.tv_suggestion_desc)
         TextView suggestionDesc;
 
         SuggestionSubItemViewHolder(@NonNull View itemView) {

@@ -1,17 +1,22 @@
 package com.hon.sunny.utils;
 
-import com.hon.sunny.utils.PLog;
-
-import rx.Subscriber;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Frank on 2017/8/9.
  * E-mail:frank_hon@foxmail.com
  */
 
-public abstract class SimpleSubscriber<T> extends Subscriber<T> {
+public abstract class SimpleSubscriber<T> implements Observer<T> {
+
     @Override
-    public void onCompleted() {
+    public void onSubscribe(Disposable d) {
+
+    }
+
+    @Override
+    public void onComplete() {
 
     }
 

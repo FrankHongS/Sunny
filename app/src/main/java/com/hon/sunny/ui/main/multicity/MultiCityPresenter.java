@@ -1,30 +1,37 @@
 package com.hon.sunny.ui.main.multicity;
 
-import com.hon.sunny.utils.PLog;
-import com.hon.sunny.utils.RxUtils;
-import com.hon.sunny.data.main.multicity.MultiCityRepository;
-import com.hon.sunny.data.main.bean.Weather;
-import com.trello.rxlifecycle.components.support.RxFragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
-import rx.Observable;
-import rx.Subscriber;
+import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.data.main.multicity.MultiCityRepository;
+import com.hon.sunny.utils.RxUtils;
+
+import io.reactivex.Flowable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class MultiCityPresenter implements MultiCityContract.Presenter{
+public class MultiCityPresenter implements MultiCityContract.Presenter, LifecycleObserver {
 
     private MultiCityRepository mMultiCityRepository;
-
     private MultiCityContract.View mMultiCityView;
 
-    public MultiCityPresenter(MultiCityRepository multiCityRepository, MultiCityContract.View multiCityView) {
+    private CompositeDisposable mMultiCityCompositeDisposable;
+
+    public MultiCityPresenter(Lifecycle lifecycle, MultiCityRepository multiCityRepository, MultiCityContract.View multiCityView) {
         mMultiCityRepository = multiCityRepository;
         mMultiCityView = multiCityView;
 
         mMultiCityView.setPresenter(this);
+
+        lifecycle.addObserver(this);
+        mMultiCityCompositeDisposable=new CompositeDisposable();
     }
 
     @Override
@@ -35,31 +42,27 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
     @Override
     public void loadMultiCityWeather() {
 
-        Observable<String> cityObservable=mMultiCityRepository.getCities();
+        Flowable<Weather> weatherFlowable=mMultiCityRepository.fetchMultiCityWeather();
 
-        if(cityObservable==null)
+        if(weatherFlowable==null){
             mMultiCityView.onEmpty();
-        else
-            mMultiCityRepository.fetchMultiCityWeather(cityObservable)
-                .compose(RxUtils.rxSchedulerHelper())
-                .compose(((RxFragment)mMultiCityView).bindToLifecycle())
-                .doOnRequest(aLong->mMultiCityView.doOnRequest())
-                .doOnTerminate(()->mMultiCityView.doOnTerminate())
-                .subscribe(new Subscriber<Weather>() {
-                    @Override
-                    public void onError(Throwable e) {
-                        mMultiCityView.onError(e);
-                    }
+        }
+        else{
+            Disposable multiCityDisposable=weatherFlowable
+                    .compose(RxUtils.rxFlowableSchedulerHelper())
+                    .doOnRequest(aLong->mMultiCityView.doOnRequest())
+                    .doOnTerminate(()->mMultiCityView.doOnTerminate())
+                    .subscribe(
+                            weather -> mMultiCityView.onNext(weather),
+                            throwable -> mMultiCityView.onError(throwable),
+                            ()->mMultiCityView.onCompleted()
+                    );
+            mMultiCityCompositeDisposable.add(multiCityDisposable);
+        }
+    }
 
-                    @Override
-                    public void onNext(Weather weather) {
-                        mMultiCityView.onNext(weather);
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        mMultiCityView.onCompleted();
-                    }
-                });
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void dispose(){
+        mMultiCityCompositeDisposable.dispose();
     }
 }

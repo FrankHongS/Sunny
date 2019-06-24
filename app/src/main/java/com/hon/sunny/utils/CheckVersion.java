@@ -20,22 +20,6 @@ import com.pgyersdk.update.UpdateManagerListener;
 
 public class CheckVersion {
 
-    public static void checkVersion(Context context) {
-        RetrofitSingleton.getInstance().fetchVersion()
-                .subscribe(new SimpleSubscriber<VersionAPI>() {
-                    @Override
-                    public void onNext(VersionAPI versionAPI) {
-                        String firVersionName = versionAPI.versionShort;
-                        String currentVersionName = Util.getVersion(context);
-                        if (currentVersionName.compareTo(firVersionName) < 0) {
-                            if (!SharedPreferenceUtil.getInstance().getString("version", "").equals(versionAPI.versionShort)) {
-                                showUpdateDialog(versionAPI, context);
-                            }
-                        }
-                    }
-                });
-    }
-
     public static void checkVersion(Context context, boolean force) {
         RetrofitSingleton.getInstance().fetchVersion()
                 .subscribe(new SimpleSubscriber<VersionAPI>() {
@@ -46,7 +30,7 @@ public class CheckVersion {
                         if (currentVersionName.compareTo(firVersionName) < 0) {
                             showUpdateDialog(versionAPI, context);
                         } else {
-                            ToastUtil.showShort("已经是最新版本(⌐■_■)");
+                            ToastUtil.showShort("已经是最新版本");
                         }
                     }
                 });

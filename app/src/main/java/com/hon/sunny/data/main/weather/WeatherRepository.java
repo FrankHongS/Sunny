@@ -2,7 +2,7 @@ package com.hon.sunny.data.main.weather;
 
 import com.hon.sunny.data.main.bean.Weather;
 
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Created by Frank on 2017/10/28.
@@ -32,7 +32,7 @@ public class WeatherRepository implements WeatherDataSource{
 
 
     @Override
-    public Observable<Weather> fetchWeather(String city) {
+    public Flowable<Weather> fetchWeather(String city) {
        return mWeatherRemoteDataSource.fetchWeather(city);
     }
 }

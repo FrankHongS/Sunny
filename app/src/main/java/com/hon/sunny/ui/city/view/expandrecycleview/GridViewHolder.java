@@ -5,7 +5,7 @@ import android.widget.Button;
 
 import com.hon.sunny.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
@@ -17,7 +17,7 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
 
 public class GridViewHolder extends AbstractViewHolder<GridBean>{
 
-    @Bind(R.id.btn_city_hint)
+    @BindView(R.id.btn_city_hint)
     Button cityHint;
 
     private GridAdapter.OnCityHintItemClickListener mOnCityHintItemClickListener;

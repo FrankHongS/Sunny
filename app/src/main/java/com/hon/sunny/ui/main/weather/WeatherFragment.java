@@ -2,19 +2,20 @@ package com.hon.sunny.ui.main.weather;
 
 import android.Manifest;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
@@ -22,29 +23,25 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.ui.common.MaterialScrollListener;
-import com.hon.sunny.utils.CheckVersion;
-import com.hon.sunny.utils.SharedPreferenceUtil;
-import com.hon.sunny.utils.SimpleSubscriber;
-import com.hon.sunny.utils.ToastUtil;
-import com.hon.sunny.utils.Util;
+import com.hon.sunny.component.event.ChangeCityEvent;
 import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.component.rxbus.RxBus;
+import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.WeatherAdapter;
-import com.hon.sunny.data.main.bean.Weather;
-import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
+import com.hon.sunny.utils.CheckVersion;
+import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.ToastUtil;
+import com.hon.sunny.utils.Util;
 import com.tbruyelle.rxpermissions2.RxPermissions;
-import com.trello.rxlifecycle.components.support.RxFragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 import static com.hon.sunny.utils.Constants.CHANGE_UPDATE_TIME;
 import static com.hon.sunny.utils.Constants.ONE_HOUR;
@@ -53,38 +50,32 @@ import static com.hon.sunny.utils.Constants.ONE_HOUR;
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
  */
-
 @SuppressWarnings("all")
-public class WeatherFragment extends RxFragment implements WeatherContract.View,AMapLocationListener{
+public class WeatherFragment extends Fragment implements WeatherContract.View, AMapLocationListener {
 
-    @Bind(R.id.recyclerview)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.swiprefresh)
-    SwipeRefreshLayout mRefreshLayout;
-    @Bind(R.id.iv_erro)
-    ImageView mIvError;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerView;
+    @BindView(R.id.swiprefresh)
+    SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.iv_erro)
+    ImageView errorImageView;
 
     private WeatherContract.Presenter mWeatherPresenter;
     private WeatherAdapter mWeatherAdapter;
-    private final Weather mWeather=new Weather();
-    private List<Subscription> mSubscriptionList=new ArrayList<>();
-    //  locate current cities by AMap
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
 
     private Disposable mPermissionsDisposable;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        registerRxBus();
+    public void setPresenter(WeatherContract.Presenter presenter) {
+        mWeatherPresenter = presenter;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.content_main,container,false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.content_main, container, false);
+        ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
         initView();
         return view;
     }
@@ -93,9 +84,9 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        final RxPermissions rxPermissions=new RxPermissions(this);
+        final RxPermissions rxPermissions = new RxPermissions(this);
 
-        mPermissionsDisposable=rxPermissions
+        mPermissionsDisposable = rxPermissions
                 .request(Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(granted -> {
                     if (granted) {
@@ -109,104 +100,82 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mPermissionsDisposable.dispose();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mLocationClient = null;
-        mLocationOption = null;
-
-        unRegisterRxBus();
-    }
-
-    @Override
-    public void setPresenter(WeatherContract.Presenter presenter) {
-        mWeatherPresenter=presenter;
-    }
-
-    private void initView(){
-        if (mRefreshLayout != null) {
-            mRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+    private void initView() {
+        if (refreshLayout != null) {
+            refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                     android.R.color.holo_green_light,
                     android.R.color.holo_orange_light,
                     android.R.color.holo_red_light);
-            mRefreshLayout.setOnRefreshListener(
-                    () -> mRefreshLayout.postDelayed(this::loadWeather, 1000));
+            refreshLayout.setOnRefreshListener(
+                    () -> refreshLayout.postDelayed(this::loadWeather, 1000));
         }
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mWeatherAdapter = new WeatherAdapter(mWeather);
-        mRecyclerView.setAdapter(mWeatherAdapter);
-        mRecyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
-        safeSetTitle(mWeather.city);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mWeatherAdapter = new WeatherAdapter();
+        recyclerView.setAdapter(mWeatherAdapter);
+        recyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
     }
 
-    private void loadWeather(){
+    private void loadWeather() {
         mWeatherPresenter.start();
     }
 
     @Override
     public void doOnRequest() {
-        mRefreshLayout.setRefreshing(true);
+        refreshLayout.setRefreshing(true);
     }
 
     @Override
     public void doOnNext() {
-        mIvError.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        errorImageView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onError(Throwable e) {
-        mIvError.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        errorImageView.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
         SharedPreferenceUtil.getInstance().setCityName("北京");
         safeSetTitle("找不到城市");
-        mRefreshLayout.setRefreshing(false);
+        refreshLayout.setRefreshing(false);
         RetrofitSingleton.disposeFailureInfo(e);
     }
 
     @Override
     public void onNext(Weather weather) {
-        mWeather.status = weather.status;
 //        mWeather.aqi = weather.aqi;TODO
-        mWeather.basic = weather.basic;
-        mWeather.lifestyle = weather.lifestyle;
-        mWeather.now = weather.now;
-        mWeather.dailyForecast = weather.dailyForecast;
-        mWeather.hourlyForecast = weather.hourlyForecast;
-        mWeather.city=weather.city;
-
+        mWeatherAdapter.setWeather(weather);
         safeSetTitle(weather.city);
-        mRefreshLayout.setRefreshing(false);
+        refreshLayout.setRefreshing(false);
         ToastUtil.showShort(getString(R.string.complete));
-        mWeatherAdapter.notifyDataSetChanged();
         //发通知
 //        Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER,weather,getActivity(),MainActivity.class);
     }
 
-    private void location(){
-        mRefreshLayout.setRefreshing(true);
-        mLocationClient = new AMapLocationClient(Sunny.getAppContext());
-        mLocationClient.setLocationListener(this);
-        mLocationOption = new AMapLocationClientOption();
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
-        mLocationOption.setNeedAddress(true);
-        mLocationOption.setOnceLocation(false);
-        mLocationOption.setWifiActiveScan(true);
-        mLocationOption.setMockEnable(false);
-        int tempTime = SharedPreferenceUtil.getInstance().getInt(CHANGE_UPDATE_TIME,3);
+    //  locate current cities by AMap
+    private void location() {
+        refreshLayout.setRefreshing(true);
+        AMapLocationClient locationClient = new AMapLocationClient(Sunny.getAppContext());
+        locationClient.setLocationListener(this);
+        AMapLocationClientOption locationClientOption = new AMapLocationClientOption();
+        locationClientOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Battery_Saving);
+        locationClientOption.setNeedAddress(true);
+        locationClientOption.setOnceLocation(false);
+        locationClientOption.setWifiActiveScan(true);
+        locationClientOption.setMockEnable(false);
+        int tempTime = SharedPreferenceUtil.getInstance().getInt(CHANGE_UPDATE_TIME, 3);
         if (tempTime == 0) {
             tempTime = 100;
         }
-        mLocationOption.setInterval(tempTime * ONE_HOUR);
-        mLocationClient.setLocationOption(mLocationOption);
-        mLocationClient.startLocation();
+        locationClientOption.setInterval(tempTime * ONE_HOUR);
+        locationClient.setLocationOption(locationClientOption);
+        locationClient.startLocation();
     }
 
     @Override
@@ -220,34 +189,23 @@ public class WeatherFragment extends RxFragment implements WeatherContract.View,
                     ToastUtil.showShort(getString(R.string.errorLocation));
                 }
             }
-        }else {
+        } else {
             if (isAdded()) {
                 ToastUtil.showShort(getString(R.string.errorLocation));
             }
         }
-        mRefreshLayout.setRefreshing(false);
+        refreshLayout.setRefreshing(false);
         loadWeather();
     }
 
-    private void registerRxBus(){
-        Subscription changeCitySubscription=RxBus.getInstance().toObservable(ChangeCityEvent.class).observeOn(AndroidSchedulers.mainThread()).subscribe(new SimpleSubscriber<ChangeCityEvent>() {
-            @Override
-            public void onNext(ChangeCityEvent changeCityEvent) {
-                loadWeather();
-            }
-        });
-
-        mSubscriptionList.add(changeCitySubscription);
-    }
-
-    private void unRegisterRxBus(){
-        for(Subscription subscription:mSubscriptionList)
-            subscription.unsubscribe();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void changeCity(ChangeCityEvent event) {
+        loadWeather();
     }
 
     private void safeSetTitle(String title) {
         ActionBar appBarLayout = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (appBarLayout != null&& !TextUtils.isEmpty(title)) {
+        if (appBarLayout != null && !TextUtils.isEmpty(title)) {
             appBarLayout.setTitle(title);
         }
     }

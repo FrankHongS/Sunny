@@ -31,7 +31,6 @@
     <string name="setting">设置</string>
     <string name="about">关于</string>
     <string name="multi_cities">多城市管理</string>
-    <string name="double_exit">再按一次退出</string>
     <string name="complete">加载完毕</string>
     <string name="errorLocation">fail to locate,load default city..</string>
 

@@ -5,16 +5,16 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import android.text.TextUtils;
+import androidx.fragment.app.Fragment;
 
-import com.trello.rxlifecycle.components.support.RxFragment;
+import android.text.TextUtils;
 
 /**
  * Created by Frank on 2017/8/9.
  * E-mail:frank_hon@foxmail.com
  */
 
-public abstract class BaseFragment extends RxFragment {
+public abstract class BaseFragment extends Fragment {
     protected boolean mIsCreateView = false;
 
     //此方法在控件初始化前调用，所以不能在此方法中直接操作控件会出现空指针

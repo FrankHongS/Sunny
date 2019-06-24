@@ -2,7 +2,8 @@ package com.hon.sunny.data.main.multicity;
 
 import com.hon.sunny.data.main.bean.Weather;
 
-import rx.Observable;
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 
 /**
  * Created by Frank on 2017/10/28.
@@ -11,8 +12,6 @@ import rx.Observable;
 
 public interface MultiCityDataSource {
 
-    Observable<Weather> fetchMultiCityWeather(Observable<String> citiesObservable);
-
-    Observable<String> getCities();
+    Flowable<Weather> fetchMultiCityWeather();
 
 }

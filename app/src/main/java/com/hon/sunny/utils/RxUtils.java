@@ -1,9 +1,10 @@
 package com.hon.sunny.utils;
 
-import rx.Observable;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.FlowableTransformer;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -11,8 +12,14 @@ import rx.schedulers.Schedulers;
  */
 
 public class RxUtils {
-    public static <T> Observable.Transformer<T, T> rxSchedulerHelper() {
-        return tObservable -> tObservable.subscribeOn(Schedulers.io())
+    public static <T> ObservableTransformer<T, T> rxSchedulerHelper() {
+        return upstream -> upstream.subscribeOn(Schedulers.io())
+                .unsubscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public static <T> FlowableTransformer<T, T> rxFlowableSchedulerHelper() {
+        return upstream -> upstream.subscribeOn(Schedulers.io())
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
@@ -20,7 +27,7 @@ public class RxUtils {
     /**
      * 可自定义线程
      */
-    public static <T> Observable.Transformer<T, T> rxSchedulerHelper(Scheduler scheduler) {
+    public static <T> ObservableTransformer<T, T> rxSchedulerHelper(Scheduler scheduler) {
         return tObservable -> tObservable.subscribeOn(scheduler)
                 .unsubscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread());

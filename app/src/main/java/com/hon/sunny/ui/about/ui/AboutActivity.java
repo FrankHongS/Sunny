@@ -4,21 +4,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseActivity;
 import com.hon.sunny.utils.CheckVersion;
 import com.hon.sunny.utils.StatusBarUtil;
 import com.hon.sunny.utils.Util;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -28,24 +29,24 @@ import butterknife.OnClick;
  */
 
 public class AboutActivity extends BaseActivity {
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.toolbar_layout)
+    @BindView(R.id.toolbar_layout)
     CollapsingToolbarLayout mToolbarLayout;
-    @Bind(R.id.tv_version)
+    @BindView(R.id.tv_version)
     TextView mTvVersion;
 
-    @Bind(R.id.bt_code)
+    @BindView(R.id.bt_code)
     Button mBtCode;
-    @Bind(R.id.bt_blog)
+    @BindView(R.id.bt_blog)
     Button mBtBlog;
-    @Bind(R.id.bt_pay)
+    @BindView(R.id.bt_pay)
     Button mBtPay;
-    @Bind(R.id.bt_share)
+    @BindView(R.id.bt_share)
     Button mBtShare;
-    @Bind(R.id.bt_update)
+    @BindView(R.id.bt_update)
     Button mBtUpdate;
-    @Bind(R.id.bt_bug)
+    @BindView(R.id.bt_bug)
     Button mBtBug;
 
     @Override

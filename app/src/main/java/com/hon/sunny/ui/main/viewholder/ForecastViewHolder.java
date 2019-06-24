@@ -15,7 +15,7 @@ import java.util.List;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank Hon on 2019/4/13 12:17 AM.
@@ -25,9 +25,9 @@ import butterknife.Bind;
  */
 public class ForecastViewHolder extends BaseViewHolder<Weather> {
 
-    @Bind(R.id.cv_forecast)
+    @BindView(R.id.cv_forecast)
     CardView forecastCard;
-    @Bind(R.id.rv_forecast)
+    @BindView(R.id.rv_forecast)
     RecyclerView forecasts;
 
     private ForecastAdapter mForecastAdapter;

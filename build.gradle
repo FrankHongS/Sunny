@@ -2,14 +2,13 @@
 //apply from: 'config.gradle'
 
 buildscript {
+    apply from: 'config.gradle'
     repositories {
         google()
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
@@ -25,17 +24,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext{
-    supportLibraryVersion= '1.0.0-beta01'
-    retrofitVersion='2.3.0'
-    rxJavaVersion='2.2.8'
-    rxAndroidVersion='2.1.1'
-    rxPermissionsVersion='0.10.2'
-    okhttpVersion='3.4.1'
-    gsonVersion='2.4'
-    glideVersion='3.7.0'
-    butterknifeVersion='7.0.1'
-    simplechartviewVersion='0.0.3'
 }

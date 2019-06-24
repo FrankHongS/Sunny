@@ -7,7 +7,7 @@ import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Frank on 2017/10/29.
@@ -17,5 +17,5 @@ import rx.Observable;
 public interface CityDataSource {
     void addItemToHistoryTable(SearchItem item);
 
-    Observable<List<ParentBean>> searchCity(SQLiteDatabase database,String query);
+    Observable<List<ParentBean>> searchCity(SQLiteDatabase database, String query);
 }

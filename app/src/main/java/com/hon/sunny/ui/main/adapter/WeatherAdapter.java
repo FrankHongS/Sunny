@@ -1,27 +1,26 @@
 package com.hon.sunny.ui.main.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
-import com.hon.sunny.utils.PLog;
-import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.component.AnimRecyclerViewAdapter;
 import com.hon.sunny.component.ImageLoader;
 import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
 import com.hon.sunny.ui.main.viewholder.ForecastViewHolder;
 import com.hon.sunny.ui.main.viewholder.HoursWeatherViewHolder;
 import com.hon.sunny.ui.main.viewholder.SuggestionViewHolder;
+import com.hon.sunny.utils.SharedPreferenceUtil;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -40,10 +39,6 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
     private static final int FORECAST_CHART = 4;
 
     private Weather mWeatherData;
-
-    public WeatherAdapter(Weather weatherData) {
-        this.mWeatherData = weatherData;
-    }
 
     @NonNull
     @Override
@@ -79,7 +74,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mWeatherData.status != null ? 5 : 0;
+        return mWeatherData != null && mWeatherData.status != null ? 5 : 0;
     }
 
     @Override
@@ -87,24 +82,29 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
         return position;
     }
 
+    public void setWeather(Weather weather) {
+        this.mWeatherData = weather;
+        notifyDataSetChanged();
+    }
+
     /**
      * 当前天气情况
      */
     class NowWeatherViewHolder extends BaseViewHolder<Weather> {
 
-        @Bind(R.id.weather_icon)
+        @BindView(R.id.weather_icon)
         ImageView weatherIcon;
-        @Bind(R.id.temp_flu)
+        @BindView(R.id.temp_flu)
         TextView tempFlu;
-        @Bind(R.id.temp_max)
+        @BindView(R.id.temp_max)
         TextView tempMax;
-        @Bind(R.id.temp_min)
+        @BindView(R.id.temp_min)
         TextView tempMin;
-        @Bind(R.id.temp_pm)
+        @BindView(R.id.temp_pm)
         TextView tempPm;
-        @Bind(R.id.temp_quality)
+        @BindView(R.id.temp_quality)
         TextView tempQuality;
-        @Bind(R.id.cardView)
+        @BindView(R.id.cardView)
         CardView cardView;
 
         NowWeatherViewHolder(View itemView) {

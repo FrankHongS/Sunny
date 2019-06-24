@@ -1,30 +1,37 @@
 package com.hon.sunny.ui.main.weather;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 
-import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.data.main.weather.WeatherRepository;
-import com.hon.sunny.data.main.bean.Weather;
-import com.trello.rxlifecycle.components.support.RxFragment;
+import com.hon.sunny.utils.SharedPreferenceUtil;
 
-import rx.Subscriber;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class WeatherPresent implements WeatherContract.Presenter{
+public class WeatherPresent implements WeatherContract.Presenter, LifecycleObserver {
 
     private WeatherRepository mWeatherRepository;
-
     private WeatherContract.View mWeatherView;
 
-    public WeatherPresent(@NonNull WeatherRepository weatherRepository, @NonNull WeatherContract.View weatherView){
-        mWeatherRepository=weatherRepository;
-        mWeatherView=weatherView;
+    private CompositeDisposable mWeatherCompositeDisposable;
+
+    public WeatherPresent(Lifecycle lifecycle, @NonNull WeatherRepository weatherRepository, @NonNull WeatherContract.View weatherView) {
+        mWeatherRepository = weatherRepository;
+        mWeatherView = weatherView;
 
         mWeatherView.setPresenter(this);
+
+        lifecycle.addObserver(this);
+
+        mWeatherCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -35,25 +42,19 @@ public class WeatherPresent implements WeatherContract.Presenter{
     @Override
     public void loadWeather() {
         String cityName = SharedPreferenceUtil.getInstance().getCityName();
-        mWeatherRepository.fetchWeather(cityName)
-                .compose(((RxFragment)mWeatherView).bindToLifecycle())
-                .doOnRequest(aLong -> mWeatherView.doOnRequest())
+        Disposable weatherDisposable = mWeatherRepository.fetchWeather(cityName)
+                .doOnRequest(l -> mWeatherView.doOnRequest())
                 .doOnNext(weather -> mWeatherView.doOnNext())
-                .subscribe(new Subscriber<Weather>() {
-                    @Override
-                    public void onCompleted() {
+                .subscribe(
+                        weather -> mWeatherView.onNext(weather),
+                        throwable -> mWeatherView.onError(throwable)
+                );
 
-                    }
+        mWeatherCompositeDisposable.add(weatherDisposable);
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mWeatherView.onError(e);
-                    }
-
-                    @Override
-                    public void onNext(Weather weather) {
-                        mWeatherView.onNext(weather);
-                    }
-                });
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    public void dispose(){
+        mWeatherCompositeDisposable.dispose();
     }
 }

@@ -2,20 +2,22 @@ package com.hon.sunny.component.retrofit;
 
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
+import com.hon.sunny.component.OrmLite;
+import com.hon.sunny.data.main.bean.CityORM;
+import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.ui.about.domain.VersionAPI;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.utils.Util;
-import com.hon.sunny.ui.about.domain.VersionAPI;
-import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.data.main.bean.Weather;
 import com.litesuits.orm.db.assit.WhereBuilder;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Flowable;
+import io.reactivex.Observable;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -24,9 +26,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Observable;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -119,7 +120,7 @@ public class RetrofitSingleton {
                 .baseUrl(ApiInterface.HOST)
                 .client(sOkHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
@@ -139,27 +140,28 @@ public class RetrofitSingleton {
             return sApiService;
     }
 
-    public Observable<Weather> fetchWeather(String city) {
+    public Flowable<Weather> fetchWeather(String city) {
 
         return sApiService.mWeatherAPI(city, Constants.KEY)
                 .flatMap(weatherAPI -> {
                     String status = weatherAPI.mHeWeatherDataService30s.get(0).status;
                     if ("no more requests".equals(status)) {
-                        return Observable.error(new RuntimeException("/(ㄒoㄒ)/~~,API免费次数已用完"));
+                        return Flowable.error(new RuntimeException("/(ㄒoㄒ)/~~,API免费次数已用完"));
                     } else if ("unknown city".equals(status)) {
-                        return Observable.error(new RuntimeException(String.format("API没有%s", city)));
+                        return Flowable.error(new RuntimeException(String.format("API没有%s", city)));
                     }
-                    return Observable.just(weatherAPI);
+                    return Flowable.just(weatherAPI);
                 })
                 .map(weatherAPI -> {
                     Weather weather=weatherAPI.mHeWeatherDataService30s.get(0);
                     weather.city=city;
                     return weather;
                 })
-                .compose(RxUtils.rxSchedulerHelper());
+                .compose(RxUtils.rxFlowableSchedulerHelper());
     }
 
     public Observable<VersionAPI> fetchVersion() {
-        return sApiService.mVersionAPI(Constants.API_TOKEN).compose(RxUtils.rxSchedulerHelper());
+        return sApiService.mVersionAPI(Constants.API_TOKEN)
+                .compose(RxUtils.rxSchedulerHelper());
     }
 }

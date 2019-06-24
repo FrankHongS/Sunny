@@ -5,10 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import com.hon.persistentsearchview.SearchItem;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
+import com.hon.sunny.utils.RxUtils;
 
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Frank on 2017/10/29.
@@ -43,6 +44,7 @@ public class CityRepository implements CityDataSource{
 
     @Override
     public Observable<List<ParentBean>> searchCity(SQLiteDatabase database, String query) {
-        return mCityDataSource.searchCity(database, query);
+        return mCityDataSource.searchCity(database, query)
+                .compose(RxUtils.rxSchedulerHelper());
     }
 }

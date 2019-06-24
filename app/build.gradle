@@ -2,19 +2,14 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 28
+    compileSdkVersion versions.compileSdk
 
     defaultConfig {
         applicationId "com.hon.sunny"
-        minSdkVersion 19
-        targetSdkVersion 28
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.compileSdk
         versionCode 8
         versionName "1.1.2"
-        javaCompileOptions{
-            annotationProcessorOptions{
-                includeCompileClasspath true
-            }// for ButterKnife
-        }
     }
 
     signingConfigs {
@@ -59,33 +54,31 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    // 默认 UI
-    implementation "androidx.appcompat:appcompat:$rootProject.supportLibraryVersion"
-    implementation "com.google.android.material:material:$rootProject.supportLibraryVersion"
-    implementation "androidx.cardview:cardview:$rootProject.supportLibraryVersion"
-    implementation "androidx.legacy:legacy-support-v4:$rootProject.supportLibraryVersion"
+
+    implementation deps.support.appCompat
+    implementation deps.support.material
+    implementation deps.support.cardview
+    implementation deps.support.constraintlayout
 
     // Rx
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxJavaVersion"
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxAndroidVersion"
-    implementation "com.github.tbruyelle:rxpermissions:$rootProject.rxPermissionsVersion"
-    implementation 'com.trello:rxlifecycle:0.7.0'
-    // If you want to bind to Android-specific lifecycles
-    implementation 'com.trello:rxlifecycle-android:0.7.0'
-    // If you want pre-written Activities and Fragments you can subclass as providers
-    implementation 'com.trello:rxlifecycle-components:0.7.0'
+    implementation deps.rxJava
+    implementation deps.rxAndroid
+    implementation deps.rxPermissions
     // network
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofitVersion"
-    implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpVersion"
-    implementation "com.google.code.gson:gson:$rootProject.gsonVersion"
-    // Glide for loading images
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    implementation "com.github.bumptech.glide:okhttp3-integration:1.4.0@aar"
+    implementation deps.retrofit.root
+    implementation deps.retrofit.converter_gson
+    implementation deps.retrofit.adapter_rxjava2
+    implementation deps.okhttp_logging
+    // Glide
+    implementation deps.glide.root
 
-    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    // butter knife
+    implementation deps.butterknife.runtime
+    annotationProcessor deps.butterknife.compiler
+
+    // event bus
+    implementation deps.eventbus
+
     //amap sdk
     implementation 'com.amap.api:location:latest.integration'
     //search view
@@ -94,11 +87,8 @@ dependencies {
     implementation 'zlc.season:practicalrecyclerview:1.1.5'
     //popup window
     implementation 'com.labo.kaji:relativepopupwindow:0.3.1'
-    //dialog & diolog effect
-    implementation 'com.nineoldandroids:library:2.4.0'
-    implementation 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
 
-    implementation "com.hon.simplechartview:simplechartview:$rootProject.simplechartviewVersion"
+    implementation deps.simplechartview
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation deps.test.junit
 }

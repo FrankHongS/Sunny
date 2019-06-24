@@ -2,94 +2,77 @@ package com.hon.sunny.ui.main.multicity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
+import com.hon.sunny.component.OrmLite;
+import com.hon.sunny.component.event.ChangeCityEvent;
+import com.hon.sunny.component.event.MultiUpdateEvent;
+import com.hon.sunny.component.retrofit.RetrofitSingleton;
+import com.hon.sunny.data.main.bean.CityORM;
+import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
+import com.hon.sunny.ui.main.adapter.MultiCityAdapter;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
-import com.hon.sunny.utils.SimpleSubscriber;
 import com.hon.sunny.utils.ToastUtil;
-import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.component.rxbus.RxBus;
-import com.hon.sunny.ui.main.adapter.MultiCityAdapter;
-import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.component.rxbus.event.MultiUpdate;
-import com.hon.sunny.data.main.bean.Weather;
 import com.litesuits.orm.db.assit.WhereBuilder;
-import com.trello.rxlifecycle.components.support.RxFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class MultiCityFragment extends RxFragment implements MultiCityContract.View{
+public class MultiCityFragment extends Fragment implements MultiCityContract.View{
 
-    @Bind(R.id.recyclerview)
-    RecyclerView mRecyclerView;
-    @Bind(R.id.swiprefresh)
-    SwipeRefreshLayout mRefreshLayout;
-    @Bind(R.id.empty)
-    LinearLayout mLayout;
-    @Bind(R.id.iv_erro)
-    ImageView mIvError;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerView;
+    @BindView(R.id.swiprefresh)
+    SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.empty)
+    LinearLayout emptyLayout;
+    @BindView(R.id.iv_erro)
+    ImageView errorImageView;
 
     private List<Weather> mWeathers;
     private MultiCityAdapter mMultiCityAdapter;
     private MultiCityContract.Presenter mMultiCityPresenter;
-    private List<Subscription> mSubscriptionList=new ArrayList<>();
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        registerRxBus();
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_multicity,container,false);
         ButterKnife.bind(this,view);
+        EventBus.getDefault().register(this);
         initView();
-
         return view;
     }
 
-    /**
-     * Fragment's onActivityCreated invoked after Activity's onCreate, which
-     * ensure that mMultiCityPresenter has been instantiated.
-     * (
-     *  bug should be fixed. 2018/7/24
-     *  crash :caused by java.lang.NullPointerException:
-     *  Attempt to invoke interface method
-     *  'void com.hon.sunny.ui.main.multicity.MultiCityContract$Presenter.start()
-     * )
-     */
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -99,7 +82,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unRegisterRxBus();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -110,9 +93,9 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     private void initView(){
         mWeathers = new ArrayList<>();
         mMultiCityAdapter = new MultiCityAdapter(mWeathers);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mMultiCityAdapter);
-        mRecyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mMultiCityAdapter);
+        recyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
         mMultiCityAdapter.setOnMultiCityClickListener(new MultiCityAdapter.OnMultiCityClickListener() {
             @Override
             public void onLongClick(String city) {
@@ -122,39 +105,39 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
             @Override
             public void onClick(String city) {
                 SharedPreferenceUtil.getInstance().setCityName(city);
-                RxBus.getInstance().post(new ChangeCityEvent());
+                EventBus.getDefault().post(new ChangeCityEvent());
             }
         });
 
-        if (mRefreshLayout != null) {
-            mRefreshLayout.setColorSchemeResources(
+        if (refreshLayout != null) {
+            refreshLayout.setColorSchemeResources(
                     android.R.color.holo_orange_light,
                     android.R.color.holo_red_light,
                     android.R.color.holo_green_light,
                     android.R.color.holo_blue_bright
             );
-            mRefreshLayout.setOnRefreshListener(() -> mRefreshLayout.postDelayed(this::multiLoad, 1000));
+            refreshLayout.setOnRefreshListener(() -> refreshLayout.postDelayed(this::multiLoad, 1000));
         }
     }
 
     @Override
     public void doOnRequest() {
-        mRefreshLayout.setRefreshing(true);
+        refreshLayout.setRefreshing(true);
     }
 
     @Override
     public void doOnTerminate() {
-        mRefreshLayout.setRefreshing(false);
+        refreshLayout.setRefreshing(false);
     }
 
     @Override
     public void onError(Throwable t) {
-        if(mLayout!=null){
+        if(emptyLayout!=null){
             if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||
                     t.toString().contains("UnknownHostException")||t.toString().contains("Unsatisfiable")){
-                mLayout.setVisibility(View.GONE);
-                mIvError.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
+                emptyLayout.setVisibility(View.GONE);
+                errorImageView.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
         }
         RetrofitSingleton.disposeFailureInfo(t);
@@ -163,8 +146,8 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     @Override
     public void onEmpty() {
         mMultiCityAdapter.notifyDataSetChanged();
-        mIvError.setVisibility(View.GONE);
-        mLayout.setVisibility(View.VISIBLE);
+        errorImageView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -178,9 +161,9 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     @Override
     public void onCompleted() {
         mMultiCityAdapter.notifyDataSetChanged();
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mIvError.setVisibility(View.GONE);
-        mLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+        errorImageView.setVisibility(View.GONE);
+        emptyLayout.setVisibility(View.GONE);
     }
 
     private void multiLoad() {
@@ -189,24 +172,9 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         mMultiCityPresenter.start();
     }
 
-    private void registerRxBus(){
-        Subscription multiUpdateSubscription=
-                RxBus.getInstance()
-                        .toObservable(MultiUpdate.class)
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new SimpleSubscriber<MultiUpdate>() {
-                            @Override
-                            public void onNext(MultiUpdate multiUpdate) {
-                                multiLoad();
-                            }
-                        });
-
-        mSubscriptionList.add(multiUpdateSubscription);
-    }
-
-    private void unRegisterRxBus(){
-        for(Subscription subscription:mSubscriptionList)
-            subscription.unsubscribe();
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void multiUpdate(MultiUpdateEvent event){
+        multiLoad();
     }
 
     private void showDialog(String city){

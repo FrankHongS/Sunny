@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,24 +15,27 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
+import com.hon.sunny.component.ImageLoader;
+import com.hon.sunny.component.event.ChangeCityEvent;
+import com.hon.sunny.service.AutoUpdateService;
+import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.utils.FileSizeUtil;
 import com.hon.sunny.utils.FileUtil;
 import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.SimpleSubscriber;
 import com.hon.sunny.utils.Util;
-import com.hon.sunny.component.ImageLoader;
-import com.hon.sunny.component.rxbus.RxBus;
-import com.hon.sunny.ui.main.MainActivity;
-import com.hon.sunny.component.rxbus.event.ChangeCityEvent;
-import com.hon.sunny.service.AutoUpdateService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
-import rx.Observable;
-import rx.functions.Func1;
+import io.reactivex.Observable;
 
 import static com.hon.sunny.utils.Constants.ANIM_START;
 import static com.hon.sunny.utils.Constants.AUTO_UPDATE;
@@ -116,16 +117,13 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
             ImageLoader.clear(getActivity());
             Observable.just(FileUtil.delete(new File(Sunny.getAppCacheDir() + "/NetCache")))
-                    .filter(new Func1<Boolean, Boolean>() {
-                        @Override
-                        public Boolean call(Boolean aBoolean) {
-                            return aBoolean;
-                        }
-                    }).compose(RxUtils.rxSchedulerHelper()).subscribe(new SimpleSubscriber<Boolean>() {
+                .compose(RxUtils.rxSchedulerHelper()).subscribe(new SimpleSubscriber<Boolean>() {
                 @Override
-                public void onNext(Boolean aBoolean) {
+                public void onNext(Boolean success) {
                     mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
-                    Snackbar.make(getView(), "缓存已清除", Snackbar.LENGTH_SHORT).show();
+                    if(success){
+                        Snackbar.make(getView(), "缓存已清除", Snackbar.LENGTH_SHORT).show();
+                    }
                 }
             });
         } else if (mChangeUpdateTime == preference) {
@@ -222,7 +220,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         getActivity().startActivity(intent);
                         getActivity().finish();
-                        RxBus.getInstance().post(new ChangeCityEvent());
+                        EventBus.getDefault().post(new ChangeCityEvent());
                     }).show();
         });
     }

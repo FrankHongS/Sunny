@@ -13,7 +13,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank Hon on 2019/4/13 12:36 AM.
@@ -23,7 +23,7 @@ import butterknife.Bind;
  */
 public class SuggestionViewHolder extends BaseViewHolder<Weather> {
 
-    @Bind(R.id.rv_suggestions)
+    @BindView(R.id.rv_suggestions)
     RecyclerView suggestions;
 
     public SuggestionViewHolder(View itemView) {

@@ -6,14 +6,13 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.view.WindowManager;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
 
 /**
  * Created by Frank on 2017/8/9.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class BaseActivity extends RxAppCompatActivity{
+public abstract class BaseActivity extends AppCompatActivity{
     private static String TAG = BaseActivity.class.getSimpleName();
 
     /**

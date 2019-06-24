@@ -23,7 +23,7 @@ import com.hon.sunny.data.main.bean.Weather;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -74,13 +74,13 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
 
     class MultiCityViewHolder extends BaseViewHolder<Weather> {
 
-        @Bind(R.id.dialog_city)
+        @BindView(R.id.dialog_city)
         TextView mDialogCity;
-        @Bind(R.id.dialog_icon)
+        @BindView(R.id.dialog_icon)
         ImageView mDialogIcon;
-        @Bind(R.id.dialog_temp)
+        @BindView(R.id.dialog_temp)
         TextView mDialogTemp;
-        @Bind(R.id.cardView)
+        @BindView(R.id.cardView)
         CardView mCardView;
 
         public MultiCityViewHolder(View itemView) {

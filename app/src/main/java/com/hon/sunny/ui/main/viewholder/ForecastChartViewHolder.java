@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank Hon on 2019/4/21 1:11 AM.
@@ -21,7 +21,7 @@ import butterknife.Bind;
  */
 public class ForecastChartViewHolder extends BaseViewHolder<Weather> {
 
-    @Bind(R.id.chart_forecast)
+    @BindView(R.id.chart_forecast)
     ChartView chartView;
 
     public ForecastChartViewHolder(View itemView) {

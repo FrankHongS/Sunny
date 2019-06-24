@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.hon.sunny.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
@@ -16,7 +16,7 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  */
 
 class ChildViewHolder extends AbstractViewHolder<ChildBean>{
-    @Bind(R.id.text)
+    @BindView(R.id.text)
     TextView mText;
 
     private ExpandAdapter.OnItemClickListener mOnItemClickListener;

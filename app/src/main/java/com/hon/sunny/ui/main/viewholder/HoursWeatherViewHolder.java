@@ -14,7 +14,7 @@ import java.util.List;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Frank_Hon on 4/12/2019.
@@ -24,10 +24,10 @@ import butterknife.Bind;
  */
 public class HoursWeatherViewHolder extends BaseViewHolder<Weather> {
 
-    @Bind(R.id.cv_hour_info)
+    @BindView(R.id.cv_hour_info)
     CardView hourInfoCard;
 
-    @Bind(R.id.rv_hour_info)
+    @BindView(R.id.rv_hour_info)
     RecyclerView hoursInfo;
 
     private HourInfoAdapter mHourInfoAdapter;
