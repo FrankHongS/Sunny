@@ -20,6 +20,7 @@ import com.hon.sunny.R;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.SimpleSubscriber;
 import com.hon.sunny.utils.ToastUtil;
@@ -63,8 +64,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     private MultiCityContract.Presenter mMultiCityPresenter;
     private List<Subscription> mSubscriptionList=new ArrayList<>();
 
-    private boolean mFirstTime;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,12 +77,11 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         ButterKnife.bind(this,view);
         initView();
 
-        mFirstTime=true;
-
         return view;
     }
 
     /**
+     * Fragment's onActivityCreated invoked after Activity's onCreate, which
      * ensure that mMultiCityPresenter has been instantiated.
      * (
      *  bug should be fixed. 2018/7/24
@@ -93,12 +91,9 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
      * )
      */
     @Override
-    public void onResume() {
-        super.onResume();
-        if(mFirstTime){
-            multiLoad();
-            mFirstTime=false;
-        }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        multiLoad();
     }
 
     @Override
@@ -138,12 +133,7 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
                     android.R.color.holo_green_light,
                     android.R.color.holo_blue_bright
             );
-            mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-                @Override
-                public void onRefresh() {
-                    mRefreshLayout.postDelayed(()->multiLoad(), 1000);
-                }
-            });
+            mRefreshLayout.setOnRefreshListener(() -> mRefreshLayout.postDelayed(this::multiLoad, 1000));
         }
     }
 
@@ -155,20 +145,6 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     @Override
     public void doOnTerminate() {
         mRefreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void onCompleted() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-        mMultiCityAdapter.notifyDataSetChanged();
-
-        if (mMultiCityAdapter.isEmpty()) {
-            mIvError.setVisibility(View.GONE);
-            mLayout.setVisibility(View.VISIBLE);
-        } else {
-            mIvError.setVisibility(View.GONE);
-            mLayout.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -185,6 +161,13 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
     }
 
     @Override
+    public void onEmpty() {
+        mMultiCityAdapter.notifyDataSetChanged();
+        mIvError.setVisibility(View.GONE);
+        mLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void onNext(Weather weather) {
         if(Constants.UNKNOWN_CITY.equals(weather.status)){
             ToastUtil.showLong("there's an unknown city...");
@@ -192,7 +175,16 @@ public class MultiCityFragment extends RxFragment implements MultiCityContract.V
         mWeathers.add(weather);
     }
 
+    @Override
+    public void onCompleted() {
+        mMultiCityAdapter.notifyDataSetChanged();
+        mRecyclerView.setVisibility(View.VISIBLE);
+        mIvError.setVisibility(View.GONE);
+        mLayout.setVisibility(View.GONE);
+    }
+
     private void multiLoad() {
+        PLog.d(getClass(),"multiLoad");
         mWeathers.clear();
         mMultiCityPresenter.start();
     }

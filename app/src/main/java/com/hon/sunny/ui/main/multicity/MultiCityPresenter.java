@@ -1,10 +1,12 @@
 package com.hon.sunny.ui.main.multicity;
 
+import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.bean.Weather;
 import com.trello.rxlifecycle.components.support.RxFragment;
 
+import rx.Observable;
 import rx.Subscriber;
 
 /**
@@ -32,7 +34,13 @@ public class MultiCityPresenter implements MultiCityContract.Presenter{
 
     @Override
     public void loadMultiCityWeather() {
-        mMultiCityRepository.fetchMultiCityWeather(mMultiCityRepository.getCities())
+
+        Observable<String> cityObservable=mMultiCityRepository.getCities();
+
+        if(cityObservable==null)
+            mMultiCityView.onEmpty();
+        else
+            mMultiCityRepository.fetchMultiCityWeather(cityObservable)
                 .compose(RxUtils.rxSchedulerHelper())
                 .compose(((RxFragment)mMultiCityView).bindToLifecycle())
                 .doOnRequest(aLong->mMultiCityView.doOnRequest())

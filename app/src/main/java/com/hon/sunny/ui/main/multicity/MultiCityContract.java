@@ -14,9 +14,10 @@ public interface MultiCityContract {
     interface View extends BaseView<Presenter>{
         void doOnRequest();
         void doOnTerminate();
-        void onCompleted();
         void onError(Throwable e);
+        void onEmpty();
         void onNext(Weather weather);
+        void onCompleted();
     }
 
     interface Presenter extends BasePresenter{

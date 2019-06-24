@@ -36,7 +36,6 @@ public class AutoUpdateService extends Service {
     
     private SharedPreferenceUtil mSharedPreferenceUtil;
     private CompositeSubscription mCompositeSubscription;
-    private int mCount=0;
 
     @Override
     public IBinder onBind(Intent intent) {
