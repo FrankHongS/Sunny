@@ -8,8 +8,8 @@ android {
         applicationId "com.hon.sunny"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.compileSdk
-        versionCode 8
-        versionName "1.1.2"
+        versionCode 9
+        versionName "1.1.3"
     }
 
     signingConfigs {
