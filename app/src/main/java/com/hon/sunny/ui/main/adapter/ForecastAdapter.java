@@ -6,19 +6,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.bumptech.glide.Glide;
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.data.main.bean.ForecastEntity;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.ForecastEntity;
 
 import java.text.ParseException;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 
 /**
@@ -33,8 +34,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
     @Override
     public ForecastItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_forecast_subitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_forecast_subitem, parent, false);
 
         return new ForecastItemViewHolder(view);
     }
@@ -46,10 +47,10 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
     @Override
     public int getItemCount() {
-        return mForecastList==null?0:mForecastList.size();
+        return mForecastList == null ? 0 : mForecastList.size();
     }
 
-    public void swapDataList(List<ForecastEntity> forecastList){
+    public void swapDataList(List<ForecastEntity> forecastList) {
         if (mForecastList == null) {
             mForecastList = forecastList;
             notifyDataSetChanged();
@@ -67,8 +68,8 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
 
                 @Override
                 public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-                    ForecastEntity oldEntity=mForecastList.get(oldItemPosition);
-                    ForecastEntity newEntity=forecastList.get(newItemPosition);
+                    ForecastEntity oldEntity = mForecastList.get(oldItemPosition);
+                    ForecastEntity newEntity = forecastList.get(newItemPosition);
                     return oldEntity.getDate().equals(newEntity.getDate());
                 }
 
@@ -76,16 +77,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
                 public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
                     ForecastEntity oldEntity = mForecastList.get(oldItemPosition);
                     ForecastEntity newEntity = forecastList.get(newItemPosition);
-                    return oldEntity.getDate().equals(newEntity.getDate())&&oldEntity.getCity().equals(newEntity.getCity());
+                    return oldEntity.getDate().equals(newEntity.getDate()) && oldEntity.getCity().equals(newEntity.getCity());
                 }
             });
 
-            mForecastList=forecastList;
+            mForecastList = forecastList;
             result.dispatchUpdatesTo(this);
         }
     }
 
-    static class ForecastItemViewHolder extends BaseViewHolder<ForecastEntity>{
+    static class ForecastItemViewHolder extends BaseViewHolder<ForecastEntity> {
 
         @BindView(R.id.iv_forecast_icon)
         ImageView forecastIcon;

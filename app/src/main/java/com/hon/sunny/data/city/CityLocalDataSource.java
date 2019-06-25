@@ -21,9 +21,8 @@ import io.reactivex.ObservableOnSubscribe;
 
 public class CityLocalDataSource implements CityDataSource {
 
-    private SearchHistoryTable mSearchHistoryTable = SearchHistoryTable.getInstance(Sunny.getAppContext());
-
     private static CityLocalDataSource INSTANCE;
+    private SearchHistoryTable mSearchHistoryTable = SearchHistoryTable.getInstance(Sunny.getAppContext());
 
     private CityLocalDataSource() {
     }

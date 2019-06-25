@@ -6,12 +6,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -21,7 +23,7 @@ import android.widget.ImageView;
 public class CircularAnimUtil {
 
     public static final long PERFECT_MILLS = 618;
-    public static final long SHOW_HIDE_ANIM_DURATION=200;
+    public static final long SHOW_HIDE_ANIM_DURATION = 200;
     public static final int MINI_RADIUS = 0;
 
     /**
@@ -188,7 +190,7 @@ public class CircularAnimUtil {
         hide(myView, MINI_RADIUS, PERFECT_MILLS);
     }
 
-    public static void hide(FloatingActionButton button){
+    public static void hide(FloatingActionButton button) {
         button.animate()
                 .scaleX(0f)
                 .scaleY(0f)

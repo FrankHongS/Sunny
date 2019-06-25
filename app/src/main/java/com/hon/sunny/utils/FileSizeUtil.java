@@ -4,7 +4,6 @@ import android.text.format.Formatter;
 import android.util.Log;
 
 import com.hon.sunny.Sunny;
-import com.hon.sunny.utils.PLog;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,8 +33,7 @@ public class FileSizeUtil {
         try {
             if (file.isDirectory()) {
                 blockSize = getFileSizes(file);
-            }
-            else {
+            } else {
                 blockSize = getFileSize(file);
             }
         } catch (Exception e) {
@@ -60,15 +58,14 @@ public class FileSizeUtil {
         try {
             if (file.isDirectory()) {
                 blockSize = getFileSizes(file);
-            }
-            else {
+            } else {
                 blockSize = getFileSize(file);
             }
         } catch (Exception e) {
             e.printStackTrace();
             PLog.e("获取文件大小失败!");
         }
-        return Formatter.formatFileSize(Sunny.getAppContext(),blockSize);
+        return Formatter.formatFileSize(Sunny.getAppContext(), blockSize);
     }
 
 
@@ -83,8 +80,7 @@ public class FileSizeUtil {
             FileInputStream fis;
             fis = new FileInputStream(file);
             size = fis.available();
-        }
-        else {
+        } else {
 //            file.createNewFile();
             Log.e("获取文件大小", "文件不存在!");
         }
@@ -103,16 +99,12 @@ public class FileSizeUtil {
         for (int i = 0; i < flist.length; i++) {
             if (flist[i].isDirectory()) {
                 size = size + getFileSizes(flist[i]);
-            }
-            else {
+            } else {
                 size = size + getFileSize(flist[i]);
             }
         }
         return size;
     }
-
-
-
 
 
     /**

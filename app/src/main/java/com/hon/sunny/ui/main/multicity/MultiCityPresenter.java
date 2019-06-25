@@ -4,9 +4,8 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
-import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
-import com.hon.sunny.utils.RxUtils;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
@@ -31,7 +30,7 @@ public class MultiCityPresenter implements MultiCityContract.Presenter, Lifecycl
         mMultiCityView.setPresenter(this);
 
         lifecycle.addObserver(this);
-        mMultiCityCompositeDisposable=new CompositeDisposable();
+        mMultiCityCompositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -42,27 +41,25 @@ public class MultiCityPresenter implements MultiCityContract.Presenter, Lifecycl
     @Override
     public void loadMultiCityWeather() {
 
-        Flowable<Weather> weatherFlowable=mMultiCityRepository.fetchMultiCityWeather();
+        Flowable<Weather> weatherFlowable = mMultiCityRepository.fetchMultiCityWeather();
 
-        if(weatherFlowable==null){
+        if (weatherFlowable == null) {
             mMultiCityView.onEmpty();
-        }
-        else{
-            Disposable multiCityDisposable=weatherFlowable
-                    .compose(RxUtils.rxFlowableSchedulerHelper())
-                    .doOnRequest(aLong->mMultiCityView.doOnRequest())
-                    .doOnTerminate(()->mMultiCityView.doOnTerminate())
+        } else {
+            Disposable multiCityDisposable = weatherFlowable
+                    .doOnRequest(aLong -> mMultiCityView.doOnRequest())
+                    .doOnTerminate(() -> mMultiCityView.doOnTerminate())
                     .subscribe(
                             weather -> mMultiCityView.onNext(weather),
                             throwable -> mMultiCityView.onError(throwable),
-                            ()->mMultiCityView.onCompleted()
+                            () -> mMultiCityView.onCompleted()
                     );
             mMultiCityCompositeDisposable.add(multiCityDisposable);
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    public void dispose(){
+    public void dispose() {
         mMultiCityCompositeDisposable.dispose();
     }
 }

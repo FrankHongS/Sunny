@@ -7,18 +7,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
 import com.hon.sunny.component.AnimRecyclerViewAdapter;
 import com.hon.sunny.component.ImageLoader;
-import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
 import com.hon.sunny.ui.main.viewholder.ForecastViewHolder;
 import com.hon.sunny.ui.main.viewholder.HoursWeatherViewHolder;
 import com.hon.sunny.ui.main.viewholder.SuggestionViewHolder;
 import com.hon.sunny.utils.SharedPreferenceUtil;
+import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import butterknife.BindView;
 
@@ -26,18 +26,15 @@ import butterknife.BindView;
  * Created by Frank on 2017/8/10.
  * E-mail:frank_hon@foxmail.com
  */
-
 @SuppressWarnings("all")
 public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
-
-    private static String TAG = WeatherAdapter.class.getSimpleName();
 
     private static final int NOW_WEATHER = 0;
     private static final int HOURS_WEATHER = 1;
     private static final int SUGGESTION = 2;
     private static final int FORECAST = 3;
     private static final int FORECAST_CHART = 4;
-
+    private static String TAG = WeatherAdapter.class.getSimpleName();
     private Weather mWeatherData;
 
     @NonNull
@@ -46,7 +43,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
         switch (viewType) {
             case NOW_WEATHER:
                 return new NowWeatherViewHolder(
-                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_temperature, parent, false));
+                        LayoutInflater.from(parent.getContext()).inflate(R.layout.item_now_temperature, parent, false));
             case HOURS_WEATHER:
                 return new HoursWeatherViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hour_info, parent, false));
@@ -92,20 +89,18 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
      */
     class NowWeatherViewHolder extends BaseViewHolder<Weather> {
 
-        @BindView(R.id.weather_icon)
+        @BindView(R.id.iv_now_weather)
         ImageView weatherIcon;
-        @BindView(R.id.temp_flu)
-        TextView tempFlu;
-        @BindView(R.id.temp_max)
+        @BindView(R.id.tv_now_temp)
+        TextView tempNow;
+        @BindView(R.id.tv_now_temp_max)
         TextView tempMax;
-        @BindView(R.id.temp_min)
+        @BindView(R.id.tv_now_temp_min)
         TextView tempMin;
-        @BindView(R.id.temp_pm)
+        @BindView(R.id.tv_now_air_pm25)
         TextView tempPm;
-        @BindView(R.id.temp_quality)
+        @BindView(R.id.tv_now_air_quality)
         TextView tempQuality;
-        @BindView(R.id.cardView)
-        CardView cardView;
 
         NowWeatherViewHolder(View itemView) {
             super(itemView);
@@ -114,7 +109,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
         @Override
         public void bind(Weather weather) {
             if (weather.now != null)
-                tempFlu.setText(String.format("%s℃", weather.now.tmp));
+                tempNow.setText(String.format("%s℃", weather.now.tmp));
             if (weather.dailyForecast != null) {
 
                 tempMax.setText(
@@ -124,8 +119,9 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
             }
 
-//                tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.aqi.city.pm25)));
-//                tempQuality.setText(Util.safeText("空气质量： ", weather.aqi.city.qlty));服务端不支持
+            tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.pm25)));
+            tempQuality.setText(Util.safeText("空气质量: ", weather.quality));
+
             if (weather.now != null)
                 ImageLoader.load(itemView.getContext(),
                         SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none),

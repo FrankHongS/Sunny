@@ -21,7 +21,6 @@ import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.component.ImageLoader;
-import com.hon.sunny.component.event.ChangeCityEvent;
 import com.hon.sunny.service.AutoUpdateService;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.utils.FileSizeUtil;
@@ -30,6 +29,7 @@ import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.SimpleSubscriber;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.event.ChangeCityEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -89,14 +89,14 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         );
         mAnimationOnOff.setChecked(mSharedPreferenceUtil.getMainAnim());
         mChangeIcons.setSummary(
-                getResources().getStringArray(R.array.icons)[mSharedPreferenceUtil.getInt(CHANGE_ICONS,0)]);
+                getResources().getStringArray(R.array.icons)[mSharedPreferenceUtil.getInt(CHANGE_ICONS, 0)]);
 
         //为了兼容小米，应用被彻底清除之后，前台service也会关闭
-        mAutoUpdate.setChecked(Util.isServiceRunning(getActivity(),"com.hon.sunny.service.AutoUpdateService"));
+        mAutoUpdate.setChecked(Util.isServiceRunning(getActivity(), "com.hon.sunny.service.AutoUpdateService"));
 //        mAutoUpdate.setChecked(mSharedPreferenceUtil.getBoolean(AUTO_UPDATE));
         mChangeUpdateTime.setEnabled(mSharedPreferenceUtil.getBoolean(AUTO_UPDATE));
         mChangeUpdateTime.setSummary(
-                "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME,3) + "小时更新");
+                "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME, 3) + "小时更新");
         mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
 
         mChangeIcons.setOnPreferenceClickListener(this);
@@ -117,11 +117,11 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
             ImageLoader.clear(getActivity());
             Observable.just(FileUtil.delete(new File(Sunny.getAppCacheDir() + "/NetCache")))
-                .compose(RxUtils.rxSchedulerHelper()).subscribe(new SimpleSubscriber<Boolean>() {
+                    .compose(RxUtils.rxSchedulerHelper()).subscribe(new SimpleSubscriber<Boolean>() {
                 @Override
                 public void onNext(Boolean success) {
                     mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
-                    if(success){
+                    if (success) {
                         Snackbar.make(getView(), "缓存已清除", Snackbar.LENGTH_SHORT).show();
                     }
                 }
@@ -142,17 +142,17 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         } else if (preference == mAutoUpdate) {
             if (newSetting) {
 
-                Intent i=new Intent(getActivity(), AutoUpdateService.class);
-                i.putExtra(INIT_SERVICE,true);
+                Intent i = new Intent(getActivity(), AutoUpdateService.class);
+                i.putExtra(INIT_SERVICE, true);
                 getActivity().startService(i);
 
-                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE,true);
+                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE, true);
                 mChangeUpdateTime.setEnabled(true);
             } else {
 
                 getActivity().stopService(new Intent(getActivity(), AutoUpdateService.class));
 
-                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE,false);
+                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE, false);
                 mChangeUpdateTime.setEnabled(false);
             }
         } else if (preference == mNotificationType) {
@@ -182,7 +182,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
 
         alertDialog.show();
 
-        switch (mSharedPreferenceUtil.getInt(CHANGE_ICONS,0)) {
+        switch (mSharedPreferenceUtil.getInt(CHANGE_ICONS, 0)) {
             case 0:
                 radioTypeOne.setChecked(true);
                 radioTypeTwo.setChecked(false);
@@ -204,7 +204,7 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         });
 
         done.setOnClickListener(v -> {
-            mSharedPreferenceUtil.putInt(CHANGE_ICONS,radioTypeOne.isChecked() ? 0 : 1);
+            mSharedPreferenceUtil.putInt(CHANGE_ICONS, radioTypeOne.isChecked() ? 0 : 1);
             String[] iconsText = getResources().getStringArray(R.array.icons);
             mChangeIcons.setSummary(radioTypeOne.isChecked() ? iconsText[0] :
                     iconsText[1]);
@@ -239,14 +239,14 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         TextView tvDone = dialogLayout.findViewById(R.id.done);
 
         mSeekBar.setMax(24);
-        mSeekBar.setProgress(mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME,3));
+        mSeekBar.setProgress(mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME, 3));
         tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress()));
         alertDialog.show();
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress()+1));
+                tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress() + 1));
             }
 
             @Override
@@ -260,9 +260,9 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
             }
         });
         tvDone.setOnClickListener(v -> {
-            mSharedPreferenceUtil.putInt(CHANGE_UPDATE_TIME,mSeekBar.getProgress()+1);
+            mSharedPreferenceUtil.putInt(CHANGE_UPDATE_TIME, mSeekBar.getProgress() + 1);
             mChangeUpdateTime.setSummary(
-                    "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME,3) + "小时更新");
+                    "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME, 3) + "小时更新");
             getActivity().stopService(new Intent(getActivity(), AutoUpdateService.class));
             getActivity().startService(new Intent(getActivity(), AutoUpdateService.class));
             alertDialog.dismiss();

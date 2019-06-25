@@ -1,9 +1,10 @@
 package com.hon.sunny.base;
 
 import android.os.Build;
+import android.view.WindowManager;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import android.view.WindowManager;
 
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
@@ -12,8 +13,26 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
  * E-mail:frank_hon@foxmail.com
  */
 
-public abstract class BaseActivity extends AppCompatActivity{
+public abstract class BaseActivity extends AppCompatActivity {
     private static String TAG = BaseActivity.class.getSimpleName();
+
+    public static void setDayTheme(AppCompatActivity activity) {
+        AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_NO);
+        activity.getDelegate().setLocalNightMode(
+                AppCompatDelegate.MODE_NIGHT_NO);
+        // 调用 recreate() 使设置生效
+        activity.recreate();
+    }
+
+    public static void setNightTheme(AppCompatActivity activity) {
+        AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_YES);
+        activity.getDelegate().setLocalNightMode(
+                AppCompatDelegate.MODE_NIGHT_YES);
+        // 调用 recreate() 使设置生效
+        activity.recreate();
+    }
 
     /**
      * 设置状态栏颜色
@@ -52,24 +71,6 @@ public abstract class BaseActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    public static void setDayTheme(AppCompatActivity activity) {
-        AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_NO);
-        activity.getDelegate().setLocalNightMode(
-                AppCompatDelegate.MODE_NIGHT_NO);
-        // 调用 recreate() 使设置生效
-        activity.recreate();
-    }
-
-    public static void setNightTheme(AppCompatActivity activity) {
-        AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_YES);
-        activity.getDelegate().setLocalNightMode(
-                AppCompatDelegate.MODE_NIGHT_YES);
-        // 调用 recreate() 使设置生效
-        activity.recreate();
     }
 
     public void setTheme(boolean isNights, AppCompatActivity activity) {

@@ -14,33 +14,33 @@ import zlc.season.practicalrecyclerview.ItemType;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class GridAdapter extends AbstractAdapter<ItemType,AbstractViewHolder>{
+public class GridAdapter extends AbstractAdapter<ItemType, AbstractViewHolder> {
 
     private OnCityHintItemClickListener mOnCityHintItemClickListener;
 
-    public GridAdapter(){
-        String[] cityList= Sunny.getAppContext().getResources().getStringArray(R.array.city_hint);
-        for(String city:cityList){
-            GridBean bean=new GridBean(city);
+    public GridAdapter() {
+        String[] cityList = Sunny.getAppContext().getResources().getStringArray(R.array.city_hint);
+        for (String city : cityList) {
+            GridBean bean = new GridBean(city);
             add(bean);
         }
     }
 
     @Override
     protected AbstractViewHolder onNewCreateViewHolder(ViewGroup parent, int viewType) {
-        return new GridViewHolder(parent,mOnCityHintItemClickListener);
+        return new GridViewHolder(parent, mOnCityHintItemClickListener);
     }
 
     @Override
     protected void onNewBindViewHolder(AbstractViewHolder holder, int position) {
-        ((GridViewHolder)holder).setData((GridBean) get(position));
+        ((GridViewHolder) holder).setData((GridBean) get(position));
     }
 
-    public void setOnCityHintItemClickListener(OnCityHintItemClickListener listener){
-        this.mOnCityHintItemClickListener=listener;
+    public void setOnCityHintItemClickListener(OnCityHintItemClickListener listener) {
+        this.mOnCityHintItemClickListener = listener;
     }
 
-    public interface OnCityHintItemClickListener{
+    public interface OnCityHintItemClickListener {
         void onCityHintItemClick(String cityName);
     }
 }

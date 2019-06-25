@@ -18,7 +18,7 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  * E-mail:frank_hon@foxmail.com
  */
 
-class ParentViewHolder extends AbstractViewHolder<ParentBean> implements View.OnClickListener{
+class ParentViewHolder extends AbstractViewHolder<ParentBean> implements View.OnClickListener {
     private TextView mText;
     private ImageView mImageView;
 
@@ -30,14 +30,14 @@ class ParentViewHolder extends AbstractViewHolder<ParentBean> implements View.On
 
     private String mZone;
 
-    ParentViewHolder(ExpandAdapter.OnItemClickListener onItemClickListener,AbstractAdapter adapter, ViewGroup parent) {
+    ParentViewHolder(ExpandAdapter.OnItemClickListener onItemClickListener, AbstractAdapter adapter, ViewGroup parent) {
         super(parent, R.layout.parent_item);
-        mText=(TextView)itemView.findViewById(R.id.text);
+        mText = (TextView) itemView.findViewById(R.id.text);
         mText.setOnClickListener(this);
-        mImageView=(ImageView)itemView.findViewById(R.id.image);
+        mImageView = (ImageView) itemView.findViewById(R.id.image);
         mImageView.setOnClickListener(this);
         mAdapter = (ExpandAdapter) adapter;
-        mOnItemClickListener=onItemClickListener;
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -45,19 +45,19 @@ class ParentViewHolder extends AbstractViewHolder<ParentBean> implements View.On
         mText.setText(data.text);
         child = data.mChild;
         parent = data;
-        mZone=data.zone;
-        if(child==null||child.size()==0){
+        mZone = data.zone;
+        if (child == null || child.size() == 0) {
             mImageView.setVisibility(View.INVISIBLE);
-        }else {
+        } else {
             mImageView.setVisibility(View.VISIBLE);
         }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.image:
-                if(child!=null&&child.size()!=0&&View.VISIBLE==mImageView.getVisibility()){
+                if (child != null && child.size() != 0 && View.VISIBLE == mImageView.getVisibility()) {
                     if (parent.isExpand) {
                         mAdapter.removeBack(getAdapterPosition(), child.size());
                         parent.isExpand = false;
@@ -70,12 +70,12 @@ class ParentViewHolder extends AbstractViewHolder<ParentBean> implements View.On
                 }
                 break;
             case R.id.text:
-                if(mOnItemClickListener!=null){
+                if (mOnItemClickListener != null) {
                     String city;
-                    if(mZone!=null&& !TextUtils.isEmpty(mZone)){
-                        city=mZone;
-                    }else {
-                        city=mText.getText().toString();
+                    if (mZone != null && !TextUtils.isEmpty(mZone)) {
+                        city = mZone;
+                    } else {
+                        city = mText.getText().toString();
                     }
                     mOnItemClickListener.onItemClick(city);
                 }

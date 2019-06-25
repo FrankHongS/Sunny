@@ -45,29 +45,6 @@ public class SvgHelper {
         }
     }
 
-    public static class SvgPath {
-        private static final Region sRegion = new Region();
-        private static final Region sMaxClip = new Region(
-                Integer.MIN_VALUE, Integer.MIN_VALUE,
-                Integer.MAX_VALUE, Integer.MAX_VALUE);
-
-        public final Path path;
-        public final Paint paint;
-        public final float length;
-        public final Rect bounds;
-
-        public SvgPath(Path path, Paint paint) {
-            this.path = path;
-            this.paint = paint;
-
-            PathMeasure measure = new PathMeasure(path, false);
-            this.length = measure.getLength();
-
-            sRegion.setPath(path, sMaxClip);
-            bounds = sRegion.getBounds();
-        }
-    }
-
     public List<SvgPath> getPathsForViewport(final int width, final int height) {
         mPaths.clear();
 
@@ -107,5 +84,28 @@ public class SvgHelper {
         mSvg.renderToCanvas(canvas);
 
         return mPaths;
+    }
+
+    public static class SvgPath {
+        private static final Region sRegion = new Region();
+        private static final Region sMaxClip = new Region(
+                Integer.MIN_VALUE, Integer.MIN_VALUE,
+                Integer.MAX_VALUE, Integer.MAX_VALUE);
+
+        public final Path path;
+        public final Paint paint;
+        public final float length;
+        public final Rect bounds;
+
+        public SvgPath(Path path, Paint paint) {
+            this.path = path;
+            this.paint = paint;
+
+            PathMeasure measure = new PathMeasure(path, false);
+            this.length = measure.getLength();
+
+            sRegion.setPath(path, sMaxClip);
+            bounds = sRegion.getBounds();
+        }
     }
 }

@@ -1,7 +1,8 @@
 package com.hon.sunny.ui.main.adapter;
 
-import androidx.core.content.ContextCompat;
 import android.view.View;
+
+import androidx.core.content.ContextCompat;
 
 import com.hon.sunny.R;
 

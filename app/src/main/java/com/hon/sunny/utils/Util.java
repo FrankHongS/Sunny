@@ -19,24 +19,22 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
-import androidx.core.app.NotificationCompat;
 import android.text.TextUtils;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
+import androidx.core.app.NotificationCompat;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.utils.PLog;
 import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.about.domain.VersionBean;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.data.main.bean.Weather;
-import com.hon.sunny.utils.SharedPreferenceUtil;
-import com.hon.sunny.utils.ToastUtil;
+import com.hon.sunny.ui.main.MainActivity;
+import com.hon.sunny.vo.bean.main.CityORM;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -145,7 +143,7 @@ public class Util {
      * 安全的 String 返回
      *
      * @param prefix 默认字段
-     * @param obj 拼接字段 (需检查)
+     * @param obj    拼接字段 (需检查)
      */
     public static String safeText(String prefix, String obj) {
         if (TextUtils.isEmpty(obj)) return "";
@@ -232,7 +230,6 @@ public class Util {
     }
 
     /**
-     *
      * @param context
      * @param dipValue
      * @return
@@ -260,24 +257,25 @@ public class Util {
     }
 
     //parse json by Gson
-    public static VersionBean parseJsonByGson(String json){
-        Gson gson=new Gson();
+    public static VersionBean parseJsonByGson(String json) {
+        Gson gson = new Gson();
         return gson.fromJson(json,
-                new TypeToken<VersionBean>(){}.getType());
+                new TypeToken<VersionBean>() {
+                }.getType());
     }
 
     // check if cities count is more than 3
-    public static boolean checkMultiCitiesCount(){
-        int count=(int) OrmLite.getInstance().queryCount(CityORM.class);
+    public static boolean checkMultiCitiesCount() {
+        int count = (int) OrmLite.getInstance().queryCount(CityORM.class);
 
-        return count>= CITY_COUNT;
+        return count >= CITY_COUNT;
     }
 
     // check if selected city exists
-    public static boolean checkIfCityExists(String city){
-        List<CityORM> cities=OrmLite.getInstance().query(CityORM.class);
-        for(CityORM cityOrm:cities){
-            if(city!=null&&city.equals(cityOrm.getName())){
+    public static boolean checkIfCityExists(String city) {
+        List<CityORM> cities = OrmLite.getInstance().query(CityORM.class);
+        for (CityORM cityOrm : cities) {
+            if (city != null && city.equals(cityOrm.getName())) {
                 return true;
             }
         }
@@ -287,52 +285,52 @@ public class Util {
     @TargetApi(Build.VERSION_CODES.O)
     public static void createNotificationChannel(String channelId,
                                                  String channelName,
-                                                 int importance){
-        NotificationChannel channel=new NotificationChannel(channelId,
-                channelName,importance);
-        NotificationManager notificationManager=
+                                                 int importance) {
+        NotificationChannel channel = new NotificationChannel(channelId,
+                channelName, importance);
+        NotificationManager notificationManager =
                 (NotificationManager) Sunny.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.createNotificationChannel(channel);
 
     }
 
-    public static void normalStyleNotification(String channelId,Weather weather,Context context,Class<? extends Activity> target){
-        SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
+    public static void normalStyleNotification(String channelId, Weather weather, Context context, Class<? extends Activity> target) {
+        SharedPreferenceUtil sharedPreferenceUtil = SharedPreferenceUtil.getInstance();
         Intent intent = new Intent(context, MainActivity.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,channelId);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
         Notification notification = builder
                 .setContentIntent(pendingIntent)
                 // 这里部分 ROM 无法成功
                 .setSmallIcon(R.mipmap.ic_launch_logo)
-                .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),sharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
+                .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(), sharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
                 .setContentTitle(weather.city)
                 .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.txt, weather.now.tmp))
                 .setWhen(System.currentTimeMillis())
                 .setShowWhen(true)
                 .build();
         notification.flags = sharedPreferenceUtil.getNotificationModel();
-        notification.defaults |=Notification.DEFAULT_ALL;
+        notification.defaults |= Notification.DEFAULT_ALL;
         NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // tag和id都是可以拿来区分不同的通知的
         manager.notify(1, notification);
     }
 
-    public static void initIcons(boolean reset){
+    public static void initIcons(boolean reset) {
 
-        SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
+        SharedPreferenceUtil sharedPreferenceUtil = SharedPreferenceUtil.getInstance();
 
-        if(!reset){
-            if(sharedPreferenceUtil.getBoolean(INIT_ICONS)){
+        if (!reset) {
+            if (sharedPreferenceUtil.getBoolean(INIT_ICONS)) {
                 return;
-            }else{
-                sharedPreferenceUtil.putBoolean(INIT_ICONS,true);
+            } else {
+                sharedPreferenceUtil.putBoolean(INIT_ICONS, true);
             }
         }
 
-        if (sharedPreferenceUtil.getInt(CHANGE_ICONS,0) == 0) {
+        if (sharedPreferenceUtil.getInt(CHANGE_ICONS, 0) == 0) {
             sharedPreferenceUtil.putInt("未知", R.mipmap.none);
             sharedPreferenceUtil.putInt("晴", R.mipmap.type_one_sunny);
             sharedPreferenceUtil.putInt("阴", R.mipmap.type_one_cloudy);

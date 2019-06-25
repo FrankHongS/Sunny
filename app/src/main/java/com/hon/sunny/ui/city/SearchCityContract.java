@@ -14,15 +14,19 @@ import java.util.List;
 
 public interface SearchCityContract {
 
-    interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter> {
         void doOnSubscribe();
+
         void onNext(List<ParentBean> list);
+
         void onCompleted();
     }
 
-    interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter {
         void initCityDataBase();
+
         void addItemToHistoryTable(SearchItem item);
+
         void fillResultToRecyclerView(String query);
     }
 }

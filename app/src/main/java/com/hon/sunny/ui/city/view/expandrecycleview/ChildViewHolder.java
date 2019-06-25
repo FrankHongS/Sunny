@@ -15,16 +15,16 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  * E-mail:frank_hon@foxmail.com
  */
 
-class ChildViewHolder extends AbstractViewHolder<ChildBean>{
+class ChildViewHolder extends AbstractViewHolder<ChildBean> {
     @BindView(R.id.text)
     TextView mText;
 
     private ExpandAdapter.OnItemClickListener mOnItemClickListener;
 
-    ChildViewHolder(ExpandAdapter.OnItemClickListener onItemClickListener,ViewGroup parent) {
+    ChildViewHolder(ExpandAdapter.OnItemClickListener onItemClickListener, ViewGroup parent) {
         super(parent, R.layout.child_item);
-        ButterKnife.bind(this,itemView);
-        mOnItemClickListener=onItemClickListener;
+        ButterKnife.bind(this, itemView);
+        mOnItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -34,7 +34,7 @@ class ChildViewHolder extends AbstractViewHolder<ChildBean>{
 
     @OnClick(R.id.text)
     public void onClick() {
-        if(mOnItemClickListener!=null)
+        if (mOnItemClickListener != null)
             mOnItemClickListener.onItemClick(mText.getText().toString());
     }
 }

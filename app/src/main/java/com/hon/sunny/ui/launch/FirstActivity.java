@@ -20,18 +20,18 @@ import com.hon.sunny.ui.main.MainActivity;
 
 public class FirstActivity extends Activity {
     private static final String TAG = FirstActivity.class.getSimpleName();
-    private static final int COUNT_DOWN_TIME=5;
-    private static final int COUNT_DOWN_INTERVAL=1;
+    private static final int COUNT_DOWN_TIME = 5;
+    private static final int COUNT_DOWN_INTERVAL = 1;
     private SvgView mSvgView;
     private TextView mCount;
     private TextView mSkip;
     private FrameLayout mContainer;
 
 
-    private CountDownTimer mCountDownTimer=new CountDownTimer(setCountTime()*1000,COUNT_DOWN_INTERVAL*1000) {
+    private CountDownTimer mCountDownTimer = new CountDownTimer(setCountTime() * 1000, COUNT_DOWN_INTERVAL * 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
-            mCount.setText(millisUntilFinished/1000+"s");
+            mCount.setText(millisUntilFinished / 1000 + "s");
         }
 
         @Override
@@ -40,6 +40,7 @@ public class FirstActivity extends Activity {
             finishSelf();
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //activity切换的淡入淡出效果
@@ -47,39 +48,39 @@ public class FirstActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        mCount=findViewById(R.id.tv_count);
-        mSkip=findViewById(R.id.tv_skip);
-        mContainer=findViewById(R.id.container);
-        addSvgView(getLayoutInflater(),mContainer);
+        mCount = findViewById(R.id.tv_count);
+        mSkip = findViewById(R.id.tv_skip);
+        mContainer = findViewById(R.id.container);
+        addSvgView(getLayoutInflater(), mContainer);
 
         mSkip.setOnClickListener(
-                v->{
+                v -> {
                     finishSelf();
                     mCountDownTimer.cancel();
                 }
         );
     }
 
-    private void addSvgView(LayoutInflater inflater, FrameLayout container){
-        final View view=inflater.inflate(R.layout.item_svg,container,true);
-        mSvgView=(SvgView)view.findViewById(R.id.svg);
+    private void addSvgView(LayoutInflater inflater, FrameLayout container) {
+        final View view = inflater.inflate(R.layout.item_svg, container, true);
+        mSvgView = (SvgView) view.findViewById(R.id.svg);
         mSvgView.setSvgResource(R.raw.cloud);
 
-        new Handler().postDelayed(()-> {
+        new Handler().postDelayed(() -> {
                     mSvgView.startAnimation();
                     mCountDownTimer.start();
                 }
-                ,1000);
+                , 1000);
     }
 
-    private int setCountTime(){
+    private int setCountTime() {
 //        if(BuildConfig.DEBUG){
 //            return 1;
 //        }
         return COUNT_DOWN_TIME;
     }
 
-    private void finishSelf(){
+    private void finishSelf() {
         finish();
         startActivity(new Intent(FirstActivity.this, MainActivity.class));
     }

@@ -6,8 +6,8 @@ import com.hon.simplechartview.ChartEntity;
 import com.hon.simplechartview.ChartView;
 import com.hon.sunny.R;
 import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -31,13 +31,13 @@ public class ForecastChartViewHolder extends BaseViewHolder<Weather> {
     @Override
     public void bind(Weather weather) {
 
-        List<ChartEntity> chartEntities=new ArrayList<>();
+        List<ChartEntity> chartEntities = new ArrayList<>();
 
-        List<String> labelList=new ArrayList<>();
+        List<String> labelList = new ArrayList<>();
 
-        List<Float> maxDataList=new ArrayList<>();
-        List<Float> minDataList=new ArrayList<>();
-        for(Weather.DailyForecastEntity entity:weather.dailyForecast){
+        List<Float> maxDataList = new ArrayList<>();
+        List<Float> minDataList = new ArrayList<>();
+        for (Weather.DailyForecastEntity entity : weather.dailyForecast) {
             maxDataList.add(Float.valueOf(entity.max));
             minDataList.add(Float.valueOf(entity.min));
             try {
@@ -46,13 +46,13 @@ public class ForecastChartViewHolder extends BaseViewHolder<Weather> {
                 labelList.add(entity.date);
             }
         }
-        ChartEntity maxChartEntity=new ChartEntity(maxDataList,itemView.getResources().getColor(R.color.maxLineColor),itemView.getResources().getColor(R.color.chartDotColor));
-        ChartEntity minChartEntity=new ChartEntity(minDataList,itemView.getResources().getColor(R.color.minLineColor),itemView.getResources().getColor(R.color.chartDotColor));
+        ChartEntity maxChartEntity = new ChartEntity(maxDataList, itemView.getResources().getColor(R.color.maxLineColor), itemView.getResources().getColor(R.color.chartDotColor));
+        ChartEntity minChartEntity = new ChartEntity(minDataList, itemView.getResources().getColor(R.color.minLineColor), itemView.getResources().getColor(R.color.chartDotColor));
 
         chartEntities.add(maxChartEntity);
         chartEntities.add(minChartEntity);
 
 
-        chartView.setChartData(chartEntities,labelList);
+        chartView.setChartData(chartEntities, labelList);
     }
 }

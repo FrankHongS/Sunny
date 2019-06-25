@@ -1,11 +1,10 @@
 package com.hon.sunny.data.main.multicity;
 
 import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.data.main.bean.Weather;
-import com.hon.sunny.utils.Constants;
+import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.CityORM;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import java.util.List;
 
@@ -48,14 +47,9 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource {
                     .distinct()
                     .take(3)
                     .flatMap(
-                            s -> RetrofitSingleton.getInstance()
-                                    .getApiService()
-                                    .mWeatherAPI(s, Constants.KEY)
-                                    .map(weatherAPI -> {
-                                        Weather weather = weatherAPI.mHeWeatherDataService30s.get(0);
-                                        weather.city = s;
-                                        return weather;
-                                    })
+                            s -> RetrofitSingleton
+                                    .getInstance()
+                                    .fetchWeather(s)
                     );
 //                .filter(weather -> !Constants.UNKNOWN_CITY.equals(weather.status));
 

@@ -11,31 +11,32 @@ import com.hon.sunny.Sunny;
 
 public class ToastUtil {
 
-    private volatile static Toast sToast=null;
+    private volatile static Toast sToast = null;
 
-    private ToastUtil(){}
+    private ToastUtil() {
+    }
 
-    public static void showShort(String content){
-        if(sToast==null){
-            synchronized (ToastUtil.class){
-                if(sToast==null){
-                    sToast=Toast.makeText(Sunny.getAppContext(),content,Toast.LENGTH_SHORT);
+    public static void showShort(String content) {
+        if (sToast == null) {
+            synchronized (ToastUtil.class) {
+                if (sToast == null) {
+                    sToast = Toast.makeText(Sunny.getAppContext(), content, Toast.LENGTH_SHORT);
                 }
             }
-        }else {
+        } else {
             sToast.setText(content);
         }
         sToast.show();
     }
 
-    public static void showLong(String content){
-        if(sToast==null){
-            synchronized (ToastUtil.class){
-                if(sToast==null){
-                    sToast=Toast.makeText(Sunny.getAppContext(),content,Toast.LENGTH_LONG);
+    public static void showLong(String content) {
+        if (sToast == null) {
+            synchronized (ToastUtil.class) {
+                if (sToast == null) {
+                    sToast = Toast.makeText(Sunny.getAppContext(), content, Toast.LENGTH_LONG);
                 }
             }
-        }else {
+        } else {
             sToast.setText(content);
         }
         sToast.show();

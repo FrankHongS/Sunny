@@ -24,8 +24,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.hon.sunny.R;
-import com.hon.sunny.component.event.ChangeCityEvent;
-import com.hon.sunny.component.event.MultiUpdateEvent;
 import com.hon.sunny.data.main.multicity.MultiCityRemoteDataSource;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.data.main.weather.WeatherRemoteDataSource;
@@ -43,6 +41,8 @@ import com.hon.sunny.utils.CircularAnimUtil;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.event.ChangeCityEvent;
+import com.hon.sunny.vo.event.MultiUpdateEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -58,22 +58,20 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    @BindView(R.id.viewPager)
-    ViewPager mViewPager;
-    @BindView(R.id.toolbar)
-    Toolbar mToolbar;
-    @BindView(R.id.tabLayout)
-    TabLayout mTabLayout;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
-    @BindView(R.id.nav_view)
-    NavigationView mNavView;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
-
     private static final String KEY_MULTI_CITY = "MULTI_CITY";
     private static final String KEY_WEATHER = "WEATHER";
-
+    @BindView(R.id.viewPager)
+    ViewPager viewPager;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tabLayout)
+    TabLayout tabLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.nav_view)
+    NavigationView navigationView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     private Fragment mMultiCityFragment;
     private Fragment mWeatherFragment;
 
@@ -86,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initView(savedInstanceState);
         Util.initIcons(false);
         createNotificationChannel();
-
     }
 
     @Override
@@ -105,27 +102,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            Snackbar.make(mFab, "exit the app", Snackbar.LENGTH_SHORT)
-                    .setAction("yeah", (v) -> finish())
+            Snackbar.make(fab, "exit the app", Snackbar.LENGTH_SHORT)
+                    .setAction("yeah", v -> finish())
                     .show();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void changeCity(ChangeCityEvent event){
-        mViewPager.setCurrentItem(0, true);
+    public void changeCity(ChangeCityEvent event) {
+        viewPager.setCurrentItem(0, true);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void multiUpdate(MultiUpdateEvent event){
-        mViewPager.setCurrentItem(1, true);
+    public void multiUpdate(MultiUpdateEvent event) {
+        viewPager.setCurrentItem(1, true);
     }
 
     private void initView(Bundle savedInstanceState) {
-        setSupportActionBar(mToolbar);
+        setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
             mWeatherFragment = new WeatherFragment();
@@ -135,15 +132,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             mMultiCityFragment = getSupportFragmentManager().getFragment(savedInstanceState, KEY_MULTI_CITY);
         }
 
-        new WeatherPresent(getLifecycle(),WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance()), (WeatherContract.View) mWeatherFragment);
-        new MultiCityPresenter(getLifecycle(),MultiCityRepository.getInstance(MultiCityRemoteDataSource.getInstance()), (MultiCityContract.View) mMultiCityFragment);
+        new WeatherPresent(getLifecycle(), WeatherRepository.getInstance(WeatherRemoteDataSource.getInstance()), (WeatherContract.View) mWeatherFragment);
+        new MultiCityPresenter(getLifecycle(), MultiCityRepository.getInstance(MultiCityRemoteDataSource.getInstance()), (MultiCityContract.View) mMultiCityFragment);
 
         HomePagerAdapter homePagerAdapter = new HomePagerAdapter(getSupportFragmentManager());
         homePagerAdapter.addTab(mWeatherFragment, getResources().getString(R.string.weather_fragment));
         homePagerAdapter.addTab(mMultiCityFragment, getResources().getString(R.string.multi_city_fragment));
-        mViewPager.setAdapter(homePagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.setAdapter(homePagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -153,25 +150,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onPageSelected(int position) {
 
 
-                if (!mFab.isShown()) {//  this is useful
-                    mFab.show();
+                if (!fab.isShown()) {//  this is useful
+                    fab.show();
                 }
-                mFab.post(new Runnable() {
+                fab.post(new Runnable() {
                     @Override
                     public void run() {
-                        mFab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+                        fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
                             @Override
                             public void onHidden(FloatingActionButton fab) {
                                 if (position == 1) {
-                                    mFab.setImageResource(R.drawable.ic_add_24dp);
-                                    mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
-                                    mFab.setOnClickListener(v -> onFabClick(1));
+                                    fab.setImageResource(R.drawable.ic_add_24dp);
+                                    fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorPrimary)));
+                                    fab.setOnClickListener(v -> onFabClick(1));
                                 } else if (position == 0) {
-                                    mFab.setImageResource(R.drawable.ic_favorite);
-                                    mFab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
-                                    mFab.setOnClickListener(v -> onFabClick(0));
+                                    fab.setImageResource(R.drawable.ic_favorite);
+                                    fab.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(MainActivity.this, R.color.colorAccent)));
+                                    fab.setOnClickListener(v -> onFabClick(0));
                                 }
-                                if (!mFab.isShown()) {
+                                if (!fab.isShown()) {
                                     fab.show();
                                 }
                             }
@@ -187,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        mFab.setOnClickListener(v -> onFabClick(0));
+        fab.setOnClickListener(v -> onFabClick(0));
 
         initDrawer();
     }
@@ -199,11 +196,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case 1:
                 if (Util.checkMultiCitiesCount()) {
-                    Snackbar.make(mFab, R.string.city_count, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(fab, R.string.city_count, Snackbar.LENGTH_LONG).show();
                 } else {
                     Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
                     intent.putExtra(Constants.MULTI_CHECK, true);
-                    CircularAnimUtil.startActivity(MainActivity.this, intent, mFab,
+                    CircularAnimUtil.startActivity(MainActivity.this, intent, fab,
                             R.color.colorPrimary);
                 }
                 break;
@@ -213,19 +210,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initDrawer() {
-        if (mNavView != null) {
-            mNavView.setNavigationItemSelectedListener(this);
-            mNavView.inflateHeaderView(R.layout.nav_header_main);
+        if (navigationView != null) {
+            navigationView.setNavigationItemSelectedListener(this);
+            navigationView.inflateHeaderView(R.layout.nav_header_main);
             ActionBarDrawerToggle toggle =
-                    new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open,
+                    new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
                             R.string.navigation_drawer_close);
-            mDrawerLayout.addDrawerListener(toggle);
+            drawerLayout.addDrawerListener(toggle);
             toggle.syncState();
         }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+
         switch (item.getItemId()) {
             case R.id.nav_set:
                 launch(SettingActivity.class);
@@ -237,10 +237,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 launch(SearchCityActivity.class);
                 break;
             case R.id.nav_multi_cities:
-                mViewPager.setCurrentItem(1);
+                viewPager.setCurrentItem(1);
                 break;
         }
-        mDrawerLayout.closeDrawer(GravityCompat.START);
+
         return false;
     }
 
@@ -256,10 +256,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void displayFabMaterial(boolean isScrolledDown) {
-        if (isScrolledDown && !mFab.isShown()) {
-            mFab.show();
-        } else if (!isScrolledDown && mFab.isShown()) {
-            mFab.hide();
+        if (isScrolledDown && !fab.isShown()) {
+            fab.show();
+        } else if (!isScrolledDown && fab.isShown()) {
+            fab.hide();
         }
     }
 }

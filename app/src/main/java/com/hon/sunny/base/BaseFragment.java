@@ -2,12 +2,12 @@ package com.hon.sunny.base;
 
 
 import android.os.Bundle;
+import android.text.TextUtils;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
-import android.text.TextUtils;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -42,7 +42,7 @@ public abstract class BaseFragment extends Fragment {
 
     protected void safeSetTitle(String title) {
         ActionBar appBarLayout = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (appBarLayout != null&& !TextUtils.isEmpty(title)) {
+        if (appBarLayout != null && !TextUtils.isEmpty(title)) {
             appBarLayout.setTitle(title);
         }
     }

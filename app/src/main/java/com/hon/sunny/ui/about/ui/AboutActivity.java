@@ -49,13 +49,17 @@ public class AboutActivity extends BaseActivity {
     @BindView(R.id.bt_bug)
     Button mBtBug;
 
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, AboutActivity.class));
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         ButterKnife.bind(this);
         StatusBarUtil.setImmersiveStatusBar(this);
-        StatusBarUtil.setImmersiveStatusBarToolbar(mToolbar,this);
+        StatusBarUtil.setImmersiveStatusBarToolbar(mToolbar, this);
         initView();
     }
 
@@ -80,7 +84,7 @@ public class AboutActivity extends BaseActivity {
         }
     }
 
-    @OnClick({ R.id.bt_code, R.id.bt_blog, R.id.bt_pay, R.id.bt_share, R.id.bt_bug, R.id.bt_update })
+    @OnClick({R.id.bt_code, R.id.bt_blog, R.id.bt_pay, R.id.bt_share, R.id.bt_bug, R.id.bt_update})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.bt_code:
@@ -114,9 +118,5 @@ public class AboutActivity extends BaseActivity {
         intent.setAction(Intent.ACTION_VIEW);           //指定Action
         intent.setData(uri);                            //设置Uri
         startActivity(intent);        //启动Activity
-    }
-
-    public static void launch(Context context) {
-        context.startActivity(new Intent(context, AboutActivity.class));
     }
 }

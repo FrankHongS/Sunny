@@ -1,4 +1,4 @@
-package com.hon.sunny.data.main.bean;
+package com.hon.sunny.vo.bean.main;
 
 /**
  * Created by Frank_Hon on 4/12/2019.
@@ -12,8 +12,8 @@ public class HourInfoEntity {
     private String hum;
     private String spd;
 
-    public HourInfoEntity(String city,String time, String tmp, String hum, String spd) {
-        this.city=city;
+    public HourInfoEntity(String city, String time, String tmp, String hum, String spd) {
+        this.city = city;
         this.time = time;
         this.tmp = tmp;
         this.hum = hum;

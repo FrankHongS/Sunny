@@ -16,14 +16,13 @@ import java.io.IOException;
  */
 
 public class PLog {
-    public static boolean isDebug = BuildConfig.DEBUG;
     public static final String PATH = Sunny.getAppFileDir();
     public static final String PLOG_FILE_NAME = "log.txt";
-
     /**
      * 是否写入日志文件
      */
     public static final boolean PLOG_WRITE_TO_FILE = true;
+    public static boolean isDebug = BuildConfig.DEBUG;
 
     /**
      * 错误信息
@@ -89,8 +88,8 @@ public class PLog {
         i(getClassName(), msg);
     }
 
-    public static void d(Class<?> clazz,String msg) {
-        d(clazz.getSimpleName(),msg);
+    public static void d(Class<?> clazz, String msg) {
+        d(clazz.getSimpleName(), msg);
     }
 
     /**

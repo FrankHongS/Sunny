@@ -3,14 +3,12 @@ package com.hon.sunny.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.hon.sunny.utils.EnvUtil;
-import com.hon.sunny.utils.SdkUtil;
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * Created by Frank on 2017/8/10.

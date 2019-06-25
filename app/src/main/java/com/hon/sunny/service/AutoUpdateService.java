@@ -11,13 +11,13 @@ import androidx.core.app.NotificationCompat;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,8 +32,8 @@ import io.reactivex.disposables.Disposable;
 
 public class AutoUpdateService extends Service {
 
-    private static final String TAG=AutoUpdateService.class.getSimpleName();
-    
+    private static final String TAG = AutoUpdateService.class.getSimpleName();
+
     private SharedPreferenceUtil mSharedPreferenceUtil;
     private CompositeDisposable mAutoUpdateCompositeDisposable;
 
@@ -52,7 +52,7 @@ public class AutoUpdateService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        boolean initService=intent.getBooleanExtra(Constants.INIT_SERVICE,false);
+        boolean initService = intent.getBooleanExtra(Constants.INIT_SERVICE, false);
 //        if(initService){ todo 如何实现启动之后立即更新，下面的interval应该不可以
 //            fetchDataByNetWork();
 //        }
@@ -60,13 +60,13 @@ public class AutoUpdateService extends Service {
         Disposable netSubscription = Flowable
                 .interval(SharedPreferenceUtil.getInstance().getInt(Constants.CHANGE_UPDATE_TIME, 3),
                         TimeUnit.HOURS)
-                .flatMap(l->{
+                .flatMap(l -> {
                     String cityName = mSharedPreferenceUtil.getCityName();
                     if (cityName != null) {
                         cityName = Util.replaceCity(cityName);
                         return RetrofitSingleton.getInstance()
                                 .fetchWeather(cityName);
-                    }else {
+                    } else {
                         return Flowable.error(new IllegalArgumentException("city name is null"));
                     }
                 })
@@ -84,14 +84,14 @@ public class AutoUpdateService extends Service {
         mAutoUpdateCompositeDisposable.dispose();
     }
 
-    private void sendNotification(Weather weather){
+    private void sendNotification(Weather weather) {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         Notification notification =
                 new NotificationCompat.Builder(this, Constants.CHANNEL_ID_WEATHER)
-                        .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(),mSharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
+                        .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(), mSharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
                         .setContentTitle(weather.city)
                         .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.txt, weather.now.tmp))
                         // important!, not showing if not set
@@ -100,7 +100,7 @@ public class AutoUpdateService extends Service {
                         .setTicker("ticker")
                         .build();
 
-        startForeground(1,notification);
+        startForeground(1, notification);
 
     }
 

@@ -16,21 +16,21 @@ import io.reactivex.Observable;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class CityRepository implements CityDataSource{
+public class CityRepository implements CityDataSource {
 
     private static CityRepository INSTANCE;
 
     private final CityDataSource mCityDataSource;
 
-    private CityRepository(CityDataSource cityLocalDataSource){
-        mCityDataSource=cityLocalDataSource;
+    private CityRepository(CityDataSource cityLocalDataSource) {
+        mCityDataSource = cityLocalDataSource;
     }
 
-    public static CityRepository getInstance(CityDataSource cityLocalDataSource){
-        if(INSTANCE==null){
-            synchronized (MultiCityRepository.class){
-                if(INSTANCE==null){
-                    INSTANCE=new CityRepository(cityLocalDataSource);
+    public static CityRepository getInstance(CityDataSource cityLocalDataSource) {
+        if (INSTANCE == null) {
+            synchronized (MultiCityRepository.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new CityRepository(cityLocalDataSource);
                 }
             }
         }

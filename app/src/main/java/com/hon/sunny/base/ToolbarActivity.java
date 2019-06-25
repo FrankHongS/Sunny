@@ -2,13 +2,14 @@ package com.hon.sunny.base;
 
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.appbar.AppBarLayout;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.appbar.AppBarLayout;
 import com.hon.sunny.R;
 
 /**
@@ -18,14 +19,14 @@ import com.hon.sunny.R;
 
 public abstract class ToolbarActivity extends BaseActivity {
 
+    protected AppBarLayout mAppBar;
+    protected Toolbar mToolbar;
+    protected boolean mIsHidden = false;
+
     abstract protected int provideContentViewId();
 
     public void onToolbarClick() {
     }
-
-    protected AppBarLayout mAppBar;
-    protected Toolbar mToolbar;
-    protected boolean mIsHidden = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

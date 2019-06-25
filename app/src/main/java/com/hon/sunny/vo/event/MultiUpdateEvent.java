@@ -1,4 +1,4 @@
-package com.hon.sunny.component.event;
+package com.hon.sunny.vo.event;
 
 /**
  * Created by Frank on 2017/8/10.

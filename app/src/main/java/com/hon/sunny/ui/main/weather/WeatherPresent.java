@@ -54,7 +54,7 @@ public class WeatherPresent implements WeatherContract.Presenter, LifecycleObser
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    public void dispose(){
+    public void dispose() {
         mWeatherCompositeDisposable.dispose();
     }
 }

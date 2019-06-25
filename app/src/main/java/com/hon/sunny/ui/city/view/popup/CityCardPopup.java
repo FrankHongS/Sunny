@@ -6,11 +6,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import androidx.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
 
 import com.hon.sunny.R;
 import com.labo.kaji.relativepopupwindow.RelativePopupWindow;
@@ -20,7 +21,7 @@ import com.labo.kaji.relativepopupwindow.RelativePopupWindow;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class CityCardPopup extends RelativePopupWindow{
+public class CityCardPopup extends RelativePopupWindow {
     public CityCardPopup(Context context) {
         setContentView(LayoutInflater.from(context).inflate(R.layout.popup_card, null));
         setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);

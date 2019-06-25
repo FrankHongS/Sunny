@@ -14,28 +14,28 @@ import java.util.List;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class CitySuggestionBuilder implements SearchSuggestionsBuilder{
+public class CitySuggestionBuilder implements SearchSuggestionsBuilder {
     private SearchHistoryTable mSearchHistoryTable;
 
-    public CitySuggestionBuilder(Context context){
-        mSearchHistoryTable=SearchHistoryTable.getInstance(context);
+    public CitySuggestionBuilder(Context context) {
+        mSearchHistoryTable = SearchHistoryTable.getInstance(context);
     }
 
 
     @Override
     public Collection<SearchItem> buildEmptySearchSuggestion(int maxCount) {
-        List<SearchItem> items=mSearchHistoryTable.getAllItems(null);
-        if(items.size()>maxCount){
-            items=items.subList(0,maxCount);
+        List<SearchItem> items = mSearchHistoryTable.getAllItems(null);
+        if (items.size() > maxCount) {
+            items = items.subList(0, maxCount);
         }
         return items;
     }
 
     @Override
     public Collection<SearchItem> buildSearchSuggestion(int maxCount, String query) {
-        List<SearchItem> items=mSearchHistoryTable.getSuggestionItems(query);
-        if(items.size()>maxCount){
-            items=items.subList(0,maxCount);
+        List<SearchItem> items = mSearchHistoryTable.getSuggestionItems(query);
+        if (items.size() > maxCount) {
+            items = items.subList(0, maxCount);
         }
         return items;
     }

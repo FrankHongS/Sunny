@@ -3,13 +3,14 @@ package com.hon.sunny.ui.main.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
@@ -19,7 +20,7 @@ import com.hon.sunny.base.BaseViewHolder;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
-import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import java.util.List;
 
@@ -35,18 +36,18 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
     private List<Weather> mWeatherList;
     private OnMultiCityClickListener onMultiCityClickListener = null;
 
-    public void setOnMultiCityClickListener(OnMultiCityClickListener onMultiCityClickListener) {
-        this.onMultiCityClickListener = onMultiCityClickListener;
-    }
-
     public MultiCityAdapter(List<Weather> weatherList) {
         mWeatherList = weatherList;
+    }
+
+    public void setOnMultiCityClickListener(OnMultiCityClickListener onMultiCityClickListener) {
+        this.onMultiCityClickListener = onMultiCityClickListener;
     }
 
     @Override
     public MultiCityViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View itemView=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_city, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_multi_city, parent, false);
         return new MultiCityViewHolder(itemView);
     }
 
@@ -54,7 +55,7 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
     public void onBindViewHolder(MultiCityViewHolder holder, int position) {
 
         holder.bind(mWeatherList.get(position));
-        holder.itemView.setOnClickListener(v->{
+        holder.itemView.setOnClickListener(v -> {
             onMultiCityClickListener.onClick(mWeatherList.get(holder.getAdapterPosition()).city);
         });
         holder.itemView.setOnLongClickListener(v -> {
@@ -70,6 +71,12 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
 
     public boolean isEmpty() {
         return 0 == mWeatherList.size();
+    }
+
+    public interface OnMultiCityClickListener {
+        void onLongClick(String city);
+
+        void onClick(String city);
     }
 
     class MultiCityViewHolder extends BaseViewHolder<Weather> {
@@ -94,13 +101,13 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
             int code;
             CardCityUIHelper cardCityUIHelper = new CardCityUIHelper();
 
-            if(Constants.UNKNOWN_CITY.equals(weather.status)){
-                weatherDesc="未知";
-                code=-1;
+            if (Constants.UNKNOWN_CITY.equals(weather.status)) {
+                weatherDesc = "未知";
+                code = -1;
                 mDialogCity.setText(Util.safeText(weather.city));
                 mDialogTemp.setText("error");
-            }else {
-                weatherDesc=weather.now.txt;
+            } else {
+                weatherDesc = weather.now.txt;
                 code = Integer.valueOf(weather.now.code);
                 mDialogCity.setText(Util.safeText(weather.city));
                 mDialogTemp.setText(String.format("%s℃", weather.now.tmp));
@@ -120,11 +127,6 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
                     });
 
         }
-    }
-
-    public interface OnMultiCityClickListener {
-        void onLongClick(String city);
-        void onClick(String city);
     }
 }
 

@@ -15,18 +15,18 @@ import zlc.season.practicalrecyclerview.AbstractViewHolder;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class GridViewHolder extends AbstractViewHolder<GridBean>{
+public class GridViewHolder extends AbstractViewHolder<GridBean> {
 
     @BindView(R.id.btn_city_hint)
     Button cityHint;
 
     private GridAdapter.OnCityHintItemClickListener mOnCityHintItemClickListener;
 
-    public GridViewHolder(ViewGroup parent, GridAdapter.OnCityHintItemClickListener listener){
+    public GridViewHolder(ViewGroup parent, GridAdapter.OnCityHintItemClickListener listener) {
         super(parent, R.layout.item_city_hint);
-        ButterKnife.bind(this,itemView);
+        ButterKnife.bind(this, itemView);
 
-        this.mOnCityHintItemClickListener=listener;
+        this.mOnCityHintItemClickListener = listener;
     }
 
     @Override
@@ -35,8 +35,8 @@ public class GridViewHolder extends AbstractViewHolder<GridBean>{
     }
 
     @OnClick(R.id.btn_city_hint)
-    public void onClick(){
-        if(mOnCityHintItemClickListener!=null)
+    public void onClick() {
+        if (mOnCityHintItemClickListener != null)
             mOnCityHintItemClickListener.onCityHintItemClick(cityHint.getText().toString());
     }
 }

@@ -22,15 +22,14 @@ import java.util.List;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class SvgView extends View{
+public class SvgView extends View {
     private static final String LOG_TAG = "StateView";
 
     private final Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private final SvgHelper mSvg = new SvgHelper(mPaint);
-    private int mSvgResource;
-
     private final Object mSvgLock = new Object();
+    private int mSvgResource;
     private List<SvgHelper.SvgPath> mPaths = new ArrayList<SvgHelper.SvgPath>(0);
     private Thread mLoader;
 
@@ -70,10 +69,14 @@ public class SvgView extends View{
         }
     }
 
+    private static PathEffect createPathEffect(float pathLength, float phase, float offset) {
+        return new DashPathEffect(new float[]{pathLength, pathLength},
+                Math.max(phase * pathLength, offset));
+    }
+
     public float getPhase() {
         return mPhase;
     }
-
 
     public void setPhase(float phase) {
         mPhase = phase;
@@ -148,13 +151,7 @@ public class SvgView extends View{
         }
     }
 
-    private static PathEffect createPathEffect(float pathLength, float phase, float offset) {
-        return new DashPathEffect(new float[] { pathLength, pathLength },
-                Math.max(phase * pathLength, offset));
-    }
-
-    public void startAnimation()
-    {
+    public void startAnimation() {
         mPhase = mOriginphase;
         if (mSvgAnimator == null) {
 
@@ -187,7 +184,7 @@ public class SvgView extends View{
 
                 }
             });
-        }else {
+        } else {
             mSvgAnimator.start();
         }
 
@@ -203,7 +200,7 @@ public class SvgView extends View{
         this.mCallback = mCallback;
     }
 
-    interface SvgCompletedCallBack{
+    interface SvgCompletedCallBack {
         void onSvgStart();
 
         void onSvgCompleted();

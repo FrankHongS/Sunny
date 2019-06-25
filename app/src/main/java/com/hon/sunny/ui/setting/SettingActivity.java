@@ -14,6 +14,10 @@ import com.hon.sunny.base.ToolbarActivity;
 
 public class SettingActivity extends ToolbarActivity {
 
+    public static void launch(Context context) {
+        context.startActivity(new Intent(context, SettingActivity.class));
+    }
+
     @Override
     protected int provideContentViewId() {
         return R.layout.activity_setting;
@@ -47,9 +51,5 @@ public class SettingActivity extends ToolbarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    public static void launch(Context context) {
-        context.startActivity(new Intent(context, SettingActivity.class));
     }
 }

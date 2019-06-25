@@ -15,11 +15,11 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class SunnyRecyclerView extends RecyclerView {
     public SunnyRecyclerView(@NonNull Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public SunnyRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public SunnyRecyclerView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyle) {

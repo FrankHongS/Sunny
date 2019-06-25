@@ -7,12 +7,12 @@ import zlc.season.practicalrecyclerview.ItemType;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class GridBean implements ItemType{
+public class GridBean implements ItemType {
 
     public String cityName;
 
-    public GridBean(String cityName){
-        this.cityName=cityName;
+    public GridBean(String cityName) {
+        this.cityName = cityName;
     }
 
     @Override

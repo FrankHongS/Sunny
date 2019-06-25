@@ -14,12 +14,12 @@ public class ParentBean implements ItemType {
 
     public List<ChildBean> mChild;
 
-    public String zone="";
+    public String zone = "";
 
     /**
      * 是否展开
      */
-    boolean isExpand=false;
+    boolean isExpand = false;
 
     @Override
     public int itemType() {

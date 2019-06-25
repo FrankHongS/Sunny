@@ -1,4 +1,4 @@
-package com.hon.sunny.data.main.bean;
+package com.hon.sunny.vo.bean.main;
 
 /**
  * Created by Frank Hon on 2019/4/12 11:40 PM.
@@ -16,9 +16,9 @@ public class ForecastEntity {
     private String spd;
     private String pop;
 
-    public ForecastEntity(String city,String date, String max, String min,
+    public ForecastEntity(String city, String date, String max, String min,
                           String txtD, String sc, String dir, String spd, String pop) {
-        this.city=city;
+        this.city = city;
         this.date = date;
         this.max = max;
         this.min = min;

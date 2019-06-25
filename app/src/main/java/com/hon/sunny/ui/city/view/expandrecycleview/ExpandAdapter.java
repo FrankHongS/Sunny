@@ -6,23 +6,21 @@ import zlc.season.practicalrecyclerview.AbstractAdapter;
 import zlc.season.practicalrecyclerview.AbstractViewHolder;
 import zlc.season.practicalrecyclerview.ItemType;
 
-import static android.media.CamcorderProfile.get;
-
 /**
  * Created by Frank on 2017/9/4.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class ExpandAdapter extends AbstractAdapter<ItemType,AbstractViewHolder> {
+public class ExpandAdapter extends AbstractAdapter<ItemType, AbstractViewHolder> {
 
     private OnItemClickListener mOnItemClickListener;
 
     @Override
     protected AbstractViewHolder onNewCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == RecyclerItemType.PARENT.getValue()) {
-            return new ParentViewHolder(mOnItemClickListener,this, parent);
+            return new ParentViewHolder(mOnItemClickListener, this, parent);
         } else if (viewType == RecyclerItemType.CHILD.getValue()) {
-            return new ChildViewHolder(mOnItemClickListener,parent);
+            return new ChildViewHolder(mOnItemClickListener, parent);
         }
         return null;
     }
@@ -42,11 +40,11 @@ public class ExpandAdapter extends AbstractAdapter<ItemType,AbstractViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.mOnItemClickListener=listener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(String text);
     }
 }

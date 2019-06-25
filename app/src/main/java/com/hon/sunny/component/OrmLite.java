@@ -14,7 +14,7 @@ public class OrmLite {
     private static LiteOrm sLiteOrm;
 
     public static LiteOrm getInstance() {
-        if(sLiteOrm==null){
+        if (sLiteOrm == null) {
             sLiteOrm = LiteOrm.newSingleInstance(Sunny.getAppContext(), Constants.ORM_NAME);
             sLiteOrm.setDebugged(BuildConfig.DEBUG);
         }

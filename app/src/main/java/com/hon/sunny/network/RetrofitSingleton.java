@@ -1,16 +1,16 @@
-package com.hon.sunny.component.retrofit;
+package com.hon.sunny.network;
 
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.data.main.bean.Weather;
 import com.hon.sunny.ui.about.domain.VersionAPI;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.CityORM;
+import com.hon.sunny.vo.bean.main.Weather;
 import com.litesuits.orm.db.assit.WhereBuilder;
 
 import java.io.File;
@@ -33,7 +33,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Frank on 2017/8/10.
  * E-mail:frank_hon@foxmail.com
  */
-
 public class RetrofitSingleton {
 
     private static RetrofitSingleton sRetrofitSingleton;
@@ -41,31 +40,21 @@ public class RetrofitSingleton {
     private static Retrofit sRetrofit = null;
     private static OkHttpClient sOkHttpClient = null;
 
-    private void init() {
-        initOkHttp();
-        initRetrofit();
-        sApiService = sRetrofit.create(ApiInterface.class);
-    }
-
     private RetrofitSingleton() {
         init();
     }
 
     public static RetrofitSingleton getInstance() {
 //        return SingletonHolder.INSTANCE;
-        if(sRetrofitSingleton==null){
-            synchronized (RetrofitSingleton.class){
-                if(sRetrofitSingleton==null){
-                    sRetrofitSingleton=new RetrofitSingleton();
+        if (sRetrofitSingleton == null) {
+            synchronized (RetrofitSingleton.class) {
+                if (sRetrofitSingleton == null) {
+                    sRetrofitSingleton = new RetrofitSingleton();
                 }
             }
         }
         return sRetrofitSingleton;
     }
-
-//    private static class SingletonHolder {
-//        private static final RetrofitSingleton INSTANCE = new RetrofitSingleton();
-//    }
 
     private static void initOkHttp() {
         OkHttpClient.Builder builder = new OkHttpClient.Builder();
@@ -78,16 +67,16 @@ public class RetrofitSingleton {
 
 
         // 缓存 http://www.jianshu.com/p/93153b34310e
-        File cacheFile = new File(Sunny.getAppCacheDir()+"/NetCache");
+        File cacheFile = new File(Sunny.getAppCacheDir() + "/NetCache");
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 50);
 
 
         Interceptor cacheInterceptor = chain -> {
             Request request = chain.request();
             if (!Util.isNetworkConnected(Sunny.getAppContext())) {
-                    request = request.newBuilder()
-                            .cacheControl(CacheControl.FORCE_CACHE)
-                            .build();
+                request = request.newBuilder()
+                        .cacheControl(CacheControl.FORCE_CACHE)
+                        .build();
             }
             Response response = chain.proceed(request);
             Response.Builder newBuilder = response.newBuilder();
@@ -126,7 +115,7 @@ public class RetrofitSingleton {
 
     public static void disposeFailureInfo(Throwable t) {
         if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||
-                t.toString().contains("UnknownHostException")||t.toString().contains("504")) {
+                t.toString().contains("UnknownHostException") || t.toString().contains("504")) {
             ToastUtil.showShort("网络问题");
         } else if (t.toString().contains("API没有")) {
             OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("name=?", Util.replaceInfo(t.getMessage())));
@@ -136,27 +125,42 @@ public class RetrofitSingleton {
         PLog.e(t.getMessage());
     }
 
+    private void init() {
+        initOkHttp();
+        initRetrofit();
+        sApiService = sRetrofit.create(ApiInterface.class);
+    }
+
     public ApiInterface getApiService() {
-            return sApiService;
+        return sApiService;
     }
 
     public Flowable<Weather> fetchWeather(String city) {
-
-        return sApiService.mWeatherAPI(city, Constants.KEY)
-                .flatMap(weatherAPI -> {
-                    String status = weatherAPI.mHeWeatherDataService30s.get(0).status;
+        return sApiService.weather(city, Constants.KEY)
+                .flatMap(weatherContainer -> {
+                    String status = weatherContainer.weatherList.get(0).status;
                     if ("no more requests".equals(status)) {
                         return Flowable.error(new RuntimeException("/(ㄒoㄒ)/~~,API免费次数已用完"));
                     } else if ("unknown city".equals(status)) {
                         return Flowable.error(new RuntimeException(String.format("API没有%s", city)));
                     }
-                    return Flowable.just(weatherAPI);
+                    return Flowable.just(weatherContainer);
                 })
-                .map(weatherAPI -> {
-                    Weather weather=weatherAPI.mHeWeatherDataService30s.get(0);
-                    weather.city=city;
+                .map(weatherContainer -> {
+                    Weather weather = weatherContainer.weatherList.get(0);
+                    weather.city = city;
                     return weather;
                 })
+                .flatMap(weather -> sApiService
+                        .weatherQuality(city, Constants.KEY)
+                        .map(weatherQuality -> {
+                            if (weatherQuality != null) {
+                                weather.quality = weatherQuality.qualityList.get(0).airNowCity.quality;
+                                weather.pm25 = weatherQuality.qualityList.get(0).airNowCity.pm25;
+                            }
+                            return weather;
+                        })
+                )
                 .compose(RxUtils.rxFlowableSchedulerHelper());
     }
 

@@ -1,4 +1,4 @@
-package com.hon.sunny.data.city.bean;
+package com.hon.sunny.vo.bean.city;
 
 import java.io.Serializable;
 

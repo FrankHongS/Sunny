@@ -21,7 +21,7 @@ public class FileUtil {
             }
 
             for (File childFile : childFiles) {
-                if(!delete(childFile))
+                if (!delete(childFile))
                     return false;
             }
             return true;

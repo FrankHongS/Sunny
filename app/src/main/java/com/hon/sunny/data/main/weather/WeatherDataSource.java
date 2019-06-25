@@ -1,6 +1,6 @@
 package com.hon.sunny.data.main.weather;
 
-import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.vo.bean.main.Weather;
 
 import io.reactivex.Flowable;
 

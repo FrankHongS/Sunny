@@ -5,15 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.hon.sunny.R;
-import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.data.main.bean.HourInfoEntity;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.hon.sunny.R;
+import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.vo.bean.main.HourInfoEntity;
+
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -28,8 +29,8 @@ public class HourInfoAdapter extends RecyclerView.Adapter<HourInfoAdapter.HourIn
     @Override
     public HourInfoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view= LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_hour_info_subitem,parent,false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_hour_info_subitem, parent, false);
 
         return new HourInfoViewHolder(view);
     }
@@ -41,10 +42,10 @@ public class HourInfoAdapter extends RecyclerView.Adapter<HourInfoAdapter.HourIn
 
     @Override
     public int getItemCount() {
-        return mHourInfoList==null?0:mHourInfoList.size();
+        return mHourInfoList == null ? 0 : mHourInfoList.size();
     }
 
-    public void swapDataList(List<HourInfoEntity> hourInfoList){
+    public void swapDataList(List<HourInfoEntity> hourInfoList) {
         if (mHourInfoList == null) {
             mHourInfoList = hourInfoList;
             notifyDataSetChanged();
@@ -71,16 +72,16 @@ public class HourInfoAdapter extends RecyclerView.Adapter<HourInfoAdapter.HourIn
                     HourInfoEntity newHourInfo = hourInfoList.get(newItemPosition);
                     HourInfoEntity oldHourInfo = mHourInfoList.get(oldItemPosition);
                     return oldHourInfo.getTmp().equals(newHourInfo.getTmp())
-                            &&oldHourInfo.getCity().equals(newHourInfo.getCity());
+                            && oldHourInfo.getCity().equals(newHourInfo.getCity());
                 }
             });
 
-            mHourInfoList=hourInfoList;
+            mHourInfoList = hourInfoList;
             result.dispatchUpdatesTo(this);
         }
     }
 
-    static class HourInfoViewHolder extends BaseViewHolder<HourInfoEntity>{
+    static class HourInfoViewHolder extends BaseViewHolder<HourInfoEntity> {
 
         @BindView(R.id.tv_time)
         TextView time;

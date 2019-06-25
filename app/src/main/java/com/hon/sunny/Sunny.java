@@ -10,11 +10,11 @@ import com.hon.sunny.utils.CrashHandler;
 /**
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
- *
+ * <p>
  * project architecture:https://github.com/googlesamples/android-architecture/tree/todo-mvp/
  */
 
-public class Sunny extends Application{
+public class Sunny extends Application {
     private static String sCacheDir;
     private static Context sAppContext;
 
@@ -24,10 +24,22 @@ public class Sunny extends Application{
                 AppCompatDelegate.MODE_NIGHT_NO);
     }
 
+    public static Context getAppContext() {
+        return sAppContext;
+    }
+
+    public static String getAppCacheDir() {
+        return sCacheDir;
+    }
+
+    public static String getAppFileDir() {
+        return sAppContext.getFilesDir().toString();
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-        sAppContext=getApplicationContext();
+        sAppContext = getApplicationContext();
 
         CrashHandler.init(new CrashHandler(this));
 
@@ -40,17 +52,5 @@ public class Sunny extends Application{
 
     private boolean ExistSDCard() {
         return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
-    }
-
-    public static Context getAppContext() {
-        return sAppContext;
-    }
-
-    public static String getAppCacheDir() {
-        return sCacheDir;
-    }
-
-    public static String getAppFileDir(){
-        return sAppContext.getFilesDir().toString();
     }
 }

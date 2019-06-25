@@ -13,10 +13,8 @@ import java.io.Writer;
 
 public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private static Thread.UncaughtExceptionHandler mDefaultHandler = null;
-
-    private Context mContext = null;
-
     private final String TAG = CrashHandler.class.getSimpleName();
+    private Context mContext = null;
 
     public CrashHandler(Context context) {
         this.mContext = context;

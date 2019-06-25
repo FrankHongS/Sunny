@@ -5,9 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.appcompat.app.AlertDialog;
 
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
+import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.about.domain.VersionAPI;
 import com.hon.sunny.ui.about.domain.VersionBean;
 import com.pgyersdk.update.PgyUpdateManager;
@@ -36,7 +37,7 @@ public class CheckVersion {
                 });
     }
 
-    public static void checkVersionByPgy(Activity activity){
+    public static void checkVersionByPgy(Activity activity) {
         PgyUpdateManager.register(activity, "com.hon.sunny.frank_hon",
                 new UpdateManagerListener() {
                     @Override
@@ -46,11 +47,11 @@ public class CheckVersion {
                     @Override
                     public void onUpdateAvailable(String result) {
                         int currentVersionCode = Util.getVersionCode(activity);
-                        VersionBean versionBean=Util.parseJsonByGson(result);
-                        if(versionBean!=null){
-                            int serverVersionCode=versionBean.data.versionCode;
-                            if (currentVersionCode<serverVersionCode) {
-                                if (SharedPreferenceUtil.getInstance().getInt("version_code", 0)!=serverVersionCode) {
+                        VersionBean versionBean = Util.parseJsonByGson(result);
+                        if (versionBean != null) {
+                            int serverVersionCode = versionBean.data.versionCode;
+                            if (currentVersionCode < serverVersionCode) {
+                                if (SharedPreferenceUtil.getInstance().getInt("version_code", 0) != serverVersionCode) {
                                     showUpdateDialog(versionBean, activity);
                                 }
                             }
@@ -81,8 +82,8 @@ public class CheckVersion {
                 .show();
     }
 
-    private static void showUpdateDialog(VersionBean versionBean,Context context){
-        String title = "version "+versionBean.data.versionName+" is available !";
+    private static void showUpdateDialog(VersionBean versionBean, Context context) {
+        String title = "version " + versionBean.data.versionName + " is available !";
 
         new AlertDialog.Builder(context).setTitle(title)
                 .setMessage(versionBean.data.relaseNote)

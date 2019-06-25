@@ -19,11 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.component.event.ChangeCityEvent;
-import com.hon.sunny.component.event.MultiUpdateEvent;
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.MultiCityAdapter;
@@ -31,6 +27,10 @@ import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.ToastUtil;
+import com.hon.sunny.vo.bean.main.CityORM;
+import com.hon.sunny.vo.bean.main.Weather;
+import com.hon.sunny.vo.event.ChangeCityEvent;
+import com.hon.sunny.vo.event.MultiUpdateEvent;
 import com.litesuits.orm.db.assit.WhereBuilder;
 
 import org.greenrobot.eventbus.EventBus;
@@ -48,7 +48,7 @@ import butterknife.ButterKnife;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class MultiCityFragment extends Fragment implements MultiCityContract.View{
+public class MultiCityFragment extends Fragment implements MultiCityContract.View {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
@@ -66,8 +66,8 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_multicity,container,false);
-        ButterKnife.bind(this,view);
+        View view = inflater.inflate(R.layout.fragment_multicity, container, false);
+        ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         initView();
         return view;
@@ -87,10 +87,10 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     @Override
     public void setPresenter(MultiCityContract.Presenter presenter) {
-        mMultiCityPresenter=presenter;
+        mMultiCityPresenter = presenter;
     }
 
-    private void initView(){
+    private void initView() {
         mWeathers = new ArrayList<>();
         mMultiCityAdapter = new MultiCityAdapter(mWeathers);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -132,9 +132,9 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     @Override
     public void onError(Throwable t) {
-        if(emptyLayout!=null){
+        if (emptyLayout != null) {
             if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||
-                    t.toString().contains("UnknownHostException")||t.toString().contains("Unsatisfiable")){
+                    t.toString().contains("UnknownHostException") || t.toString().contains("Unsatisfiable")) {
                 emptyLayout.setVisibility(View.GONE);
                 errorImageView.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
@@ -152,7 +152,7 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     @Override
     public void onNext(Weather weather) {
-        if(Constants.UNKNOWN_CITY.equals(weather.status)){
+        if (Constants.UNKNOWN_CITY.equals(weather.status)) {
             ToastUtil.showLong("there's an unknown city...");
         }
         mWeathers.add(weather);
@@ -167,17 +167,17 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     }
 
     private void multiLoad() {
-        PLog.d(getClass(),"multiLoad");
+        PLog.d(getClass(), "multiLoad");
         mWeathers.clear();
         mMultiCityPresenter.start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void multiUpdate(MultiUpdateEvent event){
+    public void multiUpdate(MultiUpdateEvent event) {
         multiLoad();
     }
 
-    private void showDialog(String city){
+    private void showDialog(String city) {
         new AlertDialog.Builder(getActivity()).setMessage("是否删除该城市?")
                 .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override

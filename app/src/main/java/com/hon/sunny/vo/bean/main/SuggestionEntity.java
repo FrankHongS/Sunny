@@ -1,4 +1,4 @@
-package com.hon.sunny.data.main.bean;
+package com.hon.sunny.vo.bean.main;
 
 /**
  * Created by Frank_Hon on 4/12/2019.

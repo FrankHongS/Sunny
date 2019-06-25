@@ -1,4 +1,4 @@
-package com.hon.sunny.data.main.bean;
+package com.hon.sunny.vo.bean.main;
 
 import com.litesuits.orm.db.annotation.NotNull;
 import com.litesuits.orm.db.annotation.PrimaryKey;
