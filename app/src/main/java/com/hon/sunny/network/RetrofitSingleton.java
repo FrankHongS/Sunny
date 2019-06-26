@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -162,7 +163,7 @@ public class RetrofitSingleton {
                             return weather;
                         })
                 )
-                .compose(RxUtils.rxFlowableSchedulerHelper());
+                .subscribeOn(Schedulers.io());
     }
 
     public Observable<VersionAPI> fetchVersion() {

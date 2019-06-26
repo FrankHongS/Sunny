@@ -31,6 +31,7 @@ import com.hon.sunny.vo.bean.main.CityORM;
 import com.hon.sunny.vo.bean.main.Weather;
 import com.hon.sunny.vo.event.ChangeCityEvent;
 import com.hon.sunny.vo.event.MultiUpdateEvent;
+import com.litesuits.orm.db.assit.QueryBuilder;
 import com.litesuits.orm.db.assit.WhereBuilder;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,12 +48,11 @@ import butterknife.ButterKnife;
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
-
 public class MultiCityFragment extends Fragment implements MultiCityContract.View {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
-    @BindView(R.id.swiprefresh)
+    @BindView(R.id.srl_multi_city)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.empty)
     LinearLayout emptyLayout;
@@ -109,15 +109,13 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
             }
         });
 
-        if (refreshLayout != null) {
-            refreshLayout.setColorSchemeResources(
-                    android.R.color.holo_orange_light,
-                    android.R.color.holo_red_light,
-                    android.R.color.holo_green_light,
-                    android.R.color.holo_blue_bright
-            );
-            refreshLayout.setOnRefreshListener(() -> refreshLayout.postDelayed(this::multiLoad, 1000));
-        }
+        refreshLayout.setColorSchemeResources(
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_blue_bright
+        );
+        refreshLayout.setOnRefreshListener(this::multiLoad);
     }
 
     @Override
@@ -182,11 +180,16 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
                 .setPositiveButton("删除", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("name=?", city));
+                        List<CityORM> cityList = OrmLite.getInstance().query(new QueryBuilder<>(CityORM.class).where("name=?", city));
+                        if (cityList.isEmpty()) {
+                            return;
+                        }
+                        int id = cityList.get(0).getId();
+                        OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("id=?", id));
                         multiLoad();
                         Snackbar.make(getView(), "已经将" + city + "删掉了 Ծ‸ Ծ", Snackbar.LENGTH_LONG).setAction("撤销",
                                 v -> {
-                                    OrmLite.getInstance().save(new CityORM(city));
+                                    OrmLite.getInstance().save(new CityORM(id, city));
                                     multiLoad();
                                 }).show();
                     }

@@ -107,14 +107,11 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
     }
 
     private void initView() {
-        if (refreshLayout != null) {
-            refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-                    android.R.color.holo_green_light,
-                    android.R.color.holo_orange_light,
-                    android.R.color.holo_red_light);
-            refreshLayout.setOnRefreshListener(
-                    () -> refreshLayout.postDelayed(this::loadWeather, 1000));
-        }
+        refreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        refreshLayout.setOnRefreshListener(this::loadWeather);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mWeatherAdapter = new WeatherAdapter();
@@ -149,7 +146,6 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
 
     @Override
     public void onNext(Weather weather) {
-//        mWeather.aqi = weather.aqi;TODO
         mWeatherAdapter.setWeather(weather);
         safeSetTitle(weather.city);
         refreshLayout.setRefreshing(false);

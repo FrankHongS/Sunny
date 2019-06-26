@@ -4,6 +4,7 @@ import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.vo.bean.main.Weather;
 
 import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Frank on 2017/10/28.
@@ -30,6 +31,7 @@ public class WeatherRemoteDataSource implements WeatherDataSource {
 
     @Override
     public Flowable<Weather> fetchWeather(String city) {
-        return RetrofitSingleton.getInstance().fetchWeather(city);
+        return RetrofitSingleton.getInstance().fetchWeather(city)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

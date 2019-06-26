@@ -2,13 +2,17 @@ package com.hon.sunny.data.main.multicity;
 
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.network.RetrofitSingleton;
+import com.hon.sunny.network.exception.CityListEmptyException;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.CityORM;
 import com.hon.sunny.vo.bean.main.Weather;
+import com.litesuits.orm.db.assit.QueryBuilder;
 
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Frank on 2017/10/28.
@@ -36,21 +40,25 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource {
 
     @Override
     public Flowable<Weather> fetchMultiCityWeather() {
-        List<CityORM> cityList = OrmLite.getInstance().query(CityORM.class);
-
-        if (cityList == null || cityList.size() == 0)
-            return null;
-        else
-            return Flowable
-                    .defer(() -> Flowable.fromIterable(cityList))
-                    .map(cityORM -> Util.replaceCity(cityORM.getName()))
-                    .distinct()
-                    .take(3)
-                    .flatMap(
-                            s -> RetrofitSingleton
-                                    .getInstance()
-                                    .fetchWeather(s)
-                    );
+        return Flowable
+                .defer(() -> {
+                    List<CityORM> cityList = OrmLite.getInstance()
+                            .query(new QueryBuilder<>(CityORM.class).appendOrderDescBy("id"));
+                    if (cityList == null || cityList.size() == 0) {
+                        return Flowable.error(new CityListEmptyException("city list is empty"));
+                    } else {
+                        return Flowable.fromIterable(cityList);
+                    }
+                })
+                .map(cityORM -> Util.replaceCity(cityORM.getName()))
+                .distinct()
+                .take(3)
+                .subscribeOn(Schedulers.io())// control upstream thread
+                .concatMapEager(
+                        s -> RetrofitSingleton
+                                .getInstance()
+                                .fetchWeather(s))
+                .observeOn(AndroidSchedulers.mainThread());
 //                .filter(weather -> !Constants.UNKNOWN_CITY.equals(weather.status));
 
     }

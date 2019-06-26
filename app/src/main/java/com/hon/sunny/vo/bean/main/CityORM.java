@@ -24,6 +24,11 @@ public class CityORM {
         this.name = name;
     }
 
+    public CityORM(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

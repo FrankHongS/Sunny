@@ -5,9 +5,8 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
-import com.hon.sunny.vo.bean.main.Weather;
+import com.hon.sunny.network.exception.CityListEmptyException;
 
-import io.reactivex.Flowable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -41,21 +40,22 @@ public class MultiCityPresenter implements MultiCityContract.Presenter, Lifecycl
     @Override
     public void loadMultiCityWeather() {
 
-        Flowable<Weather> weatherFlowable = mMultiCityRepository.fetchMultiCityWeather();
-
-        if (weatherFlowable == null) {
-            mMultiCityView.onEmpty();
-        } else {
-            Disposable multiCityDisposable = weatherFlowable
-                    .doOnRequest(aLong -> mMultiCityView.doOnRequest())
-                    .doOnTerminate(() -> mMultiCityView.doOnTerminate())
-                    .subscribe(
-                            weather -> mMultiCityView.onNext(weather),
-                            throwable -> mMultiCityView.onError(throwable),
-                            () -> mMultiCityView.onCompleted()
-                    );
-            mMultiCityCompositeDisposable.add(multiCityDisposable);
-        }
+        Disposable multiCityDisposable = mMultiCityRepository
+                .fetchMultiCityWeather()
+                .doOnRequest(aLong -> mMultiCityView.doOnRequest())
+                .doOnTerminate(() -> mMultiCityView.doOnTerminate())
+                .subscribe(
+                        weather -> mMultiCityView.onNext(weather),
+                        throwable -> {
+                            if (throwable instanceof CityListEmptyException) {
+                                mMultiCityView.onEmpty();
+                            } else {
+                                mMultiCityView.onError(throwable);
+                            }
+                        },
+                        () -> mMultiCityView.onCompleted()
+                );
+        mMultiCityCompositeDisposable.add(multiCityDisposable);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
