@@ -157,6 +157,7 @@ public class RetrofitSingleton {
                             if (weatherQuality != null) {
                                 weather.quality = weatherQuality.qualityList.get(0).airNowCity.quality;
                                 weather.pm25 = weatherQuality.qualityList.get(0).airNowCity.pm25;
+                                weather.aqi = weatherQuality.qualityList.get(0).airNowCity.aqi;
                             }
                             return weather;
                         })

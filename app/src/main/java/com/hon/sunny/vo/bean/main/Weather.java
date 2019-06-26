@@ -41,6 +41,9 @@ public class Weather implements Serializable {
     @Expose(serialize = false, deserialize = false)
     public String pm25;
 
+    @Expose(serialize = false, deserialize = false)
+    public String aqi;
+
     public static class BasicEntity implements Serializable {
         @SerializedName("cnty")
         public String cnty;

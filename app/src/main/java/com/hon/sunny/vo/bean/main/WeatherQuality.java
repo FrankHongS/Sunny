@@ -24,5 +24,7 @@ public class WeatherQuality {
 
         @SerializedName("pm25")
         public String pm25;
+
+        public String aqi;
     }
 }

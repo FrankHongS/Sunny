@@ -74,7 +74,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_now_temp_min"
-            tools:text="空气质量： 优" />
+            tools:text="空气质量: 优" />
 
         <TextView
             android:id="@+id/tv_now_air_pm25"
@@ -86,5 +86,16 @@
             app:layout_constraintEnd_toStartOf="@+id/tv_now_air_quality"
             app:layout_constraintTop_toTopOf="@+id/tv_now_air_quality"
             tools:text="PM2.5: 65 μg/m³" />
+
+        <TextView
+            android:id="@+id/tv_now_aqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            tools:text="AQI: 65"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_now_air_pm25"
+            app:layout_constraintTop_toTopOf="@+id/tv_now_air_pm25" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

@@ -101,6 +101,8 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
         TextView tempPm;
         @BindView(R.id.tv_now_air_quality)
         TextView tempQuality;
+        @BindView(R.id.tv_now_aqi)
+        TextView tempAqi;
 
         NowWeatherViewHolder(View itemView) {
             super(itemView);
@@ -121,6 +123,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
             tempPm.setText(String.format("PM2.5: %s μg/m³", Util.safeText(weather.pm25)));
             tempQuality.setText(Util.safeText("空气质量: ", weather.quality));
+            tempAqi.setText(Util.safeText("AQI: ", weather.aqi));
 
             if (weather.now != null)
                 ImageLoader.load(itemView.getContext(),

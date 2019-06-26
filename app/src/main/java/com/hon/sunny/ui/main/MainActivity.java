@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,11 +56,13 @@ import butterknife.ButterKnife;
  * Created by Frank on 2017/10/27.
  * E-mail:frank_hon@foxmail.com
  */
-
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String KEY_MULTI_CITY = "MULTI_CITY";
     private static final String KEY_WEATHER = "WEATHER";
+
+    private static final float OFFSET_THRESHOLD = 0.03f;
+
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     @BindView(R.id.toolbar)
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
     private Fragment mMultiCityFragment;
     private Fragment mWeatherFragment;
 
@@ -224,23 +228,30 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-        drawerLayout.closeDrawer(GravityCompat.START);
-
-        switch (item.getItemId()) {
-            case R.id.nav_set:
-                launch(SettingActivity.class);
-                break;
+        // 使得drawerLayout关闭和切换Activity之间更流畅
+        drawerLayout.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                if (slideOffset < OFFSET_THRESHOLD) {
+                    switch (item.getItemId()) {
+                        case R.id.nav_set:
+                            launch(SettingActivity.class);
+                            break;
 //            case R.id.nav_about:
 //                launch(AboutActivity.class);
 //                break;
-            case R.id.nav_city:
-                launch(SearchCityActivity.class);
-                break;
-            case R.id.nav_multi_cities:
-                viewPager.setCurrentItem(1);
-                break;
-        }
-
+                        case R.id.nav_city:
+                            launch(SearchCityActivity.class);
+                            break;
+                        case R.id.nav_multi_cities:
+                            viewPager.setCurrentItem(1);
+                            break;
+                    }
+                    drawerLayout.removeDrawerListener(this);
+                }
+            }
+        });
+        drawerLayout.closeDrawer(GravityCompat.START);
         return false;
     }
 
