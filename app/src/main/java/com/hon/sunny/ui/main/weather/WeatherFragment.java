@@ -53,11 +53,11 @@ import static com.hon.sunny.utils.Constants.ONE_HOUR;
 @SuppressWarnings("all")
 public class WeatherFragment extends Fragment implements WeatherContract.View, AMapLocationListener {
 
-    @BindView(R.id.recyclerview)
+    @BindView(R.id.rv_weather)
     RecyclerView recyclerView;
-    @BindView(R.id.swiprefresh)
+    @BindView(R.id.srl_weather)
     SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.iv_erro)
+    @BindView(R.id.iv_error)
     ImageView errorImageView;
 
     private WeatherContract.Presenter mWeatherPresenter;
@@ -73,7 +73,7 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_weather, container, false);
         ButterKnife.bind(this, view);
         EventBus.getDefault().register(this);
         initView();
@@ -138,7 +138,6 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
     public void onError(Throwable e) {
         errorImageView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-        SharedPreferenceUtil.getInstance().setCityName("北京");
         safeSetTitle("找不到城市");
         refreshLayout.setRefreshing(false);
         RetrofitSingleton.disposeFailureInfo(e);

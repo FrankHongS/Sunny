@@ -152,7 +152,7 @@ public class Util {
 
     public static String safeText(String msg) {
         if (null == msg) {
-            return "";
+            return "~";
         }
         return safeText("", msg);
     }

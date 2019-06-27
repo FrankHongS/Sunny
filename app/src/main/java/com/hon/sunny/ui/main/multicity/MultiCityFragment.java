@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,13 +50,13 @@ import butterknife.ButterKnife;
  */
 public class MultiCityFragment extends Fragment implements MultiCityContract.View {
 
-    @BindView(R.id.recyclerview)
+    @BindView(R.id.rv_multi_city)
     RecyclerView recyclerView;
     @BindView(R.id.srl_multi_city)
     SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.empty)
-    LinearLayout emptyLayout;
-    @BindView(R.id.iv_erro)
+    @BindView(R.id.tv_city_empty)
+    TextView emptyText;
+    @BindView(R.id.iv_error)
     ImageView errorImageView;
 
     private List<Weather> mWeathers;
@@ -130,13 +130,11 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     @Override
     public void onError(Throwable t) {
-        if (emptyLayout != null) {
-            if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||
-                    t.toString().contains("UnknownHostException") || t.toString().contains("Unsatisfiable")) {
-                emptyLayout.setVisibility(View.GONE);
-                errorImageView.setVisibility(View.VISIBLE);
-                recyclerView.setVisibility(View.GONE);
-            }
+        if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||
+                t.toString().contains("UnknownHostException") || t.toString().contains("Unsatisfiable")) {
+            emptyText.setVisibility(View.GONE);
+            errorImageView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
         }
         RetrofitSingleton.disposeFailureInfo(t);
     }
@@ -144,8 +142,9 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     @Override
     public void onEmpty() {
         mMultiCityAdapter.notifyDataSetChanged();
+        emptyText.setVisibility(View.VISIBLE);
         errorImageView.setVisibility(View.GONE);
-        emptyLayout.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -161,7 +160,7 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
         mMultiCityAdapter.notifyDataSetChanged();
         recyclerView.setVisibility(View.VISIBLE);
         errorImageView.setVisibility(View.GONE);
-        emptyLayout.setVisibility(View.GONE);
+        emptyText.setVisibility(View.GONE);
     }
 
     private void multiLoad() {

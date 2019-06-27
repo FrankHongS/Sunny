@@ -155,7 +155,7 @@ public class RetrofitSingleton {
                 .flatMap(weather -> sApiService
                         .weatherQuality(city, Constants.KEY)
                         .map(weatherQuality -> {
-                            if (weatherQuality != null) {
+                            if (weatherQuality != null && weatherQuality.qualityList.get(0).airNowCity != null) {
                                 weather.quality = weatherQuality.qualityList.get(0).airNowCity.quality;
                                 weather.pm25 = weatherQuality.qualityList.get(0).airNowCity.pm25;
                                 weather.aqi = weatherQuality.qualityList.get(0).airNowCity.aqi;

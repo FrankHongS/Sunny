@@ -33,6 +33,8 @@
     <!--max and min temp-->
     <color name="tempTextColor">#BDBDBD</color>
 
+    <color name="default_text_color">#728288</color>
+
     <color name="chartDotColor">#212121</color>
     <color name="maxLineColor">#455A64</color>
     <color name="minLineColor">#9E9E9E</color>
