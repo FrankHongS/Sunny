@@ -16,9 +16,9 @@ public class Time {
      */
     @SuppressLint("SimpleDateFormat")
     public static String getNowYMDHMSTime() {
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd HH:mm:ss");
-        return mDateFormat.format(new Date());
+        return dateFormat.format(new Date());
     }
 
     /**
@@ -26,9 +26,9 @@ public class Time {
      */
     @SuppressLint("SimpleDateFormat")
     public static String getNowMDHMSTime() {
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "MM-dd HH:mm:ss");
-        return mDateFormat.format(new Date());
+        return dateFormat.format(new Date());
     }
 
     /**
@@ -37,9 +37,9 @@ public class Time {
     @SuppressLint("SimpleDateFormat")
     public static String getNowYMD() {
 
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd");
-        return mDateFormat.format(new Date());
+        return dateFormat.format(new Date());
     }
 
     /**
@@ -48,25 +48,25 @@ public class Time {
     @SuppressLint("SimpleDateFormat")
     public static String getYMD(Date date) {
 
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd");
-        return mDateFormat.format(date);
+        return dateFormat.format(date);
     }
 
     @SuppressLint("SimpleDateFormat")
     public static String getMD(Date date) {
 
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "MM-dd");
-        return mDateFormat.format(date);
+        return dateFormat.format(date);
     }
 
     @SuppressLint("SimpleDateFormat")
     public static String getNowMDhm() {
 
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "MM-dd HH:mm");
-        return mDateFormat.format(new Date());
+        return dateFormat.format(new Date());
     }
 }
 

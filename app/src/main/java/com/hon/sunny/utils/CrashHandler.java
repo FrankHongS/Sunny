@@ -35,8 +35,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         PLog.e(TAG, collectCrashDeviceInfo());
         PLog.e(TAG, getCrashInfo(ex));
 
-        // T崩溃后自动初始化数据
-        SharedPreferenceUtil.getInstance().setCityName("北京");
         // 调用系统错误机制
         mDefaultHandler.uncaughtException(thread, ex);
     }
