@@ -3,13 +3,14 @@ package com.hon.sunny;
 import android.app.Application;
 import android.content.Context;
 
-import com.hon.sunny.utils.CrashHandler;
-import com.hon.sunny.utils.PLog;
+import androidx.appcompat.app.AppCompatDelegate;
+
+import com.hon.mylogger.MyCrashHandler;
+import com.hon.mylogger.MyLogger;
 
 import java.io.IOException;
 import java.net.SocketException;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import io.reactivex.exceptions.UndeliverableException;
 import io.reactivex.plugins.RxJavaPlugins;
 
@@ -35,22 +36,21 @@ public class Sunny extends Application {
         return sCacheDir;
     }
 
-    public static String getAppFileDir() {
-        return sAppContext.getFilesDir().toString();
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
         sAppContext = getApplicationContext();
-
-        CrashHandler.init(new CrashHandler(this));
 
         if (getApplicationContext().getExternalCacheDir() != null && ExistSDCard()) {
             sCacheDir = getApplicationContext().getExternalCacheDir().toString();
         } else {
             sCacheDir = getApplicationContext().getCacheDir().toString();
         }
+
+        // init MyLogger file path if you want to write into disk
+        MyLogger.initLogFilePath(getFilesDir().getPath());
+        // init crash handler
+        MyCrashHandler.init();
 
         //https://github.com/ReactiveX/RxJava/wiki/What's-different-in-2.0#error-handling
         // 统一处理RxJava的uncaught exception
@@ -78,7 +78,7 @@ public class Sunny extends Application {
                         .uncaughtException(Thread.currentThread(), e);
                 return;
             }
-            PLog.w("Undeliverable exception received, not sure what to do", e.getMessage());
+            MyLogger.w("Undeliverable exception received, not sure what to do : %s", e.getMessage());
         });
     }
 

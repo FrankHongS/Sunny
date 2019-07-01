@@ -90,5 +90,7 @@ dependencies {
 
     implementation deps.simplechartview
 
+    implementation deps.mylogger
+
     testImplementation deps.test.junit
 }

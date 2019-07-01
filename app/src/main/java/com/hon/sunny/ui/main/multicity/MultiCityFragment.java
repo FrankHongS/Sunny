@@ -24,7 +24,6 @@ import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.MultiCityAdapter;
 import com.hon.sunny.utils.Constants;
-import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.vo.bean.main.CityORM;
@@ -164,7 +163,6 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     }
 
     private void multiLoad() {
-        PLog.d(getClass(), "multiLoad");
         mWeathers.clear();
         mMultiCityPresenter.start();
     }

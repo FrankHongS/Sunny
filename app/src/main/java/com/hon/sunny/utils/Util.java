@@ -28,6 +28,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.hon.mylogger.MyLogger;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.component.OrmLite;
@@ -214,7 +215,7 @@ public class Util {
         Resources resources = mActivity.getResources();
         int resourceId = resources.getIdentifier("status_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
-        PLog.i("Status height:" + height);
+        MyLogger.i("Status height:" + height);
         return height;
     }
 
@@ -225,7 +226,7 @@ public class Util {
         Resources resources = mActivity.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
-        PLog.i("Navi height:" + height);
+        MyLogger.i("Navi height:" + height);
         return height;
     }
 

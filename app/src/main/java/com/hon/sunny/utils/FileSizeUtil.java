@@ -1,8 +1,8 @@
 package com.hon.sunny.utils;
 
 import android.text.format.Formatter;
-import android.util.Log;
 
+import com.hon.mylogger.MyLogger;
 import com.hon.sunny.Sunny;
 
 import java.io.File;
@@ -38,7 +38,7 @@ public class FileSizeUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Log.e("获取文件大小", "获取失败!");
+            MyLogger.e("获取文件大小失败!");
         }
         return FormetFileSize(blockSize, sizeType);
 
@@ -63,7 +63,7 @@ public class FileSizeUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            PLog.e("获取文件大小失败!");
+            MyLogger.e("获取文件大小失败!");
         }
         return Formatter.formatFileSize(Sunny.getAppContext(), blockSize);
     }
@@ -82,7 +82,7 @@ public class FileSizeUtil {
             size = fis.available();
         } else {
 //            file.createNewFile();
-            Log.e("获取文件大小", "文件不存在!");
+            MyLogger.e("文件不存在!");
         }
         return size;
     }

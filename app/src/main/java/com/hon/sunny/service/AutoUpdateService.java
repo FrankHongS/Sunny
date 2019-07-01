@@ -9,12 +9,12 @@ import android.os.IBinder;
 
 import androidx.core.app.NotificationCompat;
 
+import com.hon.mylogger.MyLogger;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.utils.Constants;
-import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.Weather;
@@ -72,7 +72,7 @@ public class AutoUpdateService extends Service {
                 })
                 .subscribe(
                         this::sendNotification,
-                        throwable -> PLog.e(throwable.getMessage())
+                        MyLogger::e
                 );
         mAutoUpdateCompositeDisposable.add(netSubscription);
         return START_REDELIVER_INTENT;

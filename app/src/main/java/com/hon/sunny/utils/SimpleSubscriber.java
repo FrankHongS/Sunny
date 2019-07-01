@@ -1,5 +1,7 @@
 package com.hon.sunny.utils;
 
+import com.hon.mylogger.MyLogger;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -22,7 +24,7 @@ public abstract class SimpleSubscriber<T> implements Observer<T> {
 
     @Override
     public void onError(Throwable e) {
-        PLog.e(e.toString());
+        MyLogger.e(e.toString());
     }
 }
 

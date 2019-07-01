@@ -1,11 +1,11 @@
 package com.hon.sunny.network;
 
+import com.hon.mylogger.MyLogger;
 import com.hon.sunny.BuildConfig;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.ui.about.domain.VersionAPI;
 import com.hon.sunny.utils.Constants;
-import com.hon.sunny.utils.PLog;
 import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.utils.Util;
@@ -120,10 +120,10 @@ public class RetrofitSingleton {
             ToastUtil.showShort("网络问题");
         } else if (t.toString().contains("API没有")) {
             OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("name=?", Util.replaceInfo(t.getMessage())));
-            PLog.w(Util.replaceInfo(t.getMessage()));
+            MyLogger.w(Util.replaceInfo(t.getMessage()));
             ToastUtil.showShort("错误: " + t.getMessage());
         }
-        PLog.e(t.getMessage());
+        MyLogger.e(t.getMessage());
     }
 
     private void init() {

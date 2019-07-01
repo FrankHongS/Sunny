@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.utils.PLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,7 +43,6 @@ public class DBManager {
     }
 
     public void openDatabase() {
-        PLog.e(TAG, DB_PATH + "/" + DB_NAME);
         this.database = this.openDatabase(DB_PATH + "/" + DB_NAME);
     }
 
@@ -67,10 +65,8 @@ public class DBManager {
             }
             return SQLiteDatabase.openOrCreateDatabase(dbfile, null);
         } catch (FileNotFoundException e) {
-            PLog.e("File not found");
             e.printStackTrace();
         } catch (IOException e) {
-            PLog.e("IO exception");
             e.printStackTrace();
         }
 
