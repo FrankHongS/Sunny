@@ -89,18 +89,9 @@ public class SearchCityActivity extends AppCompatActivity implements SearchCityC
         mHintAdapter = new GridAdapter();
         mHintAdapter.setOnCityHintItemClickListener(this::onCityItemClick);
 
-        mSearchView.setHomeButtonListener(new PersistentSearchView.HomeButtonListener() {
-            @Override
-            public void onHomeButtonClick() {
-                finish();
-            }
-        });
-        mSearchView.setOverflowButtonListener(new PersistentSearchView.OverflowButtonListener() {
-            @Override
-            public void onOverflowButtonClick() {
-                mPopup.showOnAnchor(mSearchView.findViewById(R.id.button_mic), RelativePopupWindow.VerticalPosition.BELOW, RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT);
-            }
-        });
+        mSearchView.setHomeButtonListener(this::finish);
+        mSearchView.setOverflowButtonListener(() -> mPopup.showOnAnchor(mSearchView.findViewById(R.id.button_mic),
+                RelativePopupWindow.VerticalPosition.BELOW, RelativePopupWindow.HorizontalPosition.ALIGN_RIGHT));
 
         mSearchView.setSuggestionBuilder(new CitySuggestionBuilder(this));
         mSearchView.setSearchListener(new PersistentSearchView.SearchListener() {
@@ -250,7 +241,7 @@ public class SearchCityActivity extends AppCompatActivity implements SearchCityC
             }
         } else {
             SharedPreferenceUtil.getInstance().setCityName(city);
-            EventBus.getDefault().post(new ChangeCityEvent());
+            EventBus.getDefault().postSticky(new ChangeCityEvent());
         }
         quit();
     }

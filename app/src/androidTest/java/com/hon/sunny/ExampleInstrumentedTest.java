@@ -1,11 +1,14 @@
 package com.hon.sunny;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import androidx.test.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
+
+import com.hon.mylogger.MyLogger;
 
 import static org.junit.Assert.*;
 
@@ -22,5 +25,11 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.hon.sunny", appContext.getPackageName());
+    }
+
+    @Test
+    public void testLogger(){
+        MyLogger.tag("hello");
+        MyLogger.d("Frank Hon");
     }
 }

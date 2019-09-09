@@ -3,6 +3,7 @@ package com.hon.sunny.ui.main.weather;
 import android.Manifest;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.hon.mylogger.MyLogger;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.network.RetrofitSingleton;
@@ -82,17 +84,17 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        final RxPermissions rxPermissions = new RxPermissions(this);
+        RxPermissions rxPermissions = new RxPermissions(this);
 
         mPermissionsDisposable = rxPermissions
                 .request(Manifest.permission.ACCESS_COARSE_LOCATION)
                 .subscribe(granted -> {
-                    if (granted) {
-                        location();
-                    } else {
-                        loadWeather();
+                    if (savedInstanceState == null) {
+                        if (granted) {
+                            location();
+                        } else {
+                            loadWeather();
+                        }
                     }
                 });
 
@@ -193,7 +195,8 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
         loadWeather();
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    // 设置sticky的原因是防止系统回收Fragment，导致收不到消息
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void changeCity(ChangeCityEvent event) {
         loadWeather();
     }
