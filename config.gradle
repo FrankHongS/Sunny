@@ -16,7 +16,7 @@ ext.versions = [
         'mylogger'        : '1.0.2',
 
         'junit'           : '4.12',
-        'test_runner'     : '1.1.0-alpha4',
+        'test'            : '1.1.0-alpha4',
         'espresso'        : '3.1.0-alpha4'
 ]
 
@@ -28,9 +28,12 @@ ext.deps = [
                 'constraintlayout': "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
         ],
         'test'           : [
-                'junit'   : "junit:junit:${versions.junit}",
-                'runner'  : "androidx.test:runner:${versions.test_runner}",
-                'espresso': "androidx.test.espresso:espresso-core:${versions.espresso}"
+                'junit' : "junit:junit:${versions.junit}",
+                'runner': "androidx.test:runner:${versions.test}",
+                'rule'  : "androidx.test:rules:${versions.test}"
+        ],
+        'espresso'       : [
+                'core': "androidx.test.espresso:espresso-core:${versions.espresso}"
         ],
         'glide'          : [
                 'root': "com.github.bumptech.glide:glide:${versions.glide}"

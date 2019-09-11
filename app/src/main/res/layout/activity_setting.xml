@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/part_toolbar"/>
+    <include layout="@layout/layout_toolbar"/>
 
     <FrameLayout
         android:id="@+id/framelayout"

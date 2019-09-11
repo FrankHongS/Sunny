@@ -95,6 +95,10 @@ dependencies {
     implementation deps.mylogger
 
     testImplementation deps.test.junit
+
     androidTestImplementation deps.test.junit
     androidTestImplementation deps.test.runner
+    androidTestImplementation deps.test.rule
+
+    androidTestImplementation deps.espresso.core
 }

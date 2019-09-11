@@ -6,4 +6,9 @@
     <string name="string_search_city">choose your city</string>
 
     <string name="multi_city_empty">add your favorite cities here (´･_･`)</string>
+
+    <string name="nav_city">Select City</string>
+    <string name="multi_cities">Favorite Cities</string>
+    <string name="setting">Settings</string>
+    <string name="about">About</string>
 </resources>
