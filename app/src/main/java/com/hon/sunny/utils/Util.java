@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -47,6 +48,7 @@ import java.util.List;
 import static com.hon.sunny.utils.Constants.CHANGE_ICONS;
 import static com.hon.sunny.utils.Constants.CITY_COUNT;
 import static com.hon.sunny.utils.Constants.INIT_ICONS;
+import static com.hon.sunny.utils.Constants.RESST_ICONS;
 
 /**
  * Created by Frank on 2017/8/9.
@@ -295,43 +297,23 @@ public class Util {
 
     }
 
-    public static void normalStyleNotification(String channelId, Weather weather, Context context, Class<? extends Activity> target) {
-        SharedPreferenceUtil sharedPreferenceUtil = SharedPreferenceUtil.getInstance();
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent =
-                PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId);
-        Notification notification = builder
-                .setContentIntent(pendingIntent)
-                // 这里部分 ROM 无法成功
-                .setSmallIcon(R.mipmap.ic_launch_logo)
-                .setLargeIcon(BitmapFactory.decodeResource(Sunny.getAppContext().getResources(), sharedPreferenceUtil.getInt(weather.now.txt, R.mipmap.none)))
-                .setContentTitle(weather.city)
-                .setContentText(String.format("%s 当前温度: %s℃ ", weather.now.txt, weather.now.tmp))
-                .setWhen(System.currentTimeMillis())
-                .setShowWhen(true)
-                .build();
-        notification.flags = sharedPreferenceUtil.getNotificationModel();
-        notification.defaults |= Notification.DEFAULT_ALL;
-        NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // tag和id都是可以拿来区分不同的通知的
-        manager.notify(1, notification);
-    }
-
-    public static void initIcons(boolean reset) {
+    public static void initIcons() {
 
         SharedPreferenceUtil sharedPreferenceUtil = SharedPreferenceUtil.getInstance();
 
+        boolean reset = sharedPreferenceUtil.getBoolean(RESST_ICONS, false);
         if (!reset) {
             if (sharedPreferenceUtil.getBoolean(INIT_ICONS)) {
                 return;
             } else {
                 sharedPreferenceUtil.putBoolean(INIT_ICONS, true);
             }
+        } else {
+            sharedPreferenceUtil.putBoolean(RESST_ICONS, false);
         }
 
-        if (sharedPreferenceUtil.getInt(CHANGE_ICONS, 0) == 0) {
+        if (PreferenceManager.getDefaultSharedPreferences(Sunny.getAppContext())
+                .getInt(CHANGE_ICONS, 1) == 1) {
             sharedPreferenceUtil.putInt("未知", R.mipmap.none);
             sharedPreferenceUtil.putInt("晴", R.mipmap.type_one_sunny);
             sharedPreferenceUtil.putInt("阴", R.mipmap.type_one_cloudy);

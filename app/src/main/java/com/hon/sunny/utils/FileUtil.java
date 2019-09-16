@@ -7,9 +7,14 @@ import java.io.File;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class FileUtil {
+public final class FileUtil {
 
-    public static boolean delete(File file) {
+    private FileUtil() {
+    }
+
+    public static boolean delete(String filePath) {
+        File file=new File(filePath);
+
         if (file.isFile()) {
             return file.delete();
         }
@@ -21,7 +26,7 @@ public class FileUtil {
             }
 
             for (File childFile : childFiles) {
-                if (!delete(childFile))
+                if (!delete(childFile.getPath()))
                     return false;
             }
             return true;

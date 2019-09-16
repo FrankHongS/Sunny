@@ -23,26 +23,26 @@ public abstract class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder>
     protected void showItemAnim(final View view, final int position) {
         Context context = view.getContext();
         if (position > mLastPosition) {
-            view.setAlpha(0);
+//            view.setAlpha(0);
             view.postDelayed(() -> {
                 Animation animation = AnimationUtils.loadAnimation(context,
-                        R.anim.slide_in_right);
-                animation.setAnimationListener(new Animation.AnimationListener() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        view.setAlpha(1);
-                    }
-
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                    }
-
-
-                    @Override
-                    public void onAnimationRepeat(Animation animation) {
-                    }
-                });
+                        R.anim.slide_in_left);
+//                animation.setAnimationListener(new Animation.AnimationListener() {
+//                    @Override
+//                    public void onAnimationStart(Animation animation) {
+//                        view.setAlpha(1);
+//                    }
+//
+//
+//                    @Override
+//                    public void onAnimationEnd(Animation animation) {
+//                    }
+//
+//
+//                    @Override
+//                    public void onAnimationRepeat(Animation animation) {
+//                    }
+//                });
                 view.startAnimation(animation);
             }, DELAY * position);
             mLastPosition = position;

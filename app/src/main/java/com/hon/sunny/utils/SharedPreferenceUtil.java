@@ -67,34 +67,6 @@ public class SharedPreferenceUtil {
         mPrefs.edit().putString(CITY_NAME, name).apply();
     }
 
-    public int getNotificationModel() {
-        return mPrefs.getInt(NOTIFICATION_MODEL, Notification.FLAG_ONGOING_EVENT);
-    }
-
-    //  通知栏模式 默认为常驻
-    public void setNotificationModel(int t) {
-        mPrefs.edit().putInt(NOTIFICATION_MODEL, t).apply();
-        if (Build.VERSION.SDK_INT >= 23) {
-            NotificationManager manager = (NotificationManager) Sunny.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
-            StatusBarNotification[] notifications = manager.getActiveNotifications();
-            for (StatusBarNotification notification : notifications) {
-                notification.getNotification().flags = t;
-                manager.notify(1, notification.getNotification());
-            }
-        }
-
-    }
-
-    public boolean getMainAnim() {
-        return mPrefs.getBoolean(ANIM_START, false);
-    }
-
-    // 首页 Item 动画效果 默认关闭
-
-    public void setMainAnim(boolean b) {
-        mPrefs.edit().putBoolean(ANIM_START, b).apply();
-    }
-
     private static class SPHolder {
         private static final SharedPreferenceUtil sInstance = new SharedPreferenceUtil();
     }

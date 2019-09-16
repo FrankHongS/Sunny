@@ -7,8 +7,27 @@
 
     <string name="multi_city_empty">add your favorite cities here (´･_･`)</string>
 
+    <!--menus-->
     <string name="nav_city">Select City</string>
     <string name="multi_cities">Favorite Cities</string>
     <string name="setting">Settings</string>
     <string name="about">About</string>
+
+    <!--settings-->
+    <string name="setting_ui">UI</string>
+    <string name="setting_change_icons">Change weather icons</string>
+    <string-array name="icons">
+        <item>Type 1</item>
+        <item>Type 2</item>
+    </string-array>
+    <string name="setting_modify_icons_hint">Restart to take effect</string>
+    <string name="setting_restart">Restart</string>
+    <string name="setting_anim_homepage">Animations of items in homepage</string>
+    <string name="setting_system">System</string>
+    <string name="setting_auto_update">Automatically update weather</string>
+    <string name="setting_update_frequency">Update frequency</string>
+    <string name="setting_update_summary">Per %d hours</string>
+    <string name="setting_notification_ongoing">Notification ongoing</string>
+    <string name="setting_clear_cache">Clear cache</string>
+    <string name="setting_cache_cleared_hint">Cache cleared</string>
 </resources>

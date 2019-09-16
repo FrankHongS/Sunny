@@ -30,11 +30,13 @@ public class TestToolbarActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initView();
+
     }
 
     @SuppressWarnings("all")
     private void initView() {
         setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(v -> finish());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("设置");
     }

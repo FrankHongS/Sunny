@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="界面">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <PreferenceCategory android:title="@string/setting_ui">
         <Preference
             android:key="change_icons"
-            android:title="更换天气图标"/>
+            android:title="@string/setting_change_icons" />
         <CheckBoxPreference
             android:key="animation_start"
-            android:title="首页 Item 动画"
-            />
+            android:title="@string/setting_anim_homepage" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="系统">
-        <CheckBoxPreference
+    <PreferenceCategory android:title="@string/setting_system">
+        <SwitchPreference
             android:key="auto_update"
-            android:title="自动刷新"/>
-        <Preference
+            android:title="@string/setting_auto_update" />
+        <androidx.preference.SeekBarPreference
+            android:dependency="auto_update"
             android:key="change_update_time"
-            android:title="自动刷新频率"/>
+            android:title="@string/setting_update_frequency"
+            />
         <CheckBoxPreference
             android:key="notification_model"
-            android:title="通知栏常驻"/>
+            android:title="@string/setting_notification_ongoing"
+            />
         <Preference
             android:key="clear_cache"
-            android:title="清除缓存"/>
+            android:title="@string/setting_clear_cache" />
     </PreferenceCategory>
 </PreferenceScreen>

@@ -40,6 +40,7 @@ import com.hon.sunny.ui.main.weather.WeatherPresent;
 import com.hon.sunny.ui.setting.SettingActivity;
 import com.hon.sunny.utils.CircularAnimUtil;
 import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.event.ChangeCityEvent;
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private Fragment mMultiCityFragment;
     private Fragment mWeatherFragment;
 
+    private SharedPreferenceUtil sharedPreferenceUtil=SharedPreferenceUtil.getInstance();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,8 +89,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         EventBus.getDefault().register(this);
         ButterKnife.bind(this);
         initView(savedInstanceState);
-        Util.initIcons(false);
+        Util.initIcons();
         createNotificationChannel();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if(intent.getBooleanExtra(Constants.RESST_ICONS,false)){
+            sharedPreferenceUtil.putBoolean(Constants.RESST_ICONS,true);
+            recreate();
+        }
     }
 
     @Override

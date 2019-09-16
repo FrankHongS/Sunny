@@ -1,5 +1,6 @@
 package com.hon.sunny.ui.main.adapter;
 
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.hon.sunny.R;
+import com.hon.sunny.Sunny;
 import com.hon.sunny.base.BaseViewHolder;
 import com.hon.sunny.component.AnimRecyclerViewAdapter;
-import com.hon.sunny.component.ImageLoader;
 import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
 import com.hon.sunny.ui.main.viewholder.ForecastViewHolder;
 import com.hon.sunny.ui.main.viewholder.HoursWeatherViewHolder;
 import com.hon.sunny.ui.main.viewholder.SuggestionViewHolder;
+import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.Weather;
@@ -64,8 +67,9 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         holder.bind(mWeatherData);
-        if (SharedPreferenceUtil.getInstance().getMainAnim()) {
-            showItemAnim(holder.itemView, position);
+        if (PreferenceManager.getDefaultSharedPreferences(Sunny.getAppContext())
+                .getBoolean(Constants.ANIM_START, false)) {
+//            showItemAnim(holder.itemView, position);
         }
     }
 
@@ -126,9 +130,9 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
             tempAqi.setText(Util.safeText("AQI: ", weather.aqi));
 
             if (weather.now != null)
-                ImageLoader.load(itemView.getContext(),
-                        SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none),
-                        weatherIcon);
+                Glide.with(itemView.getContext())
+                        .load(SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none))
+                        .into(weatherIcon);
         }
     }
 

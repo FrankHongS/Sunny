@@ -1,41 +1,34 @@
 package com.hon.sunny.ui.setting;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
-import android.preference.Preference;
-import android.preference.PreferenceFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.service.notification.StatusBarNotification;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.preference.CheckBoxPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.SeekBarPreference;
+import androidx.preference.SwitchPreference;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.component.ImageLoader;
 import com.hon.sunny.service.AutoUpdateService;
 import com.hon.sunny.ui.main.MainActivity;
+import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.FileSizeUtil;
 import com.hon.sunny.utils.FileUtil;
 import com.hon.sunny.utils.RxUtils;
-import com.hon.sunny.utils.SharedPreferenceUtil;
-import com.hon.sunny.utils.SimpleSubscriber;
-import com.hon.sunny.utils.Util;
-import com.hon.sunny.vo.event.ChangeCityEvent;
-
-import org.greenrobot.eventbus.EventBus;
-
-import java.io.File;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 import static com.hon.sunny.utils.Constants.ANIM_START;
 import static com.hon.sunny.utils.Constants.AUTO_UPDATE;
@@ -50,84 +43,81 @@ import static com.hon.sunny.utils.Constants.NOTIFICATION_MODEL;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class SettingFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener,
+public class SettingFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener,
         Preference.OnPreferenceChangeListener {
-    private static String TAG = SettingFragment.class.getSimpleName();
 
-    private SharedPreferenceUtil mSharedPreferenceUtil;
+    private static final String CACHE_PATH = Sunny.getAppCacheDir() + "/NetCache";
 
-    private Preference mChangeIcons;
-    private Preference mChangeUpdateTime;
-    private Preference mClearCache;
+    private SharedPreferences mSharedPreferences;
 
-    // if auto update
-    private CheckBoxPreference mAutoUpdate;
-    private CheckBoxPreference mNotificationType;
-    private CheckBoxPreference mAnimationOnOff;
+    private Preference changeIcons;
+    private SeekBarPreference changeUpdateTime;
+    private Preference clearCache;
+
+    private SwitchPreference autoUpdate;
+    private CheckBoxPreference notificationType;
+    private CheckBoxPreference animation;
+
+    private Disposable cacheDisposable;
+
+    private SettingIconDialog mSettingIconDialog;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.setting);
-        mSharedPreferenceUtil = SharedPreferenceUtil.getInstance();
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.setting, rootKey);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(Sunny.getAppContext());
 
         initView();
     }
 
     private void initView() {
-        mChangeIcons = findPreference(CHANGE_ICONS);
-        mAutoUpdate = (CheckBoxPreference) findPreference(AUTO_UPDATE);
-        mChangeUpdateTime = findPreference(CHANGE_UPDATE_TIME);
-        mClearCache = findPreference(CLEAR_CACHE);
+        changeIcons = findPreference(CHANGE_ICONS);
+        animation = (CheckBoxPreference) findPreference(ANIM_START);
+        autoUpdate = (SwitchPreference) findPreference(AUTO_UPDATE);
+        changeUpdateTime = (SeekBarPreference) findPreference(CHANGE_UPDATE_TIME);
+        notificationType = (CheckBoxPreference) findPreference(NOTIFICATION_MODEL);
+        clearCache = findPreference(CLEAR_CACHE);
 
-        mAnimationOnOff = (CheckBoxPreference) findPreference(ANIM_START);
-        mNotificationType = (CheckBoxPreference) findPreference(NOTIFICATION_MODEL);
+        changeIcons.setSummary(
+                getResources().getStringArray(R.array.icons)[mSharedPreferences.getInt(CHANGE_ICONS, 1) - 1]);
+        animation.setChecked(mSharedPreferences.getBoolean(ANIM_START, false));
+        autoUpdate.setChecked(mSharedPreferences.getBoolean(AUTO_UPDATE, false));
+        changeUpdateTime.setSummary(getString(R.string.setting_update_summary,
+                mSharedPreferences.getInt(CHANGE_UPDATE_TIME, 3)));
+        notificationType.setChecked(mSharedPreferences.getBoolean(NOTIFICATION_MODEL, true));
+        clearCache.setSummary(FileSizeUtil.getFilesSize(CACHE_PATH));
 
-        mNotificationType.setChecked(
-                mSharedPreferenceUtil.getNotificationModel()
-                        == Notification.FLAG_ONGOING_EVENT
-        );
-        mAnimationOnOff.setChecked(mSharedPreferenceUtil.getMainAnim());
-        mChangeIcons.setSummary(
-                getResources().getStringArray(R.array.icons)[mSharedPreferenceUtil.getInt(CHANGE_ICONS, 0)]);
+        changeUpdateTime.setMin(3);
+        changeUpdateTime.setMax(12);
+        changeUpdateTime.setValue(mSharedPreferences.getInt(CHANGE_UPDATE_TIME, 3));
 
-        //为了兼容小米，应用被彻底清除之后，前台service也会关闭
-        mAutoUpdate.setChecked(Util.isServiceRunning(getActivity(), "com.hon.sunny.service.AutoUpdateService"));
-//        mAutoUpdate.setChecked(mSharedPreferenceUtil.getBoolean(AUTO_UPDATE));
-        mChangeUpdateTime.setEnabled(mSharedPreferenceUtil.getBoolean(AUTO_UPDATE));
-        mChangeUpdateTime.setSummary(
-                "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME, 3) + "小时更新");
-        mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
+        changeIcons.setOnPreferenceClickListener(this);
+        clearCache.setOnPreferenceClickListener(this);
 
-        mChangeIcons.setOnPreferenceClickListener(this);
-        mChangeUpdateTime.setOnPreferenceClickListener(this);
-        mClearCache.setOnPreferenceClickListener(this);
-
-        mAutoUpdate.setOnPreferenceChangeListener(this);
-        mNotificationType.setOnPreferenceChangeListener(this);
-        mAnimationOnOff.setOnPreferenceChangeListener(this);
+        changeUpdateTime.setOnPreferenceChangeListener(this);
+        autoUpdate.setOnPreferenceChangeListener(this);
+        notificationType.setOnPreferenceChangeListener(this);
     }
 
 
+    @SuppressWarnings("all")
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (mChangeIcons == preference) {
+        if (preference == changeIcons) {
             showIconDialog();
-        } else if (mClearCache == preference) {
-
-            ImageLoader.clear(getActivity());
-            Observable.just(FileUtil.delete(new File(Sunny.getAppCacheDir() + "/NetCache")))
-                    .compose(RxUtils.rxSchedulerHelper()).subscribe(new SimpleSubscriber<Boolean>() {
-                @Override
-                public void onNext(Boolean success) {
-                    mClearCache.setSummary(FileSizeUtil.getAutoFileOrFilesSize(Sunny.getAppCacheDir() + "/NetCache"));
-                    if (success) {
-                        Snackbar.make(getView(), "缓存已清除", Snackbar.LENGTH_SHORT).show();
-                    }
-                }
-            });
-        } else if (mChangeUpdateTime == preference) {
-            showUpdateDialog();
+        } else if (preference == clearCache) {
+            cacheDisposable = Observable.just(FileUtil.delete(CACHE_PATH))
+                    .map(success -> {
+                        Glide.get(Sunny.getAppContext()).clearDiskCache();
+                        return success;
+                    })
+                    .compose(RxUtils.rxSchedulerHelper())
+                    .subscribe(success -> {
+                        clearCache.setSummary(FileSizeUtil.getFilesSize(CACHE_PATH));
+                        if (success) {
+                            Snackbar.make(getView(), R.string.setting_cache_cleared_hint, Snackbar.LENGTH_SHORT).show();
+                        }
+                    });
         }
         return true;
     }
@@ -135,138 +125,65 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-        Boolean newSetting = (Boolean) newValue;
-
-        if (preference == mAnimationOnOff) {
-            mSharedPreferenceUtil.setMainAnim(newSetting);
-        } else if (preference == mAutoUpdate) {
-            if (newSetting) {
-
+        if (preference == autoUpdate) {
+            if (mSharedPreferences.getBoolean(AUTO_UPDATE, false)) {
                 Intent i = new Intent(getActivity(), AutoUpdateService.class);
                 i.putExtra(INIT_SERVICE, true);
                 getActivity().startService(i);
-
-                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE, true);
-                mChangeUpdateTime.setEnabled(true);
             } else {
-
                 getActivity().stopService(new Intent(getActivity(), AutoUpdateService.class));
-
-                mSharedPreferenceUtil.putBoolean(AUTO_UPDATE, false);
-                mChangeUpdateTime.setEnabled(false);
             }
-        } else if (preference == mNotificationType) {
-            mSharedPreferenceUtil.setNotificationModel(
-                    newSetting ? Notification.FLAG_ONGOING_EVENT : Notification.FLAG_AUTO_CANCEL);
+        } else if (preference == changeUpdateTime) {
+            changeUpdateTime.setSummary(String.format(getString(R.string.setting_update_summary), (int) newValue));
+        } else if (preference == notificationType) {
+            setNotificationModel(
+                    (boolean) newValue ? Notification.FLAG_ONGOING_EVENT : Notification.FLAG_AUTO_CANCEL
+            );
         }
 
         return true;
     }
 
-    private void showIconDialog() {
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogLayout = inflater.inflate(R.layout.icon_dialog, getActivity().findViewById(R.id.dialog_root));
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setView(dialogLayout);
-        final AlertDialog alertDialog = builder.create();
-
-        LinearLayout layoutTypeOne = dialogLayout.findViewById(R.id.layout_one);
-        layoutTypeOne.setClickable(true);
-        RadioButton radioTypeOne = dialogLayout.findViewById(R.id.radio_one);
-        LinearLayout layoutTypeTwo = dialogLayout.findViewById(R.id.layout_two);
-        layoutTypeTwo.setClickable(true);
-        RadioButton radioTypeTwo = dialogLayout.findViewById(R.id.radio_two);
-        TextView done = dialogLayout.findViewById(R.id.done);
-
-        radioTypeOne.setClickable(false);
-        radioTypeTwo.setClickable(false);
-
-        alertDialog.show();
-
-        switch (mSharedPreferenceUtil.getInt(CHANGE_ICONS, 0)) {
-            case 0:
-                radioTypeOne.setChecked(true);
-                radioTypeTwo.setChecked(false);
-                break;
-            case 1:
-                radioTypeOne.setChecked(false);
-                radioTypeTwo.setChecked(true);
-                break;
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (cacheDisposable != null && !cacheDisposable.isDisposed()) {
+            cacheDisposable.dispose();
         }
+    }
 
-        layoutTypeOne.setOnClickListener(v -> {
-            radioTypeOne.setChecked(true);
-            radioTypeTwo.setChecked(false);
-        });
-
-        layoutTypeTwo.setOnClickListener(v -> {
-            radioTypeOne.setChecked(false);
-            radioTypeTwo.setChecked(true);
-        });
-
-        done.setOnClickListener(v -> {
-            mSharedPreferenceUtil.putInt(CHANGE_ICONS, radioTypeOne.isChecked() ? 0 : 1);
+    private void showIconDialog() {
+        if (mSettingIconDialog == null) {
+            mSettingIconDialog = new SettingIconDialog(getContext());
+        }
+        mSettingIconDialog.setOnClickListener((dialog, which) -> {
             String[] iconsText = getResources().getStringArray(R.array.icons);
-            mChangeIcons.setSummary(radioTypeOne.isChecked() ? iconsText[0] :
-                    iconsText[1]);
+            changeIcons.setSummary(iconsText[mSettingIconDialog.getChecked() - 1]);
 
-            alertDialog.dismiss();
-            Snackbar.make(getView(), "切换成功,重启应用生效",
-                    Snackbar.LENGTH_INDEFINITE).setAction("重启",
-                    v1 -> {
-
-                        //Intent intent =
-                        //    getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName());
+            Snackbar.make(getView(), R.string.setting_modify_icons_hint,
+                    Snackbar.LENGTH_LONG).setAction(R.string.setting_restart,
+                    v -> {
                         Intent intent = new Intent(getActivity(), MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.putExtra(Constants.RESST_ICONS, true);
                         getActivity().startActivity(intent);
                         getActivity().finish();
-                        EventBus.getDefault().post(new ChangeCityEvent());
                     }).show();
         });
+
+        mSettingIconDialog.show();
+
     }
 
-    private void showUpdateDialog() {
-        //将 SeekBar 放入 Dialog 的方案 http://stackoverflow.com/questions/7184104/how-do-i-put-a-seek-bar-in-an-alert-dialog
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View dialogLayout = inflater.inflate(R.layout.update_dialog, (ViewGroup) getActivity().findViewById(
-                R.id.dialog_root));
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setView(dialogLayout);
-        final AlertDialog alertDialog = builder.create();
-
-        final SeekBar mSeekBar = dialogLayout.findViewById(R.id.time_seekbar);
-        final TextView tvShowHour = dialogLayout.findViewById(R.id.tv_showhour);
-        TextView tvDone = dialogLayout.findViewById(R.id.done);
-
-        mSeekBar.setMax(24);
-        mSeekBar.setProgress(mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME, 3));
-        tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress()));
-        alertDialog.show();
-
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvShowHour.setText(String.format("每%s小时", mSeekBar.getProgress() + 1));
+    //  通知栏模式 默认为常驻
+    private void setNotificationModel(int t) {
+        if (Build.VERSION.SDK_INT >= 23) {
+            NotificationManager manager = (NotificationManager) Sunny.getAppContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            StatusBarNotification[] notifications = manager.getActiveNotifications();
+            for (StatusBarNotification notification : notifications) {
+                notification.getNotification().flags = t;
+                manager.notify(1, notification.getNotification());
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        tvDone.setOnClickListener(v -> {
-            mSharedPreferenceUtil.putInt(CHANGE_UPDATE_TIME, mSeekBar.getProgress() + 1);
-            mChangeUpdateTime.setSummary(
-                    "每" + mSharedPreferenceUtil.getInt(CHANGE_UPDATE_TIME, 3) + "小时更新");
-            getActivity().stopService(new Intent(getActivity(), AutoUpdateService.class));
-            getActivity().startService(new Intent(getActivity(), AutoUpdateService.class));
-            alertDialog.dismiss();
-        });
+        }
     }
-
 }

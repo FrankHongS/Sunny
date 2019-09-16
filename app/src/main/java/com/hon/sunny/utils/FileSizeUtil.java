@@ -52,7 +52,7 @@ public class FileSizeUtil {
      * @return 计算好的带B、KB、MB、GB的字符串
      */
 
-    public static String getAutoFileOrFilesSize(String filePath) {
+    public static String getFilesSize(String filePath) {
         File file = new File(filePath);
         long blockSize = 0;
         try {

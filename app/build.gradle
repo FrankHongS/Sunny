@@ -61,8 +61,9 @@ dependencies {
     implementation deps.support.material
     implementation deps.support.cardview
     implementation deps.support.constraintlayout
+    implementation deps.support.preference
 
-    // Rx
+    // RxJava
     implementation deps.rxJava
     implementation deps.rxAndroid
     implementation deps.rxPermissions
@@ -73,12 +74,13 @@ dependencies {
     implementation deps.okhttp_logging
     // Glide
     implementation deps.glide.root
+    annotationProcessor deps.glide.compiler
 
-    // butter knife
+    // ButterKnife
     implementation deps.butterknife.runtime
     annotationProcessor deps.butterknife.compiler
 
-    // event bus
+    // EventBus
     implementation deps.eventbus
 
     //amap sdk

@@ -26,7 +26,6 @@
     <string name="app_html">https://github.com/xcc3641/SeeWeather</string>
     <string name="readme">https://github.com/xcc3641/SeeWeather/blob/master/README.md</string>
 
-    <string name="chage_icon">更换图标</string>
     <string name="nav_city">选择城市</string>
     <string name="setting">设置</string>
     <string name="about">关于</string>
@@ -38,10 +37,6 @@
     在开源的过程中，收到了很多来自有趣的你们的邮件。\n我也曾遇到过棘手的问题无处咨询又谷歌不到。那个时候的我，也可能是现在的你。所以我希望能够帮助到你。</string>
     <string name="open_source">• RxJava: github.com/ReactiveX/RxJava\n• RxAndroid: github.com/ReactiveX/RxAndroid\n• Retrofit: github.com/square/retrofit\n• Glide: github.com/bumptech/glide\n• YujunZhu 设计师提供多城市卡片设计\n• 和风天气提供数据支持\n• 高德定位提供位置定位服务</string>
     <string name="bugTableUrl">https://www.wenjuan.com/s/YbqANfc/</string>
-    <string-array name="icons">
-        <item>图标一</item>
-        <item>图标二</item>
-    </string-array>
 
     <string-array name="cache_time">
         <item>禁止刷新</item>
@@ -69,4 +64,21 @@
 
     <string name="multi_city_empty">你还没有添加城市噢 (´･_･`)</string>
 
+    <!--settings-->
+    <string name="setting_ui">界面</string>
+    <string name="setting_change_icons">更换天气图标</string>
+    <string-array name="icons">
+        <item>图标一</item>
+        <item>图标二</item>
+    </string-array>
+    <string name="setting_modify_icons_hint">切换成功,重启应用生效</string>
+    <string name="setting_restart">重启</string>
+    <string name="setting_anim_homepage">首页Item动画</string>
+    <string name="setting_system">系统</string>
+    <string name="setting_auto_update">自动刷新天气</string>
+    <string name="setting_update_frequency">刷新频率</string>
+    <string name="setting_update_summary">每%d小时更新</string>
+    <string name="setting_notification_ongoing">通知栏常驻</string>
+    <string name="setting_clear_cache">清除缓存</string>
+    <string name="setting_cache_cleared_hint">缓存已清除</string>
 </resources>
