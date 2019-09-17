@@ -69,7 +69,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
         holder.bind(mWeatherData);
         if (PreferenceManager.getDefaultSharedPreferences(Sunny.getAppContext())
                 .getBoolean(Constants.ANIM_START, false)) {
-//            showItemAnim(holder.itemView, position);
+            showItemAnim(holder);
         }
     }
 
@@ -85,7 +85,7 @@ public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
 
     public void setWeather(Weather weather) {
         this.mWeatherData = weather;
-        notifyDataSetChanged();
+        changeData();// similar to notifyDataChanged
     }
 
     /**

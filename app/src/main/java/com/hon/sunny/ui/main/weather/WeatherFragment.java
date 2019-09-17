@@ -27,6 +27,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.hon.mylogger.MyLogger;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
+import com.hon.sunny.component.WeatherItemAnimator;
 import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
@@ -119,76 +120,9 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
         mWeatherAdapter = new WeatherAdapter();
         recyclerView.setAdapter(mWeatherAdapter);
         recyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
-        recyclerView.setItemAnimator(new RecyclerView.ItemAnimator() {
-            @Override
-            public boolean animateDisappearance(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @Nullable ItemHolderInfo postLayoutInfo) {
-                Animation animation = AnimationUtils.loadAnimation(getContext(),
-                        R.anim.slide_in_left);
-                viewHolder.itemView.startAnimation(animation);
-                return false;
-            }
-
-            @Override
-            public boolean animateAppearance(@NonNull RecyclerView.ViewHolder viewHolder, @Nullable ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-//                viewHolder.itemView.postDelayed(() -> {
-                    Animation animation = AnimationUtils.loadAnimation(getContext(),
-                            R.anim.slide_in_left);
-//                animation.setAnimationListener(new Animation.AnimationListener() {
-//                    @Override
-//                    public void onAnimationStart(Animation animation) {
-//                        view.setAlpha(1);
-//                    }
-//
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation animation) {
-//                    }
-//
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation animation) {
-//                    }
-//                });
-                    viewHolder.itemView.startAnimation(animation);
-//                }, 138 * viewHolder.getLayoutPosition());
-//                mLastPosition = position;
-                return false;
-            }
-
-            @Override
-            public boolean animatePersistence(@NonNull RecyclerView.ViewHolder viewHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-                Animation animation = AnimationUtils.loadAnimation(getContext(),
-                        R.anim.slide_in_left);
-                viewHolder.itemView.startAnimation(animation);
-                return false;
-            }
-
-            @Override
-            public boolean animateChange(@NonNull RecyclerView.ViewHolder oldHolder, @NonNull RecyclerView.ViewHolder newHolder, @NonNull ItemHolderInfo preLayoutInfo, @NonNull ItemHolderInfo postLayoutInfo) {
-
-                return false;
-            }
-
-            @Override
-            public void runPendingAnimations() {
-
-            }
-
-            @Override
-            public void endAnimation(@NonNull RecyclerView.ViewHolder item) {
-
-            }
-
-            @Override
-            public void endAnimations() {
-
-            }
-
-            @Override
-            public boolean isRunning() {
-                return false;
-            }
-        });
+//        recyclerView.setItemAnimator(new WeatherItemAnimator());
+//        recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_slide_in_from_left));
+//        recyclerView.scheduleLayoutAnimation();
     }
 
     private void loadWeather() {

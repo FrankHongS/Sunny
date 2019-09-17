@@ -1,13 +1,11 @@
 package com.hon.sunny.component;
 
-import android.content.Context;
+import android.animation.ObjectAnimator;
+import android.util.Log;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.hon.sunny.R;
 
 /**
  * Created by Frank on 2017/8/10.
@@ -17,35 +15,23 @@ import com.hon.sunny.R;
 public abstract class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<T> {
 
-    private static final int DELAY = 138;
+    private static final int DELAY = 338;
     private int mLastPosition = -1;
 
-    protected void showItemAnim(final View view, final int position) {
-        Context context = view.getContext();
-        if (position > mLastPosition) {
-//            view.setAlpha(0);
-            view.postDelayed(() -> {
-                Animation animation = AnimationUtils.loadAnimation(context,
-                        R.anim.slide_in_left);
-//                animation.setAnimationListener(new Animation.AnimationListener() {
-//                    @Override
-//                    public void onAnimationStart(Animation animation) {
-//                        view.setAlpha(1);
-//                    }
-//
-//
-//                    @Override
-//                    public void onAnimationEnd(Animation animation) {
-//                    }
-//
-//
-//                    @Override
-//                    public void onAnimationRepeat(Animation animation) {
-//                    }
-//                });
-                view.startAnimation(animation);
-            }, DELAY * position);
+    protected void showItemAnim(RecyclerView.ViewHolder holder) {
+        Log.d("shuai", "showItemAnim: "+holder.getLayoutPosition()+" "+holder.getAdapterPosition());
+        int position=holder.getLayoutPosition();
+        if ( position> mLastPosition) {
+            ObjectAnimator slideInFromLeft = ObjectAnimator.ofFloat(holder.itemView, "translationX", -800, 0);
+            slideInFromLeft.setInterpolator(new DecelerateInterpolator());
+            slideInFromLeft.setDuration(DELAY * (position + 1));
+            slideInFromLeft.start();
             mLastPosition = position;
         }
+    }
+
+    protected void changeData() {
+        mLastPosition = -1;
+        notifyDataSetChanged();
     }
 }
