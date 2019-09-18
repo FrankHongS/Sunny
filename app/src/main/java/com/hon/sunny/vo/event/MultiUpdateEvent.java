@@ -6,4 +6,14 @@ package com.hon.sunny.vo.event;
  */
 
 public class MultiUpdateEvent {
+
+    private String addedCity;
+
+    public MultiUpdateEvent(String addedCity) {
+        this.addedCity = addedCity;
+    }
+
+    public String getAddedCity() {
+        return addedCity;
+    }
 }

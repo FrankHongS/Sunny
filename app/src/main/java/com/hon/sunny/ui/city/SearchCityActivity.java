@@ -26,7 +26,7 @@ import com.hon.sunny.ui.city.view.expandrecycleview.GridAdapter;
 import com.hon.sunny.ui.city.view.expandrecycleview.ParentBean;
 import com.hon.sunny.ui.city.view.popup.CityCardPopup;
 import com.hon.sunny.ui.city.view.searchview.CitySuggestionBuilder;
-import com.hon.sunny.ui.city.view.searchview.SimpleAnimationListener;
+import com.hon.sunny.ui.common.SimpleAnimationListener;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
@@ -237,7 +237,7 @@ public class SearchCityActivity extends AppCompatActivity implements SearchCityC
                 return;
             } else {
                 OrmLite.getInstance().save(new CityORM(city));
-                EventBus.getDefault().post(new MultiUpdateEvent());
+                EventBus.getDefault().post(new MultiUpdateEvent(city));
             }
         } else {
             SharedPreferenceUtil.getInstance().setCityName(city);

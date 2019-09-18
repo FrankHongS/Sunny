@@ -1,4 +1,4 @@
-package com.hon.sunny.ui.city.view.searchview;
+package com.hon.sunny.ui.common;
 
 import android.animation.Animator;
 

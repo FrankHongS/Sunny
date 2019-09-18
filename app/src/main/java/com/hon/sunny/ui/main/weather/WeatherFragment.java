@@ -3,12 +3,9 @@ package com.hon.sunny.ui.main.weather;
 import android.Manifest;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -24,10 +21,8 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.hon.mylogger.MyLogger;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.component.WeatherItemAnimator;
 import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
@@ -120,9 +115,6 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
         mWeatherAdapter = new WeatherAdapter();
         recyclerView.setAdapter(mWeatherAdapter);
         recyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
-//        recyclerView.setItemAnimator(new WeatherItemAnimator());
-//        recyclerView.setLayoutAnimation(AnimationUtils.loadLayoutAnimation(getContext(),R.anim.layout_animation_slide_in_from_left));
-//        recyclerView.scheduleLayoutAnimation();
     }
 
     private void loadWeather() {

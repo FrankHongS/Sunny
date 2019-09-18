@@ -6,6 +6,10 @@ import androidx.lifecycle.OnLifecycleEvent;
 
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.network.exception.CityListEmptyException;
+import com.hon.sunny.vo.bean.main.Weather;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -56,6 +60,17 @@ public class MultiCityPresenter implements MultiCityContract.Presenter, Lifecycl
                         () -> mMultiCityView.onCompleted()
                 );
         mMultiCityCompositeDisposable.add(multiCityDisposable);
+    }
+
+    @Override
+    public void loadAddedCityWeather(String addedCity) {
+        Disposable addedCityDisposable = mMultiCityRepository
+                .fetchAddedCityWeather(addedCity)
+                .subscribe(
+                        weather -> mMultiCityView.onAdded(weather),
+                        throwable -> mMultiCityView.onError(throwable)
+                );
+        mMultiCityCompositeDisposable.add(addedCityDisposable);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)

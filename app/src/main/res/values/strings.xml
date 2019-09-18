@@ -71,6 +71,7 @@
         <item>图标一</item>
         <item>图标二</item>
     </string-array>
+    <string name="setting_change_icons_sure">确定</string>
     <string name="setting_modify_icons_hint">切换成功,重启应用生效</string>
     <string name="setting_restart">重启</string>
     <string name="setting_anim_homepage">首页Item动画</string>

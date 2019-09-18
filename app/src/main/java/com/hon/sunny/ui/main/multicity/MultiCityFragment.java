@@ -1,6 +1,5 @@
 package com.hon.sunny.ui.main.multicity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,15 +89,14 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     }
 
     private void initView() {
-        mWeathers = new ArrayList<>();
-        mMultiCityAdapter = new MultiCityAdapter(mWeathers);
+        mMultiCityAdapter = new MultiCityAdapter();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mMultiCityAdapter);
         recyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
         mMultiCityAdapter.setOnMultiCityClickListener(new MultiCityAdapter.OnMultiCityClickListener() {
             @Override
-            public void onLongClick(String city) {
-                showDialog(city);
+            public void onLongClick(String city, int position) {
+                showDialog(city, position);
             }
 
             @Override
@@ -135,15 +133,14 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
             errorImageView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         }
+        ToastUtil.showShort(t.getMessage());
         RetrofitSingleton.disposeFailureInfo(t);
     }
 
     @Override
     public void onEmpty() {
-        mMultiCityAdapter.notifyDataSetChanged();
-        emptyText.setVisibility(View.VISIBLE);
-        errorImageView.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
+        mMultiCityAdapter.submitList(mWeathers);
+        showEmptyView();
     }
 
     @Override
@@ -151,45 +148,67 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
         if (Constants.UNKNOWN_CITY.equals(weather.status)) {
             ToastUtil.showLong("there's an unknown city...");
         }
-        mWeathers.add(weather);
+        mWeathers.add(0, weather);
     }
 
     @Override
     public void onCompleted() {
-        mMultiCityAdapter.notifyDataSetChanged();
-        recyclerView.setVisibility(View.VISIBLE);
-        errorImageView.setVisibility(View.GONE);
-        emptyText.setVisibility(View.GONE);
+        mMultiCityAdapter.submitList(mWeathers);
+        showContentView();
+    }
+
+    @Override
+    public void onAdded(Weather weather) {
+        mWeathers.add(0, weather);
+        mMultiCityAdapter.notifyItemInserted(0);
+        recyclerView.scrollToPosition(0);
+        showContentView();
     }
 
     private void multiLoad() {
-        mWeathers.clear();
+        mWeathers = new ArrayList<>();
         mMultiCityPresenter.start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void multiUpdate(MultiUpdateEvent event) {
-        multiLoad();
+        mMultiCityPresenter.loadAddedCityWeather(event.getAddedCity());
     }
 
-    private void showDialog(String city) {
+    private void showEmptyView() {
+        emptyText.setVisibility(View.VISIBLE);
+        errorImageView.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    private void showContentView() {
+        recyclerView.setVisibility(View.VISIBLE);
+        errorImageView.setVisibility(View.GONE);
+        emptyText.setVisibility(View.GONE);
+    }
+
+    private void showDialog(String city, int position) {
         new AlertDialog.Builder(getActivity()).setMessage("是否删除该城市?")
-                .setPositiveButton("删除", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        List<CityORM> cityList = OrmLite.getInstance().query(new QueryBuilder<>(CityORM.class).where("name=?", city));
-                        if (cityList.isEmpty()) {
-                            return;
-                        }
-                        int id = cityList.get(0).getId();
-                        OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("id=?", id));
-                        multiLoad();
-                        Snackbar.make(getView(), "已经将" + city + "删掉了 Ծ‸ Ծ", Snackbar.LENGTH_LONG).setAction("撤销",
-                                v -> {
-                                    OrmLite.getInstance().save(new CityORM(id, city));
-                                    multiLoad();
-                                }).show();
+                .setPositiveButton("删除", (dialog, which) -> {
+                    List<CityORM> cityList = OrmLite.getInstance().query(new QueryBuilder<>(CityORM.class).where("name=?", city));
+                    if (cityList.isEmpty()) {
+                        return;
                     }
+                    int id = cityList.get(0).getId();
+                    OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("id=?", id));
+                    Weather weather = mWeathers.remove(position);
+                    mMultiCityAdapter.notifyItemRemoved(position);
+                    if (mWeathers.isEmpty()) {
+                        showEmptyView();
+                    }
+                    Snackbar.make(getView(), "已经将" + city + "删掉了 Ծ‸ Ծ", Snackbar.LENGTH_LONG).setAction("撤销",
+                            v -> {
+                                OrmLite.getInstance().save(new CityORM(id, city));
+                                mWeathers.add(position, weather);
+                                mMultiCityAdapter.notifyItemInserted(position);
+                                recyclerView.scrollToPosition(position);
+                                showContentView();
+                            }).show();
                 })
                 .show();
     }

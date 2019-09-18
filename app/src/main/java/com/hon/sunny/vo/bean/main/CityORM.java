@@ -36,5 +36,13 @@ public class CityORM {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "CityORM{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
 

@@ -56,7 +56,7 @@ public class SettingIconDialog {
         View dialogLayout = LayoutInflater.from(context).inflate(R.layout.layout_icon_dialog, null, false);
         alertDialog = new AlertDialog.Builder(context)
                 .setView(dialogLayout)
-                .setPositiveButton("Sure", (dialog, which) -> {
+                .setPositiveButton(R.string.setting_change_icons_sure, (dialog, which) -> {
                             if (isChanged()) {
                                 if (onClickListener != null) {
                                     onClickListener.onClick(dialog, which);

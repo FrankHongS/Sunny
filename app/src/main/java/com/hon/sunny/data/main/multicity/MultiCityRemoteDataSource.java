@@ -1,5 +1,7 @@
 package com.hon.sunny.data.main.multicity;
 
+import android.util.Log;
+
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.network.exception.CityListEmptyException;
@@ -42,8 +44,7 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource {
     public Flowable<Weather> fetchMultiCityWeather() {
         return Flowable
                 .defer(() -> {
-                    List<CityORM> cityList = OrmLite.getInstance()
-                            .query(new QueryBuilder<>(CityORM.class).appendOrderDescBy("id"));
+                    List<CityORM> cityList = OrmLite.getInstance().query(CityORM.class);
                     if (cityList == null || cityList.size() == 0) {
                         return Flowable.error(new CityListEmptyException("city list is empty"));
                     } else {
@@ -53,7 +54,9 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource {
                 .map(cityORM -> Util.replaceCity(cityORM.getName()))
                 .distinct()
                 .take(3)
-                .subscribeOn(Schedulers.io())// control upstream thread
+                // control upstream thread
+                .subscribeOn(Schedulers.io())
+                // for parallel
                 .concatMapEager(
                         s -> RetrofitSingleton
                                 .getInstance()
@@ -63,4 +66,13 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource {
 
     }
 
+    @Override
+    public Flowable<Weather> fetchAddedCityWeather(String addedCity) {
+        return Flowable.just(addedCity)
+                .flatMap(city ->
+                        RetrofitSingleton
+                                .getInstance()
+                                .fetchWeather(city))
+                .observeOn(AndroidSchedulers.mainThread());
+    }
 }

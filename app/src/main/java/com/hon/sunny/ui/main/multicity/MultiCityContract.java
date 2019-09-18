@@ -23,9 +23,13 @@ public interface MultiCityContract {
         void onNext(Weather weather);
 
         void onCompleted();
+
+        void onAdded(Weather weather);
     }
 
     interface Presenter extends BasePresenter {
         void loadMultiCityWeather();
+
+        void loadAddedCityWeather(String addedCity);
     }
 }

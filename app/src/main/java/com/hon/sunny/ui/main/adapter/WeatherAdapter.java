@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.base.BaseViewHolder;
-import com.hon.sunny.component.AnimRecyclerViewAdapter;
+import com.hon.sunny.ui.common.AnimatorAdapter;
 import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
 import com.hon.sunny.ui.main.viewholder.ForecastViewHolder;
 import com.hon.sunny.ui.main.viewholder.HoursWeatherViewHolder;
@@ -30,7 +30,7 @@ import butterknife.BindView;
  * E-mail:frank_hon@foxmail.com
  */
 @SuppressWarnings("all")
-public class WeatherAdapter extends AnimRecyclerViewAdapter<BaseViewHolder> {
+public class WeatherAdapter extends AnimatorAdapter<BaseViewHolder> {
 
     private static final int NOW_WEATHER = 0;
     private static final int HOURS_WEATHER = 1;

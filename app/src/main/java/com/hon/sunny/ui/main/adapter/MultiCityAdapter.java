@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -23,8 +24,6 @@ import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.Weather;
 
-import java.util.List;
-
 import butterknife.BindView;
 
 /**
@@ -32,13 +31,25 @@ import butterknife.BindView;
  * E-mail:frank_hon@foxmail.com
  */
 
-public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.MultiCityViewHolder> {
-    private List<Weather> mWeatherList;
+public class MultiCityAdapter extends ListAdapter<Weather, MultiCityAdapter.MultiCityViewHolder> {
     private OnMultiCityClickListener onMultiCityClickListener = null;
 
-    public MultiCityAdapter(List<Weather> weatherList) {
-        mWeatherList = weatherList;
+    public MultiCityAdapter() {
+        super(new DiffUtil.ItemCallback<Weather>() {
+            @Override
+            public boolean areItemsTheSame(@NonNull Weather oldItem, @NonNull Weather newItem) {
+                return oldItem.city.equals(newItem.city);
+            }
+
+            @Override
+            public boolean areContentsTheSame(@NonNull Weather oldItem, @NonNull Weather newItem) {
+                return oldItem.now.txt.equals(newItem.now.txt) &&
+                        oldItem.now.code.equals(newItem.now.code) &&
+                        oldItem.now.tmp.equals(newItem.now.tmp);
+            }
+        });
     }
+
 
     public void setOnMultiCityClickListener(OnMultiCityClickListener onMultiCityClickListener) {
         this.onMultiCityClickListener = onMultiCityClickListener;
@@ -52,29 +63,20 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
     }
 
     @Override
-    public void onBindViewHolder(MultiCityViewHolder holder, int position) {
-
-        holder.bind(mWeatherList.get(position));
+    public void onBindViewHolder(@NonNull MultiCityViewHolder holder, int position) {
+        Weather weather = getItem(position);
+        holder.bind(weather);
         holder.itemView.setOnClickListener(v -> {
-            onMultiCityClickListener.onClick(mWeatherList.get(holder.getAdapterPosition()).city);
+            onMultiCityClickListener.onClick(weather.city);
         });
         holder.itemView.setOnLongClickListener(v -> {
-            onMultiCityClickListener.onLongClick(mWeatherList.get(holder.getAdapterPosition()).city);
+            onMultiCityClickListener.onLongClick(weather.city, holder.getLayoutPosition());
             return true;
         });
     }
 
-    @Override
-    public int getItemCount() {
-        return mWeatherList.size();
-    }
-
-    public boolean isEmpty() {
-        return 0 == mWeatherList.size();
-    }
-
     public interface OnMultiCityClickListener {
-        void onLongClick(String city);
+        void onLongClick(String city, int position);
 
         void onClick(String city);
     }
@@ -90,7 +92,7 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
         @BindView(R.id.cardView)
         CardView cardView;
 
-        public MultiCityViewHolder(View itemView) {
+        MultiCityViewHolder(View itemView) {
             super(itemView);
         }
 
@@ -117,7 +119,7 @@ public class MultiCityAdapter extends RecyclerView.Adapter<MultiCityAdapter.Mult
             Glide.with(itemView.getContext())
                     .asBitmap()
                     .load(SharedPreferenceUtil.getInstance().getInt(weatherDesc, R.mipmap.none))
-                    .into(new BitmapImageViewTarget(dialogIcon){
+                    .into(new BitmapImageViewTarget(dialogIcon) {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                             super.onResourceReady(resource, transition);

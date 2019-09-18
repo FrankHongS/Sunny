@@ -20,6 +20,7 @@
         <item>Type 1</item>
         <item>Type 2</item>
     </string-array>
+    <string name="setting_change_icons_sure">Sure</string>
     <string name="setting_modify_icons_hint">Restart to take effect</string>
     <string name="setting_restart">Restart</string>
     <string name="setting_anim_homepage">Animations of items in homepage</string>
