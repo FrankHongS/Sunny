@@ -23,7 +23,7 @@ public abstract class AnimatorAdapter<T extends RecyclerView.ViewHolder>
     // to control items' animation duration
     private LinkedList<ObjectAnimator> mAnimatorQueue = new LinkedList<>();
 
-    protected void showItemAnim(RecyclerView.ViewHolder holder) {
+    protected void addItemAnimation(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
         if (position > mLastPosition) {
             ObjectAnimator slideInFromLeft = ObjectAnimator.ofFloat(holder.itemView, "translationX", -800, 0);

@@ -24,6 +24,8 @@ import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.Weather;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -33,6 +35,8 @@ import butterknife.BindView;
 
 public class MultiCityAdapter extends ListAdapter<Weather, MultiCityAdapter.MultiCityViewHolder> {
     private OnMultiCityClickListener onMultiCityClickListener = null;
+
+    private List<Weather> weatherList;
 
     public MultiCityAdapter() {
         super(new DiffUtil.ItemCallback<Weather>() {
@@ -73,6 +77,27 @@ public class MultiCityAdapter extends ListAdapter<Weather, MultiCityAdapter.Mult
             onMultiCityClickListener.onLongClick(weather.city, holder.getLayoutPosition());
             return true;
         });
+    }
+
+    @Override
+    public void submitList(@Nullable List<Weather> list) {
+        super.submitList(list);
+        this.weatherList = list;
+    }
+
+    public void insertItem(int position, Weather weather) {
+        weatherList.add(position, weather);
+        notifyItemInserted(position);
+    }
+
+    public Weather removeItem(int position){
+        Weather weather=weatherList.remove(position);
+        notifyItemRemoved(position);
+        return weather;
+    }
+
+    public boolean isEmpty(){
+        return weatherList.isEmpty();
     }
 
     public interface OnMultiCityClickListener {

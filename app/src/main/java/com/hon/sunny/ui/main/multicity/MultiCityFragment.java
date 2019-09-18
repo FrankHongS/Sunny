@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,11 @@ import com.hon.sunny.R;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.network.RetrofitSingleton;
 import com.hon.sunny.ui.common.MaterialScrollListener;
+import com.hon.sunny.ui.common.SunnyUIModel;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.MultiCityAdapter;
 import com.hon.sunny.utils.Constants;
+import com.hon.sunny.utils.RxUtils;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.ToastUtil;
 import com.hon.sunny.vo.bean.main.CityORM;
@@ -41,6 +44,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Frank on 2017/10/28.
@@ -56,6 +61,8 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     TextView emptyText;
     @BindView(R.id.iv_error)
     ImageView errorImageView;
+    @BindView(R.id.pb_delete_city)
+    ProgressBar deleteProgress;
 
     private List<Weather> mWeathers;
     private MultiCityAdapter mMultiCityAdapter;
@@ -113,6 +120,7 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
                 android.R.color.holo_blue_bright
         );
         refreshLayout.setOnRefreshListener(this::multiLoad);
+
     }
 
     @Override
@@ -159,8 +167,7 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     @Override
     public void onAdded(Weather weather) {
-        mWeathers.add(0, weather);
-        mMultiCityAdapter.notifyItemInserted(0);
+        mMultiCityAdapter.insertItem(0, weather);
         recyclerView.scrollToPosition(0);
         showContentView();
     }
@@ -187,28 +194,55 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
         emptyText.setVisibility(View.GONE);
     }
 
+    // todo refactor 数据部分移到Presenter中
     private void showDialog(String city, int position) {
+
         new AlertDialog.Builder(getActivity()).setMessage("是否删除该城市?")
                 .setPositiveButton("删除", (dialog, which) -> {
-                    List<CityORM> cityList = OrmLite.getInstance().query(new QueryBuilder<>(CityORM.class).where("name=?", city));
-                    if (cityList.isEmpty()) {
-                        return;
-                    }
-                    int id = cityList.get(0).getId();
-                    OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("id=?", id));
-                    Weather weather = mWeathers.remove(position);
-                    mMultiCityAdapter.notifyItemRemoved(position);
-                    if (mWeathers.isEmpty()) {
-                        showEmptyView();
-                    }
-                    Snackbar.make(getView(), "已经将" + city + "删掉了 Ծ‸ Ծ", Snackbar.LENGTH_LONG).setAction("撤销",
-                            v -> {
-                                OrmLite.getInstance().save(new CityORM(id, city));
-                                mWeathers.add(position, weather);
-                                mMultiCityAdapter.notifyItemInserted(position);
-                                recyclerView.scrollToPosition(position);
-                                showContentView();
-                            }).show();
+                    Disposable d=Observable.just(city)
+                            .map(
+                                    c -> {
+                                        List<CityORM> cityList = OrmLite.getInstance().query(new QueryBuilder<>(CityORM.class).where("name=?", city));
+                                        if (cityList.isEmpty()) {
+                                            return DeleteCityUIModel.failure("删除失败");
+                                        }
+                                        int id = cityList.get(0).getId();
+                                        OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("id=?", id));
+                                        return DeleteCityUIModel.success(id);
+                                    }
+                            )
+                            .onErrorReturn(t -> {
+                                t.printStackTrace();
+                                return DeleteCityUIModel.failure("删除失败");
+                            })
+                            .compose(RxUtils.rxSchedulerHelper())
+                            .startWith(DeleteCityUIModel.inProgress())
+                            .subscribe(
+                                    model -> {
+                                        deleteProgress.setVisibility(model.inProgress ? View.VISIBLE : View.GONE);
+                                        if(!model.inProgress){
+                                            if(model.success){
+                                                Weather weather = mMultiCityAdapter.removeItem(position);
+                                                if (mMultiCityAdapter.isEmpty()) {
+                                                    showEmptyView();
+                                                }
+                                                Snackbar.make(getView(), "已经将" + city + "删掉了 Ծ‸ Ծ", Snackbar.LENGTH_LONG).setAction("撤销",
+                                                        v -> {
+                                                            OrmLite.getInstance().save(new CityORM(model.deleteCityId, city));
+                                                            mMultiCityAdapter.insertItem(position, weather);
+                                                            recyclerView.scrollToPosition(position);
+                                                            showContentView();
+                                                        }).show();
+                                            }else {
+                                                ToastUtil.showShort(model.errorMessage);
+                                            }
+                                        }
+                                    },
+                                    t -> {
+                                        // do nothing
+                                    }
+                            );
+
                 })
                 .show();
     }
