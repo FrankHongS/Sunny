@@ -80,7 +80,7 @@ public class SettingFragment extends PreferenceFragmentCompat implements Prefere
 
         changeIcons.setSummary(
                 getResources().getStringArray(R.array.icons)[mSharedPreferences.getInt(CHANGE_ICONS, 1) - 1]);
-        animation.setChecked(mSharedPreferences.getBoolean(ANIM_START, false));
+        animation.setChecked(mSharedPreferences.getBoolean(ANIM_START, true));
         autoUpdate.setChecked(mSharedPreferences.getBoolean(AUTO_UPDATE, false));
         changeUpdateTime.setSummary(getString(R.string.setting_update_summary,
                 mSharedPreferences.getInt(CHANGE_UPDATE_TIME, 3)));

@@ -68,7 +68,7 @@ public class WeatherAdapter extends AnimatorAdapter<BaseViewHolder> {
     public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
         holder.bind(mWeatherData);
         if (PreferenceManager.getDefaultSharedPreferences(Sunny.getAppContext())
-                .getBoolean(Constants.ANIM_START, false)) {
+                .getBoolean(Constants.ANIM_START, true)) {
             addItemAnimation(holder);
         }
     }

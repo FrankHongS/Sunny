@@ -13,6 +13,9 @@
     <string name="setting">Settings</string>
     <string name="about">About</string>
 
+    <!--splash-->
+    <string name="splash_countdown_time">%ds</string>
+
     <!--settings-->
     <string name="setting_ui">UI</string>
     <string name="setting_change_icons">Change weather icons</string>

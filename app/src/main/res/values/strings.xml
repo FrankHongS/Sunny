@@ -64,6 +64,9 @@
 
     <string name="multi_city_empty">你还没有添加城市噢 (´･_･`)</string>
 
+    <!--splash-->
+    <string name="splash_countdown_time">%ds</string>
+
     <!--settings-->
     <string name="setting_ui">界面</string>
     <string name="setting_change_icons">更换天气图标</string>

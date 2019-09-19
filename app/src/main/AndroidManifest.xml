@@ -38,8 +38,8 @@
             android:process=":remote"/>
 
         <activity
-            android:name=".ui.launch.FirstActivity"
-            android:theme="@style/AppTheme">
+            android:name=".ui.launch.SplashActivity"
+            android:theme="@style/AppTheme.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -49,17 +49,12 @@
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme"/>
+            />
         <activity
             android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SettingTheme"
-            >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
-        </activity>
+            android:theme="@style/AppTheme.SettingActivity"
+            />
         <activity
             android:name=".ui.about.ui.AboutActivity"
             android:screenOrientation="portrait"
