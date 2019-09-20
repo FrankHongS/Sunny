@@ -15,3 +15,5 @@
 * 优化SearchCity页面  
     * checkbox隐藏动画有问题 (todo)
     * 以及其他 (todo)
+* refactor网络请求 (todo)
+* 添加MyLogger (todo)
