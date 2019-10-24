@@ -20,7 +20,7 @@ public abstract class AnimatorAdapter<T extends RecyclerView.ViewHolder>
     private static final int DELAY = 338;
     private int mLastPosition = -1;
     // to control items' animation duration
-    private List<ObjectAnimator> mAnimatorList = new ArrayList<>();
+    private List<Animator> mAnimatorList = new ArrayList<>();
 
     protected void addItemAnimation(RecyclerView.ViewHolder holder) {
         int position = holder.getLayoutPosition();
@@ -29,14 +29,24 @@ public abstract class AnimatorAdapter<T extends RecyclerView.ViewHolder>
             slideInFromLeft.setInterpolator(new DecelerateInterpolator());
             slideInFromLeft.setDuration(DELAY * (mAnimatorList.size() + 1));
             slideInFromLeft.addListener(new SimpleAnimationListener() {
+                // if canceled, don't invoke onAnimationEnd()
+                private boolean cancel = false;
+
                 @Override
                 public void onAnimationStart(Animator animation) {
-                    mAnimatorList.add(slideInFromLeft);
+                    mAnimatorList.add(animation);
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+                    cancel = true;
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mAnimatorList.remove(slideInFromLeft);
+                    if (!cancel) {
+                        mAnimatorList.remove(animation);
+                    }
                 }
             });
             slideInFromLeft.start();
@@ -46,7 +56,9 @@ public abstract class AnimatorAdapter<T extends RecyclerView.ViewHolder>
 
     protected void changeData() {
         mLastPosition = -1;
-        for (ObjectAnimator animator : mAnimatorList) {
+        for (Animator animator : mAnimatorList) {
+            // cancel方法中会调用onAnimationEnd回调，导致遍历mAnimatorList过程中
+            // 操作mAnimatorList，报错java.util.ConcurrentModificationException
             animator.cancel();
         }
         mAnimatorList.clear();
