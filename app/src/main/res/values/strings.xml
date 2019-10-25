@@ -85,4 +85,10 @@
     <string name="setting_notification_ongoing">通知栏常驻</string>
     <string name="setting_clear_cache">清除缓存</string>
     <string name="setting_cache_cleared_hint">缓存已清除</string>
+
+    <!--main - favorite cities-->
+    <string name="main_delete_city_hint">是否删除该城市?</string>
+    <string name="main_delete_city_confirm">删除</string>
+    <string name="main_delete_city_undo">撤销</string>
+    <string name="main_delete_city_message">已经将%s删掉了 Ծ‸ Ծ</string>
 </resources>

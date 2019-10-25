@@ -25,11 +25,19 @@ public interface MultiCityContract {
         void onCompleted();
 
         void onAdded(Weather weather);
+
+        void onDeleteInProgress(boolean inProgress);
+
+        void onDeleteSuccess(String city, int position,int deleteCityId);
+
+        void onDeleteError(String errorMessage);
     }
 
     interface Presenter extends BasePresenter {
         void loadMultiCityWeather();
 
         void loadAddedCityWeather(String addedCity);
+
+        void deleteCity(String city, int position);
     }
 }

@@ -5,7 +5,12 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -27,5 +32,21 @@ public class ExampleUnitTest {
         l2.clear();
 
         assertSame(l1, l2);
+    }
+
+    @Test
+    public void testRxJavaDispose() {
+        Disposable disposable = Observable.just(1)
+                .map(i -> {
+                    Thread.sleep(1000);
+                    return "hello world";
+                })
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                        System.out::println,
+                        Throwable::printStackTrace
+                );
+
+        disposable.dispose();//直接dispose，事件将被取消
     }
 }

@@ -4,13 +4,17 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.data.main.multicity.MultiCityRepository;
 import com.hon.sunny.network.exception.CityListEmptyException;
-import com.hon.sunny.vo.bean.main.Weather;
+import com.hon.sunny.utils.RxUtils;
+import com.hon.sunny.vo.bean.main.CityORM;
+import com.litesuits.orm.db.assit.QueryBuilder;
+import com.litesuits.orm.db.assit.WhereBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -71,6 +75,45 @@ public class MultiCityPresenter implements MultiCityContract.Presenter, Lifecycl
                         throwable -> mMultiCityView.onError(throwable)
                 );
         mMultiCityCompositeDisposable.add(addedCityDisposable);
+    }
+
+    @Override
+    public void deleteCity(String city, int position) {
+        Disposable deleteCityDisposable = Observable.just(city)
+                .map(
+                        c -> {
+                            List<CityORM> cityList = OrmLite.getInstance().query(new QueryBuilder<>(CityORM.class).where("name=?", city));
+                            if (cityList.isEmpty()) {
+                                return DeleteCityUIModel.failure("删除失败");
+                            }
+                            int id = cityList.get(0).getId();
+                            OrmLite.getInstance().delete(new WhereBuilder(CityORM.class).where("id=?", id));
+                            return DeleteCityUIModel.success(id);
+                        }
+                )
+                .onErrorReturn(t -> {
+                    t.printStackTrace();
+                    return DeleteCityUIModel.failure("删除失败");
+                })
+                .compose(RxUtils.rxSchedulerHelper())
+                .startWith(DeleteCityUIModel.inProgress())
+                .subscribe(
+                        model -> {
+                            mMultiCityView.onDeleteInProgress(model.inProgress);
+                            if (!model.inProgress) {
+                                if (model.success) {
+                                    mMultiCityView.onDeleteSuccess(city, position, model.deleteCityId);
+                                } else {
+                                    mMultiCityView.onDeleteError(model.errorMessage);
+                                }
+                            }
+                        },
+                        t -> {
+                            // do nothing
+                        }
+                );
+
+        mMultiCityCompositeDisposable.add(deleteCityDisposable);
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
