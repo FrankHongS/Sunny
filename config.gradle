@@ -14,7 +14,7 @@ ext.versions = [
         'butterknife'     : '10.1.0',
         'eventbus'        : '3.1.1',
         'simplechartview' : '0.0.3',
-        'mylogger'        : '1.0.2',
+        'mylogger'        : '1.0.4',
 
         'junit'           : '4.12',
         'test'            : '1.1.0-alpha4',

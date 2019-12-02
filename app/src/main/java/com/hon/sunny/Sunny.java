@@ -47,6 +47,7 @@ public class Sunny extends Application {
             sCacheDir = getApplicationContext().getCacheDir().toString();
         }
 
+        MyLogger.setLoggable(BuildConfig.DEBUG);
         // init MyLogger file path if you want to write into disk
         MyLogger.initLogFilePath(getFilesDir().getPath());
         // init crash handler
