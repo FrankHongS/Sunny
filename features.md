@@ -1,5 +1,5 @@
 **\*\*\*2019/2/13\*\*\***
-* 天气定时更新（使用WorkManager实现）
+* 天气定时更新（使用foreground service实现或者使用WorkManager实现）
 * 折叠天气信息以及查看更多功能 (done)
 * 天气温度折线图展示 (done)
 
