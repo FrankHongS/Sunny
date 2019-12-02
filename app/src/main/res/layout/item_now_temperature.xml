@@ -32,25 +32,25 @@
 
         <TextView
             android:id="@+id/tv_now_temp_max"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:textColor="@color/tempTextColor"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="↑ 25 ℃" />
+            tools:text="↑ 15 ℃" />
 
         <TextView
             android:id="@+id/tv_now_temp_min"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textColor="@color/tempTextColor"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/tv_now_temp_max"
+            app:layout_constraintEnd_toEndOf="@+id/tv_now_temp_max"
             app:layout_constraintTop_toBottomOf="@+id/tv_now_temp_max"
-            tools:text="↓ 9 ℃" />
+            tools:text="↓ -19℃" />
 
         <TextView
             android:id="@+id/tv_now_temp"
