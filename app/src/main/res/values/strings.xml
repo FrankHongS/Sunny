@@ -11,8 +11,6 @@
 
     <string name="weather_fragment">天气详情</string>
     <string name="multi_city_fragment">多城市</string>
-    <string name="city_count">sorry, cities no more than 3...</string>
-    <string name="city_exists">sorry, the city exists already</string>
     <string name="multi_city">开启多城市</string>
     <string name="no_network">网络不好(˵¯͒⌢͗¯͒˵)</string>
     <string name="title_activity_settings">Settings</string>
@@ -30,7 +28,6 @@
     <string name="setting">设置</string>
     <string name="about">关于</string>
     <string name="multi_cities">多城市管理</string>
-    <string name="complete">加载完毕</string>
     <string name="errorLocation">fail to locate,load default city..</string>
 
     <string name="aboutContent">就看天气该应用就是如同它的名字一样，只做一个单纯、简单的看天气软件。这么多天气软件，你选择了我，这是我的幸运。\n从15年10月上线，到目前经历两次重大改版，一次代码的重构，一次界面的大幅度改动，目的都是为了你们。
@@ -85,10 +82,18 @@
     <string name="setting_notification_ongoing">通知栏常驻</string>
     <string name="setting_clear_cache">清除缓存</string>
     <string name="setting_cache_cleared_hint">缓存已清除</string>
-
+    <!--main-->
+    <string name="exit_app">退出Sunny</string>
+    <string name="sure">确定</string>
+    <!--main - weather info-->
+    <string name="load_weather_successfully">加载完毕</string>
     <!--main - favorite cities-->
     <string name="main_delete_city_hint">是否删除该城市?</string>
     <string name="main_delete_city_confirm">删除</string>
     <string name="main_delete_city_undo">撤销</string>
     <string name="main_delete_city_message">已经将%s删掉了 Ծ‸ Ծ</string>
+
+    <!--select city-->
+    <string name="city_count">对不起，收藏城市不能超过3个</string>
+    <string name="city_exists">对不起，该城市已存在</string>
 </resources>

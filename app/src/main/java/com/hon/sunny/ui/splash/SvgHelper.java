@@ -1,4 +1,4 @@
-package com.hon.sunny.ui.launch;
+package com.hon.sunny.ui.splash;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,11 +9,14 @@ import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 
 import com.caverock.androidsvg.PreserveAspectRatio;
 import com.caverock.androidsvg.SVG;
 import com.caverock.androidsvg.SVGParseException;
+import com.hon.mylogger.MyLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,30 +27,34 @@ import java.util.List;
  */
 
 public class SvgHelper {
-    private static final String LOG_TAG = "SVG";
-
-    private final List<SvgPath> mPaths = new ArrayList<SvgPath>();
     private final Paint mSourcePaint;
-
     private SVG mSvg;
+    private HandlerThread mLoadSvgTask;
 
     public SvgHelper(Paint sourcePaint) {
         mSourcePaint = sourcePaint;
     }
 
-    public void load(Context context, int svgResource) {
-        if (mSvg != null) return;
-        try {
-            mSvg = SVG.getFromResource(context, svgResource);
-            mSvg.setDocumentPreserveAspectRatio(PreserveAspectRatio.UNSCALED);
-        } catch (SVGParseException e) {
-            Log.e(LOG_TAG, "Could not load specified SVG resource", e);
-        }
+    public void load(Context context, int svgResource, int width, int height, OnSvgResourceLoadedListener listener) {
+        mLoadSvgTask = new HandlerThread("LoadSvgTask");
+        mLoadSvgTask.start();
+        Handler handler = new Handler(mLoadSvgTask.getLooper());
+        handler.post(() -> {
+            try {
+                mSvg = SVG.getFromResource(context, svgResource);
+                mSvg.setDocumentPreserveAspectRatio(PreserveAspectRatio.UNSCALED);
+                if (listener != null) {
+                    List<SvgPath> paths = getPathsForViewport(width, height);
+                    listener.onSvgResourceLoaded(paths);
+                }
+            } catch (SVGParseException e) {
+                MyLogger.e("Could not load specified SVG resource", e);
+            }
+        });
     }
 
-    public List<SvgPath> getPathsForViewport(final int width, final int height) {
-        mPaths.clear();
-
+    public List<SvgPath> getPathsForViewport(int width, int height) {
+        List<SvgPath> paths = new ArrayList<>();
         Canvas canvas = new Canvas() {
             private final Matrix mMatrix = new Matrix();
 
@@ -64,12 +71,10 @@ public class SvgHelper {
             @Override
             public void drawPath(Path path, Paint paint) {
                 Path dst = new Path();
-
                 //noinspection deprecation
                 getMatrix(mMatrix);
                 path.transform(mMatrix, dst);
-
-                mPaths.add(new SvgPath(dst, new Paint(mSourcePaint)));
+                paths.add(new SvgPath(dst, new Paint(mSourcePaint)));
             }
         };
 
@@ -83,7 +88,11 @@ public class SvgHelper {
 
         mSvg.renderToCanvas(canvas);
 
-        return mPaths;
+        return paths;
+    }
+
+    public void cancel(){
+        mLoadSvgTask.quit();
     }
 
     public static class SvgPath {
@@ -107,5 +116,9 @@ public class SvgHelper {
             sRegion.setPath(path, sMaxClip);
             bounds = sRegion.getBounds();
         }
+    }
+
+    interface OnSvgResourceLoadedListener {
+        void onSvgResourceLoaded(List<SvgPath> paths);
     }
 }

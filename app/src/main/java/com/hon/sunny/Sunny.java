@@ -41,7 +41,7 @@ public class Sunny extends Application {
         super.onCreate();
         sAppContext = getApplicationContext();
 
-        if (getApplicationContext().getExternalCacheDir() != null && ExistSDCard()) {
+        if (getApplicationContext().getExternalCacheDir() != null && existSDCard()) {
             sCacheDir = getApplicationContext().getExternalCacheDir().toString();
         } else {
             sCacheDir = getApplicationContext().getCacheDir().toString();
@@ -83,7 +83,7 @@ public class Sunny extends Application {
         });
     }
 
-    private boolean ExistSDCard() {
+    private boolean existSDCard() {
         return android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED);
     }
 }

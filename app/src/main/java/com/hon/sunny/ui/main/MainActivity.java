@@ -121,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            Snackbar.make(fab, "exit the app", Snackbar.LENGTH_SHORT)
-                    .setAction("yeah", v -> finish())
+            Snackbar.make(fab, R.string.exit_app, Snackbar.LENGTH_SHORT)
+                    .setAction(getString(R.string.sure), v -> finish())
                     .show();
         }
     }

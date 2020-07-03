@@ -8,6 +8,7 @@
     <color name="colorSunset">#201D45</color>
 
     <color name="textHint">#FFFFFF</color>
+    <color name="splashText">#FFFFFF</color>
     <color name="cityHint">#546e7a</color>
 
     <color name="aboutIcon">#106c99</color>

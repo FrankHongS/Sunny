@@ -21,6 +21,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.network.RetrofitSingleton;
@@ -146,7 +147,8 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
         mWeatherAdapter.setWeather(weather);
         safeSetTitle(weather.city);
         refreshLayout.setRefreshing(false);
-        ToastUtil.showShort(getString(R.string.complete));
+        Snackbar.make(refreshLayout, R.string.load_weather_successfully, Snackbar.LENGTH_SHORT)
+                .show();
         //发通知
 //        Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER,weather,getActivity(),MainActivity.class);
     }

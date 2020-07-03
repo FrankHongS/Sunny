@@ -38,7 +38,7 @@
             android:process=":remote"/>
 
         <activity
-            android:name=".ui.launch.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:theme="@style/AppTheme.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
