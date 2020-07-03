@@ -1,7 +1,6 @@
 package com.hon.sunny.ui.splash;
 
 import android.animation.Animator;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,10 +9,8 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.graphics.PathEffect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
-import com.hon.mylogger.MyLogger;
 import com.hon.sunny.R;
 
 import java.util.ArrayList;
