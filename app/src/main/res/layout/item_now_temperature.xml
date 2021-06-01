@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cardview_margin"
+    android:clickable="false"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="3dp"
+    app:cardElevation="2dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:id="@+id/iv_now_weather"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@mipmap/type_one_sunny"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_now_temp_max"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textColor="@color/tempTextColor"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="↑ 15 ℃" />
+
+        <TextView
+            android:id="@+id/tv_now_temp_min"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/tempTextColor"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/tv_now_temp_max"
+            app:layout_constraintTop_toBottomOf="@+id/tv_now_temp_max"
+            tools:text="↓ -19℃" />
+
+        <TextView
+            android:id="@+id/tv_now_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:textSize="50sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_now_temp_min"
+            app:layout_constraintEnd_toStartOf="@+id/tv_now_temp_max"
+            app:layout_constraintTop_toTopOf="@+id/tv_now_temp_max"
+            tools:text="23℃" />
+
+        <TextView
+            android:id="@+id/tv_now_air_quality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_now_temp_min"
+            tools:text="空气质量: 优" />
+
+        <TextView
+            android:id="@+id/tv_now_air_pm25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_now_air_quality"
+            app:layout_constraintTop_toTopOf="@+id/tv_now_air_quality"
+            tools:text="PM2.5: 65 μg/m³" />
+
+        <TextView
+            android:id="@+id/tv_now_aqi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:layout_marginRight="12dp"
+            tools:text="AQI: 65"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/tv_now_air_pm25"
+            app:layout_constraintTop_toTopOf="@+id/tv_now_air_pm25" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

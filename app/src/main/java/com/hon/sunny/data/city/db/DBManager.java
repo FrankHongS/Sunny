@@ -3,11 +3,11 @@ package com.hon.sunny.data.city.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
 
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.common.PLog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,11 +22,11 @@ import java.io.InputStream;
 
 public class DBManager {
 
-    private static String TAG = DBManager.class.getSimpleName();
     public static final String DB_NAME = "china_city.db"; //数据库名字
     public static final String PACKAGE_NAME = "com.hon.sunny";
     public static final String DB_PATH = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" +
             PACKAGE_NAME;  //在手机里存放数据库的位置(/data/data/com.hon.sunny/china_city.db)
+    private static String TAG = DBManager.class.getSimpleName();
     private SQLiteDatabase database;
     private Context context;
 
@@ -38,17 +38,11 @@ public class DBManager {
         return DBManagerHolder.sInstance;
     }
 
-    private static final class DBManagerHolder {
-        public static final DBManager sInstance = new DBManager();
-    }
-
     public SQLiteDatabase getDatabase() {
         return database;
     }
 
-
     public void openDatabase() {
-        PLog.e(TAG, DB_PATH + "/" + DB_NAME);
         this.database = this.openDatabase(DB_PATH + "/" + DB_NAME);
     }
 
@@ -71,10 +65,8 @@ public class DBManager {
             }
             return SQLiteDatabase.openOrCreateDatabase(dbfile, null);
         } catch (FileNotFoundException e) {
-            PLog.e("File not found");
             e.printStackTrace();
         } catch (IOException e) {
-            PLog.e("IO exception");
             e.printStackTrace();
         }
 
@@ -85,5 +77,9 @@ public class DBManager {
         if (this.database != null) {
             this.database.close();
         }
+    }
+
+    private static final class DBManagerHolder {
+        public static final DBManager sInstance = new DBManager();
     }
 }

@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/colorPrimary"
-    >
+    android:layout_height="match_parent">
+
+    <com.hon.sunny.ui.splash.SvgView
+        android:id="@+id/svg_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:duration="4000"
+        app:fadeFactor="10.0"
+        app:phase="1.0"
+        app:strokeColor="#ffffffff"
+        app:svgStrokeWidth="2.0" />
+
     <TextView
-        android:id="@+id/tv_count"
+        android:id="@+id/tv_skip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:textColor="@android:color/black"
-        android:layout_margin="10dp"
-        android:textSize="20dp"
-        />
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-
-</LinearLayout>
+        android:layout_gravity="bottom|end"
+        android:background="@android:color/transparent"
+        android:paddingEnd="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="@string/skip"
+        android:textAllCaps="false"
+        android:textColor="@color/splashText"
+        android:textSize="20sp"
+        tools:ignore="RtlSymmetry" />
+</FrameLayout>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="skip">Skip</string>
+
+    <string name="string_search_city">choose your city</string>
+
+    <string name="multi_city_empty">add your favorite cities here (´･_･`)</string>
+
+    <!--menus-->
+    <string name="nav_city">Select City</string>
+    <string name="multi_cities">Favorite Cities</string>
+    <string name="setting">Settings</string>
+    <string name="about">About</string>
+
+    <!--splash-->
+    <string name="splash_countdown_time">%ds</string>
+
+    <!--settings-->
+    <string name="setting_ui">UI</string>
+    <string name="setting_change_icons">Change weather icons</string>
+    <string-array name="icons">
+        <item>Type 1</item>
+        <item>Type 2</item>
+    </string-array>
+    <string name="setting_change_icons_sure">Sure</string>
+    <string name="setting_modify_icons_hint">Restart to take effect</string>
+    <string name="setting_restart">Restart</string>
+    <string name="setting_anim_homepage">Animations of items in homepage</string>
+    <string name="setting_system">System</string>
+    <string name="setting_auto_update">Automatically update weather</string>
+    <string name="setting_update_frequency">Update frequency</string>
+    <string name="setting_update_summary">Per %d hours</string>
+    <string name="setting_notification_ongoing">Notification ongoing</string>
+    <string name="setting_clear_cache">Clear cache</string>
+    <string name="setting_cache_cleared_hint">Cache cleared</string>
+    <!--main-->
+    <string name="exit_app">Exit Sunny</string>
+    <string name="sure">Sure</string>
+    <!--main - weather info-->
+    <string name="load_weather_successfully">Load successfully</string>
+    <!--main - favorite cities-->
+    <string name="main_delete_city_hint">Delete the city ?</string>
+    <string name="main_delete_city_confirm">delete</string>
+    <string name="main_delete_city_undo">undo</string>
+    <string name="main_delete_city_message">The city %s deleted Ծ‸ Ծ</string>
+    <string name="city_count">sorry, cities no more than 3...</string>
+
+    <!--select city-->
+    <string name="city_exists">sorry, the city exists already</string>
+</resources>

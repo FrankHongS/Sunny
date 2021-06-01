@@ -1,31 +1,39 @@
 package com.hon.sunny.data.main.multicity;
 
-import com.hon.sunny.base.Constants;
-import com.hon.sunny.common.util.ToastUtil;
-import com.hon.sunny.common.util.Util;
-import com.hon.sunny.component.OrmLite;
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.data.main.bean.CityORM;
-import com.hon.sunny.data.main.bean.Weather;
+import android.util.Log;
 
-import rx.Observable;
+import com.hon.sunny.component.OrmLite;
+import com.hon.sunny.network.RetrofitSingleton;
+import com.hon.sunny.network.exception.CityListEmptyException;
+import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.main.CityORM;
+import com.hon.sunny.vo.bean.main.Weather;
+import com.litesuits.orm.db.assit.QueryBuilder;
+
+import java.util.List;
+
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class MultiCityRemoteDataSource implements MultiCityDataSource{
+public class MultiCityRemoteDataSource implements MultiCityDataSource {
 
     private static MultiCityRemoteDataSource INSTANCE;
 
-    private MultiCityRemoteDataSource(){}
+    private MultiCityRemoteDataSource() {
 
-    public static MultiCityRemoteDataSource getInstance(){
-        if(INSTANCE==null){
-            synchronized (MultiCityRemoteDataSource.class){
-                if(INSTANCE==null){
-                    INSTANCE=new MultiCityRemoteDataSource();
+    }
+
+    public static MultiCityRemoteDataSource getInstance() {
+        if (INSTANCE == null) {
+            synchronized (MultiCityRemoteDataSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new MultiCityRemoteDataSource();
                 }
             }
         }
@@ -33,28 +41,38 @@ public class MultiCityRemoteDataSource implements MultiCityDataSource{
     }
 
     @Override
-    public Observable<Weather> fetchMultiCityWeather(Observable<String> citiesObservable) {
-        return citiesObservable.flatMap(
-                s -> RetrofitSingleton.getInstance()
-                .getApiService()
-                .mWeatherAPI(s, Constants.KEY)
-                .map(weatherAPI -> {
-                    Weather weather=weatherAPI.mHeWeatherDataService30s.get(0);
-                    weather.city=s;
-                    return weather;
-                    })
-        );
+    public Flowable<Weather> fetchMultiCityWeather() {
+        return Flowable
+                .defer(() -> {
+                    List<CityORM> cityList = OrmLite.getInstance().query(CityORM.class);
+                    if (cityList == null || cityList.size() == 0) {
+                        return Flowable.error(new CityListEmptyException("city list is empty"));
+                    } else {
+                        return Flowable.fromIterable(cityList);
+                    }
+                })
+                .map(cityORM -> Util.replaceCity(cityORM.getName()))
+                .distinct()
+                .take(3)
+                // control upstream thread
+                .subscribeOn(Schedulers.io())
+                // for parallel
+                .concatMapEager(
+                        s -> RetrofitSingleton
+                                .getInstance()
+                                .fetchWeather(s))
+                .observeOn(AndroidSchedulers.mainThread());
 //                .filter(weather -> !Constants.UNKNOWN_CITY.equals(weather.status));
 
     }
 
     @Override
-    public Observable<String> getCities() {
-        return Observable
-                .defer(() -> Observable.from(OrmLite.getInstance().query(CityORM.class)))
-                .map(cityORM ->Util.replaceCity(cityORM.getName()))
-                .distinct()
-                .take(3);
+    public Flowable<Weather> fetchAddedCityWeather(String addedCity) {
+        return Flowable.just(addedCity)
+                .flatMap(city ->
+                        RetrofitSingleton
+                                .getInstance()
+                                .fetchWeather(city))
+                .observeOn(AndroidSchedulers.mainThread());
     }
-
 }

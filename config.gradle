@@ -1,70 +1,62 @@
-ext {
-    android = [
-            compileSdkVersion: 23,
-            buildToolsVersion: "25.0.2",
-            applicationId    : "com.hon.sunny",
-            minSdkVersion    : 19, // Android 4.4 Kitkat
-            targetSdkVersion : 25,
-            versionCode      : 34,
-            versionName      : "2.3",
-            resConfigs       : "zh"
-    ]
+ext.versions = [
+        'minSdk'          : 15,
+        'compileSdk'      : 28,
 
+        'supportLibrary'  : '1.0.0-beta01',
+        'constraintlayout': '1.1.3',
+        'preference'      : '1.0.0',
+        'retrofit'        : '2.3.0',
+        'okhttp'          : '3.4.1',
+        'rxJava'          : '2.2.8',
+        'rxAndroid'       : '2.1.1',
+        'rxPermissions'   : '0.10.2',
+        'glide'           : '4.9.0',
+        'butterknife'     : '10.1.0',
+        'eventbus'        : '3.1.1',
+        'simplechartview' : '0.0.3',
+        'mylogger'        : '1.0.4',
 
-    def supportVersion = "23.3.0"
-    def butterKnifeVersion = "7.0.0"
-    def glideVersion = "3.7.0"
-    def glideOkhttpVer = "1.4.0@aar"
+        'junit'           : '4.12',
+        'test'            : '1.1.0-alpha4',
+        'espresso'        : '3.1.0-alpha4'
+]
 
-    def retrofitVersion = "2.0.2"
-    def gsonVersion = "2.4"
-    def okHttpVersion = '3.2.0'
-    def okioVersion = "1.6.0"
-
-    def rxJavaVersion = "1.1.3"
-    def rxAndroidVersion = "1.1.0"
-    def rxPermission = "0.7.0@aar"
-    def rxBinding = "0.4.0"
-    def rxLifecycle = "0.6.0"
-
-    def rvAnimatorsVer = "2.2.3"
-
-    dependencies = [
-
-            // Android support library
-            SupportAppcompatV7      : "com.android.support:appcompat-v7:$supportVersion",
-            SupportDesign           : "com.android.support:design:$supportVersion",
-            //SupportRecyclerViewV7   : "com.android.support:recyclerview-v7:$supportVersion",
-            SupportCardViewV7       : "com.android.support:cardview-v7:$supportVersion",
-            SupportAppcompatV4      : "com.android.support:support-v4:$supportVersion",
-
-            // Nice utils
-            Butterknife             : "com.jakewharton:butterknife:$butterKnifeVersion",
-            Glide                   : "com.github.bumptech.glide:glide:$glideVersion",
-            GlideOkHttp             : "com.github.bumptech.glide:okhttp3-integration:$glideOkhttpVer",
-
-            // Rx ..
-            RxJava                  : "io.reactivex:rxjava:$rxJavaVersion",
-            RxAndroid               : "io.reactivex:rxandroid:$rxAndroidVersion",
-            RxPermission            : "com.tbruyelle.rxpermissions:rxpermissions:$rxPermission",
-            //        RxBinding               : "com.jakewharton.rxbinding:rxbinding:$rxBinding",
-            //        RxBindingSupportV4      : "com.jakewharton.rxbinding:rxbinding-support-v4:$rxBinding",
-            //        RxBindingSupportV7      : "com.jakewharton.rxbinding:rxbinding-appcompat-v7:$rxBinding",
-            //        RxBindingDesign         : "com.jakewharton.rxbinding:rxbinding-design:$rxBinding",
-            //        RxBindingRecyclerView   : "com.jakewharton.rxbinding:rxbinding-recyclerview-v7:$rxBinding",
-            //        RxLifecycle             : "com.trello:rxlifecycle:$rxLifecycle",
-
-            // Network
-            Okttp                   : "com.squareup.okhttp3:okhttp:$okHttpVersion",
-            Okio                    : "com.squareup.okio:okio:$okioVersion",
-            Retrofit                : "com.squareup.retrofit2:retrofit:$retrofitVersion",
-            RetrofitConverterGson   : "com.squareup.retrofit2:converter-gson:$retrofitVersion",
-            RetrofitAdapterRxJava   : "com.squareup.retrofit2:adapter-rxjava:$retrofitVersion",
-            OkHttpLoggingInterceptor: "com.squareup.okhttp3:logging-interceptor:$okHttpVersion",
-            Gson                    : "com.google.code.gson:gson:$gsonVersion",
-
-            // widget
-            RVanimators             : "jp.wasabeef:recyclerview-animators:$rvAnimatorsVer",
-
-    ]
-}
+ext.deps = [
+        'support'        : [
+                'appCompat'       : "androidx.appcompat:appcompat:${versions.supportLibrary}",
+                'material'        : "com.google.android.material:material:${versions.supportLibrary}",
+                'cardview'        : "androidx.cardview:cardview:${versions.supportLibrary}",
+                'constraintlayout': "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}",
+                'preference'      : "androidx.preference:preference:${versions.preference}"
+        ],
+        'test'           : [
+                'junit' : "junit:junit:${versions.junit}",
+                'runner': "androidx.test:runner:${versions.test}",
+                'rule'  : "androidx.test:rules:${versions.test}"
+        ],
+        'espresso'       : [
+                'core': "androidx.test.espresso:espresso-core:${versions.espresso}"
+        ],
+        'glide'          : [
+                'root'    : "com.github.bumptech.glide:glide:${versions.glide}",
+                'compiler': "com.github.bumptech.glide:compiler:${versions.glide}"
+        ],
+        'eventbus'       : "org.greenrobot:eventbus:${versions.eventbus}",
+        'datepicker'     : "com.wdullaer:materialdatetimepicker:${versions.datepicker}",
+        'retrofit'       : [
+                'root'           : "com.squareup.retrofit2:retrofit:${versions.retrofit}",
+                'converter_gson' : "com.squareup.retrofit2:converter-gson:${versions.retrofit}",
+                'adapter_rxjava2': "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}",
+                'mock'  : "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
+        ],
+        'okhttp_logging' : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+        'rxJava'         : "io.reactivex.rxjava2:rxjava:${versions.rxJava}",
+        'rxAndroid'      : "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}",
+        'rxPermissions'  : "com.github.tbruyelle:rxpermissions:${versions.rxPermissions}",
+        'butterknife'    : [
+                'runtime' : "com.jakewharton:butterknife:${versions.butterknife}",
+                'compiler': "com.jakewharton:butterknife-compiler:${versions.butterknife}"
+        ],
+        'simplechartview': "com.hon.simplechartview:simplechartview:${versions.simplechartview}",
+        'mylogger'       : "com.frankhon.mylogger:mylogger:${versions.mylogger}"
+]

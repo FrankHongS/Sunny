@@ -3,9 +3,9 @@ package com.hon.sunny.data.city.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.hon.sunny.common.util.Util;
-import com.hon.sunny.data.city.bean.City;
-import com.hon.sunny.data.city.bean.Province;
+import com.hon.sunny.utils.Util;
+import com.hon.sunny.vo.bean.city.City;
+import com.hon.sunny.vo.bean.city.Province;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class WeatherDB {
 
     public static List<City> loadCities(SQLiteDatabase db, int ProID) {
         List<City> list = new ArrayList<>();
-        Cursor cursor = db.query("T_City", null, "ProID = ?", new String[] { String.valueOf(ProID) }, null, null, null);
+        Cursor cursor = db.query("T_City", null, "ProID = ?", new String[]{String.valueOf(ProID)}, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 City city = new City();

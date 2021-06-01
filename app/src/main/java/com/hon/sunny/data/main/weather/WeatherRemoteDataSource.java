@@ -1,26 +1,28 @@
 package com.hon.sunny.data.main.weather;
 
-import com.hon.sunny.component.retrofit.RetrofitSingleton;
-import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.network.RetrofitSingleton;
+import com.hon.sunny.vo.bean.main.Weather;
 
-import rx.Observable;
+import io.reactivex.Flowable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Frank on 2017/10/28.
  * E-mail:frank_hon@foxmail.com
  */
 
-public class WeatherRemoteDataSource implements WeatherDataSource{
+public class WeatherRemoteDataSource implements WeatherDataSource {
 
     private static WeatherRemoteDataSource INSTANCE;
 
-    private WeatherRemoteDataSource(){}
+    private WeatherRemoteDataSource() {
+    }
 
-    public static WeatherRemoteDataSource getInstance(){
-        if(INSTANCE==null){
-            synchronized (WeatherRemoteDataSource.class){
-                if(INSTANCE==null){
-                    INSTANCE=new WeatherRemoteDataSource();
+    public static WeatherRemoteDataSource getInstance() {
+        if (INSTANCE == null) {
+            synchronized (WeatherRemoteDataSource.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new WeatherRemoteDataSource();
                 }
             }
         }
@@ -28,7 +30,8 @@ public class WeatherRemoteDataSource implements WeatherDataSource{
     }
 
     @Override
-    public Observable<Weather> fetchWeather(String city) {
-        return RetrofitSingleton.getInstance().fetchWeather(city);
+    public Flowable<Weather> fetchWeather(String city) {
+        return RetrofitSingleton.getInstance().fetchWeather(city)
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#106c99</color>
-    <color name="colorPrimaryDark">#0D4A6A</color>
-    <color name="colorAccent">#FC413D</color>
+    <color name="colorPrimary">#546e7a</color>
+    <color name="colorPrimaryDark">#546e7a</color>
+    <color name="colorAccent">#9E9E9E</color>
 
     <color name="colorSunrise">#0D4A6A</color>
     <color name="colorSunset">#201D45</color>
 
-    <color name="textHint">#8C8C8C</color>
-    <color name="cityHint">#26a69a</color>
+    <color name="textHint">#FFFFFF</color>
+    <color name="splashText">#FFFFFF</color>
+    <color name="cityHint">#546e7a</color>
 
     <color name="aboutIcon">#106c99</color>
     <!--多城市列表和卡片配色-->
@@ -29,6 +30,15 @@
 
     <color name="lineColor">#60d3d3d3</color>
     <color name="defaultTextColor">#6f6f6f</color>
+
+    <!--max and min temp-->
+    <color name="tempTextColor">#BDBDBD</color>
+
+    <color name="default_text_color">#728288</color>
+
+    <color name="chartDotColor">#212121</color>
+    <color name="maxLineColor">#455A64</color>
+    <color name="minLineColor">#9E9E9E</color>
 
 </resources>
 

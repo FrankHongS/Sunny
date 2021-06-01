@@ -1,56 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/layout">
+    android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swiprefresh"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_multi_city"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_multi_city"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <LinearLayout
-        android:id="@+id/empty"
+    <ProgressBar
+        android:id="@+id/pb_delete_city"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/srl_multi_city"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/srl_multi_city"
+        android:indeterminateDrawable="@drawable/progress_bar_bg"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tv_city_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/empty"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="你还没有添加城市噢 (´･_･`)"
-            android:textColor="@color/cloudyText"
-            />
-
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/iv_erro"
+        android:text="@string/multi_city_empty"
+        android:textColor="@color/default_text_color"
+        android:textSize="18sp"
         android:visibility="gone"
-        android:layout_centerInParent="true"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@mipmap/erro"
-        android:layout_marginBottom="50dp"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</RelativeLayout>
+
+    <include
+        layout="@layout/layout_error"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

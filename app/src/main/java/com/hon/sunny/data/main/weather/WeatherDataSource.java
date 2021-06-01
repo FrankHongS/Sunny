@@ -1,8 +1,8 @@
 package com.hon.sunny.data.main.weather;
 
-import com.hon.sunny.data.main.bean.Weather;
+import com.hon.sunny.vo.bean.main.Weather;
 
-import rx.Observable;
+import io.reactivex.Flowable;
 
 /**
  * Created by Frank on 2017/10/28.
@@ -10,5 +10,5 @@ import rx.Observable;
  */
 
 public interface WeatherDataSource {
-    Observable<Weather> fetchWeather(String city);
+    Flowable<Weather> fetchWeather(String city);
 }
