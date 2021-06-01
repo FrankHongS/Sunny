@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.hon.sunny.R;
-import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.base.BaseViewHolder;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.ForecastEntity;

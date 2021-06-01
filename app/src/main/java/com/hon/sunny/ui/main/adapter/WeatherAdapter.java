@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
-import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.base.BaseViewHolder;
 import com.hon.sunny.ui.common.AnimatorAdapter;
 import com.hon.sunny.ui.main.viewholder.ForecastChartViewHolder;
 import com.hon.sunny.ui.main.viewholder.ForecastViewHolder;

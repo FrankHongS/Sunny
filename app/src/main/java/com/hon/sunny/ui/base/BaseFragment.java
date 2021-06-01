@@ -1,4 +1,4 @@
-package com.hon.sunny.base;
+package com.hon.sunny.ui.base;
 
 
 import android.os.Bundle;
@@ -29,7 +29,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 加载数据操作,在视图创建之前初始化
      */
-    protected abstract void lazyLoad();
+    protected void lazyLoad(){};
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

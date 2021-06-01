@@ -18,7 +18,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.hon.sunny.R;
-import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.base.BaseViewHolder;
 import com.hon.sunny.utils.Constants;
 import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;

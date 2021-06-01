@@ -34,6 +34,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Frank on 2017/8/10.
  * E-mail:frank_hon@foxmail.com
  */
+// todo mock API test
 public class RetrofitSingleton {
 
     private static RetrofitSingleton sRetrofitSingleton;
@@ -145,6 +146,9 @@ public class RetrofitSingleton {
                     } else if ("unknown city".equals(status)) {
                         return Flowable.error(new RuntimeException(String.format("API没有%s", city)));
                     }
+//                    else if ("ok".equals(status)){
+//                        return Flowable.error(new RuntimeException("test"));
+//                    }
                     return Flowable.just(weatherContainer);
                 })
                 .map(weatherContainer -> {

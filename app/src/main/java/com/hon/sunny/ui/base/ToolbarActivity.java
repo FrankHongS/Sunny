@@ -1,19 +1,8 @@
-package com.hon.sunny.base;
+package com.hon.sunny.ui.base;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.DecelerateInterpolator;
-
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.hon.sunny.R;
-
-import butterknife.BindView;
 
 /**
  * Created by Frank on 2017/8/9.

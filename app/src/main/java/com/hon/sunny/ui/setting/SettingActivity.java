@@ -3,7 +3,7 @@ package com.hon.sunny.ui.setting;
 import android.os.Bundle;
 
 import com.hon.sunny.R;
-import com.hon.sunny.base.ToolbarActivity;
+import com.hon.sunny.ui.base.ToolbarActivity;
 
 /**
  * Created by Frank on 2017/8/10.

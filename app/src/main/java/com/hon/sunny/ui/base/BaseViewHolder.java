@@ -1,4 +1,4 @@
-package com.hon.sunny.base;
+package com.hon.sunny.ui.base;
 
 import android.view.View;
 

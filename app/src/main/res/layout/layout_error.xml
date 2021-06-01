@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_error"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:visibility="gone"
+    tools:visibility="visible">
 
-        <ImageView
-            android:id="@+id/iv_error"
-            android:visibility="gone"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@mipmap/error"
-            android:layout_gravity="center"
-            android:layout_marginBottom="50dp"
-            tools:ignore="ContentDescription" />
-
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:src="@mipmap/error"
+        tools:ignore="ContentDescription" />
 </FrameLayout>

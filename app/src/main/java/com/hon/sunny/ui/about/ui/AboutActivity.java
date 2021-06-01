@@ -14,7 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hon.sunny.R;
-import com.hon.sunny.base.BaseActivity;
+import com.hon.sunny.ui.base.BaseActivity;
 import com.hon.sunny.utils.CheckVersion;
 import com.hon.sunny.utils.StatusBarUtil;
 import com.hon.sunny.utils.Util;

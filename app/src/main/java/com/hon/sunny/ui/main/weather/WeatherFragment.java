@@ -25,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.Sunny;
 import com.hon.sunny.network.RetrofitSingleton;
+import com.hon.sunny.ui.base.BaseErrorViewFragment;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.WeatherAdapter;
@@ -52,14 +53,12 @@ import static com.hon.sunny.utils.Constants.ONE_HOUR;
  * E-mail:frank_hon@foxmail.com
  */
 @SuppressWarnings("all")
-public class WeatherFragment extends Fragment implements WeatherContract.View, AMapLocationListener {
+public class WeatherFragment extends BaseErrorViewFragment implements WeatherContract.View, AMapLocationListener {
 
     @BindView(R.id.rv_weather)
     RecyclerView recyclerView;
     @BindView(R.id.srl_weather)
     SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.iv_error)
-    ImageView errorImageView;
 
     private WeatherContract.Presenter mWeatherPresenter;
     private WeatherAdapter mWeatherAdapter;
@@ -116,6 +115,8 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
         mWeatherAdapter = new WeatherAdapter();
         recyclerView.setAdapter(mWeatherAdapter);
         recyclerView.addOnScrollListener(new MaterialScrollListener((MainActivity) getActivity()));
+
+        bindErrorView(v -> loadWeather());
     }
 
     private void loadWeather() {
@@ -124,21 +125,22 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
 
     @Override
     public void doOnRequest() {
+        refreshLayout.setVisibility(View.VISIBLE);
         refreshLayout.setRefreshing(true);
     }
 
     @Override
     public void doOnNext() {
-        errorImageView.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onError(Throwable e) {
-        errorImageView.setVisibility(View.VISIBLE);
+        errorLayout.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-        safeSetTitle("找不到城市");
         refreshLayout.setRefreshing(false);
+        refreshLayout.setVisibility(View.GONE);
         RetrofitSingleton.disposeFailureInfo(e);
     }
 
@@ -147,8 +149,7 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
         mWeatherAdapter.setWeather(weather);
         safeSetTitle(weather.city);
         refreshLayout.setRefreshing(false);
-        Snackbar.make(refreshLayout, R.string.load_weather_successfully, Snackbar.LENGTH_SHORT)
-                .show();
+        Snackbar.make(refreshLayout, R.string.load_weather_successfully, Snackbar.LENGTH_SHORT).show();
         //发通知
 //        Util.normalStyleNotification(Constants.CHANNEL_ID_WEATHER,weather,getActivity(),MainActivity.class);
     }
@@ -197,13 +198,6 @@ public class WeatherFragment extends Fragment implements WeatherContract.View, A
     @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
     public void changeCity(ChangeCityEvent event) {
         loadWeather();
-    }
-
-    private void safeSetTitle(String title) {
-        ActionBar appBarLayout = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        if (appBarLayout != null && !TextUtils.isEmpty(title)) {
-            appBarLayout.setTitle(title);
-        }
     }
 
 }

@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hon.sunny.R;
-import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.base.BaseViewHolder;
 import com.hon.sunny.ui.main.adapter.HourInfoAdapter;
 import com.hon.sunny.vo.bean.main.HourInfoEntity;
 import com.hon.sunny.vo.bean.main.Weather;

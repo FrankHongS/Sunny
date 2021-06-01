@@ -96,6 +96,8 @@ dependencies {
 
     implementation deps.mylogger
 
+    debugImplementation deps.retrofit.mock
+
     testImplementation deps.test.junit
 
     androidTestImplementation deps.test.junit

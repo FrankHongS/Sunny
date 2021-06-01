@@ -5,7 +5,7 @@ import android.view.View;
 import com.hon.simplechartview.ChartEntity;
 import com.hon.simplechartview.ChartView;
 import com.hon.sunny.R;
-import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.base.BaseViewHolder;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.Weather;
 

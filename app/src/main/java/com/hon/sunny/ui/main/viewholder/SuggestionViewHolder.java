@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hon.sunny.R;
-import com.hon.sunny.base.BaseViewHolder;
+import com.hon.sunny.ui.base.BaseViewHolder;
 import com.hon.sunny.ui.main.adapter.SuggestionAdapter;
 import com.hon.sunny.vo.bean.main.SuggestionEntity;
 import com.hon.sunny.vo.bean.main.Weather;

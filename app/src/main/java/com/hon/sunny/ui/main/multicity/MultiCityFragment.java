@@ -20,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.hon.sunny.R;
 import com.hon.sunny.component.OrmLite;
 import com.hon.sunny.network.RetrofitSingleton;
+import com.hon.sunny.ui.base.BaseErrorViewFragment;
 import com.hon.sunny.ui.common.MaterialScrollListener;
 import com.hon.sunny.ui.main.MainActivity;
 import com.hon.sunny.ui.main.adapter.MultiCityAdapter;
@@ -46,7 +47,7 @@ import butterknife.ButterKnife;
  * E-mail:frank_hon@foxmail.com
  */
 @SuppressWarnings("all")
-public class MultiCityFragment extends Fragment implements MultiCityContract.View {
+public class MultiCityFragment extends BaseErrorViewFragment implements MultiCityContract.View {
 
     @BindView(R.id.rv_multi_city)
     RecyclerView recyclerView;
@@ -54,8 +55,8 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.tv_city_empty)
     TextView emptyText;
-    @BindView(R.id.iv_error)
-    ImageView errorImageView;
+//    @BindView(R.id.iv_error)
+//    ImageView errorImageView;
     @BindView(R.id.pb_delete_city)
     ProgressBar deleteProgress;
 
@@ -118,11 +119,12 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
                 android.R.color.holo_blue_bright
         );
         refreshLayout.setOnRefreshListener(this::multiLoad);
-
+        bindErrorView(v -> multiLoad());
     }
 
     @Override
     public void doOnRequest() {
+        refreshLayout.setVisibility(View.VISIBLE);
         refreshLayout.setRefreshing(true);
     }
 
@@ -133,13 +135,11 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     @Override
     public void onError(Throwable t) {
-        if (t.toString().contains("GaiException") || t.toString().contains("SocketTimeoutException") ||
-                t.toString().contains("UnknownHostException") || t.toString().contains("Unsatisfiable")) {
-            emptyText.setVisibility(View.GONE);
-            errorImageView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        }
-        ToastUtil.showShort(t.getMessage());
+        emptyText.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.VISIBLE);
+        refreshLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        ToastUtil.showShort("Error: " + t.getMessage());
         RetrofitSingleton.disposeFailureInfo(t);
     }
 
@@ -208,13 +208,13 @@ public class MultiCityFragment extends Fragment implements MultiCityContract.Vie
 
     private void showEmptyView() {
         emptyText.setVisibility(View.VISIBLE);
-        errorImageView.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
     }
 
     private void showContentView() {
         recyclerView.setVisibility(View.VISIBLE);
-        errorImageView.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.GONE);
         emptyText.setVisibility(View.GONE);
     }
 }
