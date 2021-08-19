@@ -5,18 +5,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-
     </style>
 
-    <style name="AppTheme.SettingActivity">
+    <style name="SettingActivity" parent="AppTheme">
             <item name="colorAccent">@color/colorPrimary</item>
         <!--<item name="preferenceTheme">@style/q</item>-->
     </style>
 
     <style name="AppTheme.SplashActivity">
         <item name="colorPrimaryDark">@android:color/transparent</item>
-        <!--解决启动Activity背景颜色为白色的问题-->
-        <item name="android:windowBackground">@color/colorPrimary</item>
+        <!-- 解决启动Activity背景颜色为白色的问题-->
+        <item name="android:windowBackground">@drawable/bg_splash</item>
+        <item name="android:activityOpenEnterAnimation">@android:anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/slide_out_right</item>
     </style>
 
     <style name="text_shadow">

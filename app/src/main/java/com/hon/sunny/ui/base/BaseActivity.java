@@ -1,6 +1,9 @@
 package com.hon.sunny.ui.base;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,9 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     @Deprecated
     public void setStatusBarColor(int color) {
-        /**
-         * Android4.4以上  但是抽屉有点冲突，目前就重写一个方法暂时解决4.4的问题
-         */
+        // Android4.4以上  但是抽屉有点冲突，目前就重写一个方法暂时解决4.4的问题
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
@@ -52,25 +53,13 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void setStatusBarColorForKitkat(int color) {
-        /**
-         * Android4.4
-         */
+        // Android4.4
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             this.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             SystemBarTintManager tintManager = new SystemBarTintManager(this);
             tintManager.setStatusBarTintEnabled(true);
             tintManager.setStatusBarTintResource(color);
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     public void setTheme(boolean isNights, AppCompatActivity activity) {
@@ -85,5 +74,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
         activity.getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
         activity.recreate();
+    }
+
+    public void setWindowFlag() {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        if (Build.VERSION.SDK_INT >= 19) {
+            View decorView = getWindow().getDecorView();
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 }

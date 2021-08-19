@@ -49,7 +49,7 @@
         <item>深圳</item>
     </string-array>
 
-    <string name="skip">跳过</string>
+    <string name="skip">跳过&#160;&#160;%ds</string>
 
     <string name="weather_suggesetion_clothes">穿衣指数---%s</string>
     <string name="weather_suggesetion_sports">运动指数---%s</string>

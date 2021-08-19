@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="BaseActivity" parent="AppTheme">
+        <!-- 设置导航栏背景以及图标颜色-->
+        <item name="android:navigationBarColor">#F9F9F9</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="SettingActivity" parent="BaseActivity">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!--<item name="preferenceTheme">@style/q</item>-->
+    </style>
+</resources>

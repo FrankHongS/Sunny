@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="skip">Skip</string>
+    <string name="skip">Skip&#160;&#160;%ds</string>
 
     <string name="string_search_city">choose your city</string>
 

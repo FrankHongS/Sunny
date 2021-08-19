@@ -49,19 +49,22 @@
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
+            android:theme="@style/BaseActivity"
             />
         <activity
             android:name=".ui.setting.SettingActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.SettingActivity"
+            android:theme="@style/SettingActivity"
             />
         <activity
             android:name=".ui.about.ui.AboutActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/BaseActivity"
             />
         <activity android:name=".ui.city.SearchCityActivity"
             android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:theme="@style/BaseActivity"
             />
 
         <provider android:name="androidx.core.content.FileProvider"

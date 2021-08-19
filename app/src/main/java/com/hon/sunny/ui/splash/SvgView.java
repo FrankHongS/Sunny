@@ -82,7 +82,6 @@ public class SvgView extends View {
     private void startAnimation() {
         mSvgAnimator = ValueAnimator.ofFloat(mPhase, 0.0f);
         mSvgAnimator.setDuration(mDuration);
-        mSvgAnimator.start();
         mSvgAnimator.addUpdateListener(animation -> {
             for (SvgHelper.SvgPath svgPath : mPaths) {
                 PathEffect pathEffect = new DashPathEffect(new float[]{svgPath.length, svgPath.length},
@@ -117,6 +116,7 @@ public class SvgView extends View {
 
             }
         });
+        mSvgAnimator.start();
     }
 
     public void stop() {
@@ -125,8 +125,8 @@ public class SvgView extends View {
         mPaths.clear();
     }
 
-    public void setCallback(SvgCompletedCallBack mCallback) {
-        this.mCallback = mCallback;
+    public void setCallback(SvgCompletedCallBack callback) {
+        this.mCallback = callback;
     }
 
     interface SvgCompletedCallBack {
