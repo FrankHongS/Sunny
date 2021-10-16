@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 
 public class SplashActivity extends BaseActivity {
 
-    private static final int COUNT_DOWN_TIME = 5;
+    private static final int COUNT_DOWN_TIME = 4;
     private static final int COUNT_DOWN_INTERVAL = 1;
 
     @BindView(R.id.svg_splash)
@@ -27,7 +27,7 @@ public class SplashActivity extends BaseActivity {
     @BindView(R.id.btn_skip)
     Button skip;
 
-    private final CountDownTimer mCountDownTimer = new CountDownTimer(COUNT_DOWN_TIME * 1000,
+    private final CountDownTimer countDownTimer = new CountDownTimer(COUNT_DOWN_TIME * 1000,
             COUNT_DOWN_INTERVAL * 1000) {
         @Override
         public void onTick(long millisUntilFinished) {
@@ -51,7 +51,7 @@ public class SplashActivity extends BaseActivity {
         svgView.setCallback(new SvgView.SvgCompletedCallBack() {
             @Override
             public void onSvgStart() {
-                mCountDownTimer.start();
+                countDownTimer.start();
             }
 
             @Override
@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         svgView.stop();
-        mCountDownTimer.cancel();
+        countDownTimer.cancel();
     }
 
     private void finishSelf() {

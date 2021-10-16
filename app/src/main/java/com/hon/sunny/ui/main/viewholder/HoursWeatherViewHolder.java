@@ -43,9 +43,7 @@ public class HoursWeatherViewHolder extends BaseViewHolder<Weather> {
 
     @Override
     public void bind(Weather weather) {
-
         List<HourInfoEntity> hourInfoList = new ArrayList<>();
-
         if (weather.hourlyForecast != null) {
             for (Weather.HourlyForecastEntity entity : weather.hourlyForecast) {
                 HourInfoEntity hourInfo = new HourInfoEntity(

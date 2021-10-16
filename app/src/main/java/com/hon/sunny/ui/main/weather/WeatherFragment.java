@@ -2,17 +2,12 @@ package com.hon.sunny.ui.main.weather;
 
 import android.Manifest;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -85,7 +80,9 @@ public class WeatherFragment extends BaseErrorViewFragment implements WeatherCon
         RxPermissions rxPermissions = new RxPermissions(this);
 
         mPermissionsDisposable = rxPermissions
-                .request(Manifest.permission.ACCESS_COARSE_LOCATION)
+                .request(Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION)
                 .subscribe(granted -> {
                     if (granted && savedInstanceState == null) {
                         location();

@@ -46,27 +46,23 @@ public class ForecastViewHolder extends BaseViewHolder<Weather> {
 
         List<ForecastEntity> forecastList = new ArrayList<>();
 
-        if (weather.dailyForecast != null) {
-            for (Weather.DailyForecastEntity entity : weather.dailyForecast) {
-                ForecastEntity forecastEntity = new ForecastEntity(
-                        weather.city,
-                        entity.date,
-                        entity.max,
-                        entity.min,
-                        entity.txtD,
-                        entity.sc,
-                        entity.dir,
-                        entity.spd,
-                        entity.pop
-                );
+        for (Weather.DailyForecastEntity entity : weather.dailyForecast) {
+            ForecastEntity forecastEntity = new ForecastEntity(
+                    weather.city,
+                    entity.date,
+                    entity.max,
+                    entity.min,
+                    entity.txtD,
+                    entity.sc,
+                    entity.dir,
+                    entity.spd,
+                    entity.pop
+            );
 
-                forecastList.add(forecastEntity);
-            }
+            forecastList.add(forecastEntity);
         }
         List<ForecastEntity> trimmedForecastList = generateForecastList(forecastList);
-
         mForecastAdapter.swapDataList(trimmedForecastList);
-
         forecastCard.setOnClickListener(
                 view -> {
                     if (forecastList.size() > FORECAST_DAY_COUNT) {

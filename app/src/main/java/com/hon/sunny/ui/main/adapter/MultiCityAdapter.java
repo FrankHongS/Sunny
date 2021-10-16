@@ -123,7 +123,6 @@ public class MultiCityAdapter extends ListAdapter<Weather, MultiCityAdapter.Mult
 
         @Override
         public void bind(Weather weather) {
-
             String weatherDesc;
             int code;
             CardCityUIHelper cardCityUIHelper = new CardCityUIHelper();

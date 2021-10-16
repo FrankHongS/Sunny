@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +24,11 @@ import com.hon.sunny.utils.SharedPreferenceUtil;
 import com.hon.sunny.utils.Util;
 import com.hon.sunny.vo.bean.main.Weather;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -32,31 +38,38 @@ import butterknife.BindView;
 @SuppressWarnings("all")
 public class WeatherAdapter extends AnimatorAdapter<BaseViewHolder> {
 
-    private static final int NOW_WEATHER = 0;
-    private static final int HOURS_WEATHER = 1;
-    private static final int SUGGESTION = 2;
-    private static final int FORECAST = 3;
-    private static final int FORECAST_CHART = 4;
-    private static String TAG = WeatherAdapter.class.getSimpleName();
+    private static final int TYPE_NOW_WEATHER = 0;
+    private static final int TYPE_HOURS_WEATHER = 1;
+    private static final int TYPE_SUGGESTION = 2;
+    private static final int TYPE_FORECAST = 3;
+    private static final int TYPE_FORECAST_CHART = 4;
+
+    @IntDef({TYPE_NOW_WEATHER, TYPE_HOURS_WEATHER, TYPE_SUGGESTION, TYPE_FORECAST, TYPE_FORECAST_CHART})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface WeatherItemType {
+
+    }
+
     private Weather mWeatherData;
+    private List<Integer> typeList = new ArrayList<>();
 
     @NonNull
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
-            case NOW_WEATHER:
+            case TYPE_NOW_WEATHER:
                 return new NowWeatherViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_now_temperature, parent, false));
-            case HOURS_WEATHER:
+            case TYPE_HOURS_WEATHER:
                 return new HoursWeatherViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_hour_info, parent, false));
-            case SUGGESTION:
+            case TYPE_SUGGESTION:
                 return new SuggestionViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_suggestion, parent, false));
-            case FORECAST:
+            case TYPE_FORECAST:
                 return new ForecastViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forecast, parent, false));
-            case FORECAST_CHART:
+            case TYPE_FORECAST_CHART:
                 return new ForecastChartViewHolder(
                         LayoutInflater.from(parent.getContext()).inflate(R.layout.item_forecast_chart, parent, false)
                 );
@@ -75,16 +88,30 @@ public class WeatherAdapter extends AnimatorAdapter<BaseViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mWeatherData != null && mWeatherData.status != null ? 5 : 0;
+        return typeList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position;
+        return typeList.get(position);
     }
 
     public void setWeather(Weather weather) {
         this.mWeatherData = weather;
+        typeList.clear();
+        if (weather.now != null) {
+            typeList.add(TYPE_NOW_WEATHER);
+        }
+        if (weather.hourlyForecast != null) {
+            typeList.add(TYPE_HOURS_WEATHER);
+        }
+        if (weather.lifestyle != null) {
+            typeList.add(TYPE_SUGGESTION);
+        }
+        if (weather.dailyForecast != null) {
+            typeList.add(TYPE_FORECAST);
+            typeList.add(TYPE_FORECAST_CHART);
+        }
         changeData();// similar to notifyDataChanged
     }
 
@@ -113,11 +140,9 @@ public class WeatherAdapter extends AnimatorAdapter<BaseViewHolder> {
         }
 
         @Override
-        public void bind(Weather weather) {
-            if (weather.now != null)
-                tempNow.setText(String.format("%s℃", weather.now.tmp));
+        public void bind(@NonNull Weather weather) {
+            tempNow.setText(String.format("%s℃", weather.now.tmp));
             if (weather.dailyForecast != null) {
-
                 tempMax.setText(
                         String.format("↑ %s ℃", weather.dailyForecast.get(0).max));
                 tempMin.setText(
@@ -129,10 +154,9 @@ public class WeatherAdapter extends AnimatorAdapter<BaseViewHolder> {
             tempQuality.setText(Util.safeText("空气质量: ", weather.quality));
             tempAqi.setText(Util.safeText("AQI: ", weather.aqi));
 
-            if (weather.now != null)
-                Glide.with(itemView.getContext())
-                        .load(SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none))
-                        .into(weatherIcon);
+            Glide.with(itemView.getContext())
+                    .load(SharedPreferenceUtil.getInstance().getInt(weather.now.txt, R.mipmap.none))
+                    .into(weatherIcon);
         }
     }
 

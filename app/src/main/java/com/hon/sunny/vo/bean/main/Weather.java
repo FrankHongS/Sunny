@@ -94,9 +94,6 @@ public class Weather implements Serializable {
 
     }
 
-    /*
-     *
-     * */
     public static class LifestyleEntity implements Serializable {
         @SerializedName("type")
         public String type;

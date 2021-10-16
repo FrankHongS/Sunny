@@ -102,7 +102,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         }
 
         @Override
-        public void bind(ForecastEntity forecast) {
+        public void bind(@NonNull ForecastEntity forecast) {
             try {
                 forecastDate.setText(
                         Util.dayForWeek(forecast.getDate()));

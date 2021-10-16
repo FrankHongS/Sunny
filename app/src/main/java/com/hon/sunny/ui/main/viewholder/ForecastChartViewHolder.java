@@ -52,7 +52,6 @@ public class ForecastChartViewHolder extends BaseViewHolder<Weather> {
         chartEntities.add(maxChartEntity);
         chartEntities.add(minChartEntity);
 
-
         chartView.setChartData(chartEntities, labelList);
     }
 }
